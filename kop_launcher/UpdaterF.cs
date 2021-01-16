@@ -20,6 +20,7 @@ namespace kop_launcher
         private List<string> DownloadedFiles;
         private int TotalUpdates = 0;
         private bool ForceUpdate = false;
+        private bool WasUpdated = false;
         public UpdaterF(string RemoteVersion, string Region, bool ForceUpdate=false)
         {
             InitializeComponent();
@@ -42,31 +43,31 @@ namespace kop_launcher
         async Task CheckGameNeedsUpdate()
         {
             GameUpdater = new AutoUpdate(RemoteVersion);
-            if (ForceUpdate)
+            if (GameUpdater.IsGameUpToDate())
             {
-                SetControlThreadSafe(label2, (arg) => { label2.Text = "Receiving Update Information..."; }, null);
-                DownloadedFiles = new List<string>();
-
-                var PatchInfo = GameUpdater.GetRequiredUpdates(RemoteVersion, Properties.Resources.UpdateXMLFile, true);
-                if (PatchInfo.PatchList.Count > 0 && PatchInfo.LastVersion > 0)
+                Close();
+                if (!StartGameInstance())
                 {
-                    SetControlThreadSafe(progressBar1, (arg) => { progressBar1.Value = 0; }, null);
-                    SetControlThreadSafe(progressBar1, (arg) => { progressBar1.Style = ProgressBarStyle.Blocks; }, null);
-                    SetControlThreadSafe(label2, (arg) => { label2.Text = "Downloading Game Updates..."; }, null);
-                    TotalUpdates = PatchInfo.PatchList.Count;
-
-                    await DownloadMultipleFilesAsync(PatchInfo.PatchList);
-                    backgroundWorker1.RunWorkerAsync();
+                    utils.ShowMessageA("An error occured while opening a game instance");
                 }
             }
             else
             {
-                if (GameUpdater.IsGameUpToDate())
+                if (ForceUpdate)
                 {
-                    Close();
-                    if (!StartGameInstance())
+                    SetControlThreadSafe(label2, (arg) => { label2.Text = "Receiving Update Information..."; }, null);
+                    DownloadedFiles = new List<string>();
+
+                    var PatchInfo = GameUpdater.GetRequiredUpdates(RemoteVersion, Properties.Resources.UpdateXMLFile, true);
+                    if (PatchInfo.PatchList.Count > 0 && PatchInfo.LastVersion > 0)
                     {
-                        utils.ShowMessageA("An error occured while opening a game instance");
+                        SetControlThreadSafe(progressBar1, (arg) => { progressBar1.Value = 0; }, null);
+                        SetControlThreadSafe(progressBar1, (arg) => { progressBar1.Style = ProgressBarStyle.Blocks; }, null);
+                        SetControlThreadSafe(label2, (arg) => { label2.Text = "Downloading Game Updates..."; }, null);
+                        TotalUpdates = PatchInfo.PatchList.Count;
+
+                        await DownloadMultipleFilesAsync(PatchInfo.PatchList);
+                        backgroundWorker1.RunWorkerAsync();
                     }
                 }
                 else
@@ -98,6 +99,7 @@ namespace kop_launcher
         {
             SetControlThreadSafe(progressBar1, (arg) => { progressBar1.Value = 100; }, null);
             SetControlThreadSafe(label2, (arg) => { label2.Text = "Game Updated Successfully..."; }, null);
+            WasUpdated = true;
             GameUpdater.OverrideLocalGameVersion(RemoteVersion);
             if (!ForceUpdate)
             {
@@ -186,7 +188,25 @@ namespace kop_launcher
 
         private bool StartGameInstance()
         {
-            if (utils.ShowMessageOK("Game has been updated to the last available version, would you like to start the game now?"))
+            if (WasUpdated)
+            {
+                if (utils.ShowMessageOK("Game has been updated to the last available version, would you like to start the game now?"))
+                {
+                    int procID = Globals.StartGameInstance(RegionIP);
+
+                    if (procID != -1)
+                    {
+                        Globals.lastOpenedRegion = RegionIP;
+                        Globals.GameInstances.Add(procID);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
             {
                 int procID = Globals.StartGameInstance(RegionIP);
 

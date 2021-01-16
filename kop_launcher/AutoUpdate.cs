@@ -212,33 +212,33 @@ namespace kop_launcher
                     from cmd in xdoc.Descendants("Update")
                     select new
                     {
-                        FileURL = (string)cmd.Element("FileURL"),
-                        FileMirror = (string)cmd.Element("FileMirror"),
-                        Version = (string)cmd.Element("Version"),
+                        FileURL     = (string)cmd.Element("FileURL"),
+                        FileMirror  = (string)cmd.Element("FileMirror"),
+                        Version     = (string)cmd.Element("Version"),
                     };
-
 
                     foreach (var patch in commands)
                     {
                         int version = CastVersionToInt(patch.Version);
                         Patch PatchInfo = new Patch();
 
-                        //System.Windows.Forms.MessageBox.Show($"Patch version {version} Remote versin {remoteVersion}");
+                        var patchURL = patch.FileURL;
+                        var patchMirror = patch.FileMirror;
 
                         if (ForceUpdate)
                         {
                             if (version > 0 && !string.IsNullOrEmpty(patch.FileURL))
                             {
-                                if (IsLinkReachable(patch.FileURL))
+                                if (IsLinkReachable(patchURL))
                                 {
-                                    PatchInfo.FileURL = patch.FileURL;
-                                    PatchInfo.FileMirror = patch.FileMirror;
+                                    PatchInfo.FileURL = patchURL;
+                                    PatchInfo.FileMirror = patchMirror;
                                     PatchInfo.PatchVersion = version;
                                 }
                                 else
                                 {
-                                    PatchInfo.FileURL = patch.FileMirror;
-                                    PatchInfo.FileMirror = patch.FileMirror;
+                                    PatchInfo.FileURL = patchMirror;
+                                    PatchInfo.FileMirror = PatchInfo.FileURL;
                                     PatchInfo.PatchVersion = version;
                                 }
 
@@ -250,16 +250,16 @@ namespace kop_launcher
                         {
                             if (version > 0 && !string.IsNullOrEmpty(patch.FileURL) && version <= remoteVersion)
                             {
-                                if (IsLinkReachable(patch.FileURL))
+                                if (IsLinkReachable(patchURL))
                                 {
-                                    PatchInfo.FileURL = patch.FileURL;
-                                    PatchInfo.FileMirror = patch.FileMirror;
+                                    PatchInfo.FileURL = patchURL;
+                                    PatchInfo.FileMirror = patchMirror;
                                     PatchInfo.PatchVersion = version;
                                 }
                                 else
                                 {
-                                    PatchInfo.FileURL = patch.FileMirror;
-                                    PatchInfo.FileMirror = patch.FileMirror;
+                                    PatchInfo.FileURL = patchMirror;
+                                    PatchInfo.FileMirror = PatchInfo.FileURL;
                                     PatchInfo.PatchVersion = version;
                                 }
 

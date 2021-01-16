@@ -246,8 +246,7 @@ namespace kop_launcher
                     {
                         if (!Globals.KillProcess(processID))
                         {
-                            utils.ShowMessageOK("An error occured while performing on of the mandatory tasks, please contact an administrator!");
-                
+                            ;
                         }
                     }
 

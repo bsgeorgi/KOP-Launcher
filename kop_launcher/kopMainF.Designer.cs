@@ -65,7 +65,6 @@
             this.instagramButton = new System.Windows.Forms.PictureBox();
             this.facebookButton = new System.Windows.Forms.PictureBox();
             this.faDiscordBtn = new System.Windows.Forms.PictureBox();
-            this.mainBanner = new Guna.UI2.WinForms.Guna2PictureBox();
             this.topContainer = new Guna.UI2.WinForms.Guna2Panel();
             this.label21 = new System.Windows.Forms.Label();
             this.minimiseButton = new Guna.UI2.WinForms.Guna2ControlBox();
@@ -87,6 +86,7 @@
             this.SecurityBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.CheckHasheshBW = new System.ComponentModel.BackgroundWorker();
             this.UpdateHashesTimer = new System.Windows.Forms.Timer(this.components);
+            this.mainBanner = new Guna.UI2.WinForms.Guna2PictureBox();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.package4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.package3)).BeginInit();
@@ -102,8 +102,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.instagramButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.facebookButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.faDiscordBtn)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mainBanner)).BeginInit();
             this.topContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mainBanner)).BeginInit();
             this.SuspendLayout();
             // 
             // mainPanel
@@ -602,17 +602,6 @@
             this.faDiscordBtn.TabStop = false;
             this.faDiscordBtn.Click += new System.EventHandler(this.faDiscordBtn_Click);
             // 
-            // mainBanner
-            // 
-            this.mainBanner.BackColor = System.Drawing.Color.Transparent;
-            this.mainBanner.Image = ((System.Drawing.Image)(resources.GetObject("mainBanner.Image")));
-            this.mainBanner.Location = new System.Drawing.Point(83, 65);
-            this.mainBanner.Name = "mainBanner";
-            this.mainBanner.ShadowDecoration.Parent = this.mainBanner;
-            this.mainBanner.Size = new System.Drawing.Size(1014, 313);
-            this.mainBanner.TabIndex = 2;
-            this.mainBanner.TabStop = false;
-            // 
             // topContainer
             // 
             this.topContainer.Controls.Add(this.label21);
@@ -790,6 +779,17 @@
             this.UpdateHashesTimer.Interval = 10000;
             this.UpdateHashesTimer.Tick += new System.EventHandler(this.UpdateHashesTimer_Tick);
             // 
+            // mainBanner
+            // 
+            this.mainBanner.BackColor = System.Drawing.Color.Transparent;
+            this.mainBanner.Image = ((System.Drawing.Image)(resources.GetObject("mainBanner.Image")));
+            this.mainBanner.Location = new System.Drawing.Point(83, 65);
+            this.mainBanner.Name = "mainBanner";
+            this.mainBanner.ShadowDecoration.Parent = this.mainBanner;
+            this.mainBanner.Size = new System.Drawing.Size(1014, 313);
+            this.mainBanner.TabIndex = 2;
+            this.mainBanner.TabStop = false;
+            // 
             // kopmainF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -821,9 +821,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.instagramButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.facebookButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.faDiscordBtn)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mainBanner)).EndInit();
             this.topContainer.ResumeLayout(false);
             this.topContainer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mainBanner)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -834,7 +834,6 @@
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl2;
         private Guna.UI2.WinForms.Guna2Panel leftSidebar;
-        private Guna.UI2.WinForms.Guna2PictureBox mainBanner;
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl3;
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl4;
         private Guna.UI2.WinForms.Guna2Panel topContainer;
@@ -887,6 +886,7 @@
         private System.ComponentModel.BackgroundWorker SecurityBackgroundWorker;
         private System.ComponentModel.BackgroundWorker CheckHasheshBW;
         private System.Windows.Forms.Timer UpdateHashesTimer;
+        private Guna.UI2.WinForms.Guna2PictureBox mainBanner;
     }
 }
 
