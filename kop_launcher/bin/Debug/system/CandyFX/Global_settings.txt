@@ -1,8 +1,0 @@
-#define  ReShade_ToggleKey	36
-#define ReShade_Start_Enabled 1
-#define ReShade_Screenshot_Format 2
-#define ReShade_ShowToggleMessage 0
-#define ReShade_ShowStatistics 0
-#define CandyFX_Greeting 1
-#define ReShade_ShowClock 0
-#define ReShade_ShowFPS 0
