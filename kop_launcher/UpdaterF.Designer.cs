@@ -1,11 +1,14 @@
-﻿namespace kop_launcher
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace kop_launcher
 {
     partial class UpdaterF
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -102,10 +105,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Button CancelButton;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private Button CancelButton;
+        private Label label2;
+        private Label label1;
+        private ProgressBar progressBar1;
+        private BackgroundWorker backgroundWorker1;
     }
 }

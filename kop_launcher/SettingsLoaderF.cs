@@ -1,95 +1,90 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Windows.Forms;
 
 namespace kop_launcher
 {
-    public partial class SettingsLoaderF : Form
-    {
-        private ConfigFileReaderWriter configs;
-        private Dictionary<string, string> CandyFXsettings;
-        private Dictionary<string, string> GlobalSettings;
-        private Dictionary<string, string> GameSettings;
-        private SettingsF settingsForm;
-        public SettingsLoaderF()
-        {
-            InitializeComponent();
+	public partial class SettingsLoaderF : Form
+	{
+		private ConfigFileReaderWriter     configs;
+		private Dictionary<string, string> CandyFXsettings;
+		private Dictionary<string, string> GlobalSettings;
+		private Dictionary<string, string> GameSettings;
+		private SettingsF                  settingsForm;
 
-            backgroundWorker1.DoWork += BackgroundWorker1_DoWork;
-            backgroundWorker1.RunWorkerCompleted += BackgroundWorker1_RunWorkerCompleted;
-            backgroundWorker1.RunWorkerAsync();
-        }
+		public SettingsLoaderF ( )
+		{
+			InitializeComponent ( );
 
-        private bool CheckOpened(string name)
-        {
-            FormCollection fc = Application.OpenForms;
-            foreach (Form frm in fc)
-            {
-                if (frm.Name == name)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+			backgroundWorker1.DoWork             += BackgroundWorker1_DoWork;
+			backgroundWorker1.RunWorkerCompleted += BackgroundWorker1_RunWorkerCompleted;
+			backgroundWorker1.RunWorkerAsync ( );
+		}
 
-        private void BringToFront(string name)
-        {
-            FormCollection fc = Application.OpenForms;
-            foreach (Form frm in fc)
-            {
-                if (frm.Name == name)
-                {
-                    frm.BringToFront();
-                }
-            }
-        }
+		private bool CheckOpened ( string name )
+		{
+			var fc = Application.OpenForms;
+			foreach ( Form frm in fc )
+				if ( frm.Name == name )
+					return true;
+			return false;
+		}
 
-        private void BackgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
-        {
-            if (!CheckOpened("SettingsF"))
-            {
-                settingsForm = new SettingsF(CandyFXsettings, GlobalSettings, GameSettings);
-                settingsForm.Show();
-                settingsForm.IsOpen = true;
+		private void BringToFront ( string name )
+		{
+			var fc = Application.OpenForms;
+			foreach ( Form frm in fc )
+				if ( frm.Name == name )
+					frm.BringToFront ( );
+		}
 
-                backgroundWorker1.Dispose();
-                configs = null;
-                CandyFXsettings = null;
-                GlobalSettings = null;
-                GameSettings = null;
-                Close();
+		private void BackgroundWorker1_RunWorkerCompleted ( object sender, RunWorkerCompletedEventArgs e )
+		{
+			if ( !CheckOpened ( "SettingsF" ) )
+			{
+				settingsForm = new SettingsF ( CandyFXsettings, GlobalSettings, GameSettings );
+				settingsForm.Show ( );
+				settingsForm.IsOpen = true;
 
-            }
-            else
-            {
-                backgroundWorker1.Dispose();
-                configs = null;
-                CandyFXsettings = null;
-                GlobalSettings = null;
-                GameSettings = null;
-                Close();
-                BringToFront("SettingsF");
-            }
-        }
+				backgroundWorker1.Dispose ( );
+				configs         = null;
+				CandyFXsettings = null;
+				GlobalSettings  = null;
+				GameSettings    = null;
+				Close ( );
+			}
+			else
+			{
+				backgroundWorker1.Dispose ( );
+				configs         = null;
+				CandyFXsettings = null;
+				GlobalSettings  = null;
+				GameSettings    = null;
+				Close ( );
+				BringToFront ( "SettingsF" );
+			}
+		}
 
-        private void BackgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {
-            configs = new ConfigFileReaderWriter();
-            CandyFXsettings = configs.ReadConfigFile("CandyFX_settings.txt");
-            GlobalSettings = configs.ReadConfigFile("Global_settings.txt");
+		private void BackgroundWorker1_DoWork ( object sender, DoWorkEventArgs e )
+		{
+			configs         = new ConfigFileReaderWriter ( );
+			CandyFXsettings = configs.ReadConfigFile ( "CandyFX_settings.txt" );
+			GlobalSettings  = configs.ReadConfigFile ( "Global_settings.txt" );
 
-            string pathToGameS = System.IO.Path.Combine(Globals.rootDirectory, "user", "system.ini");
-            GameSettings = configs.ReadCoreIniSettings(pathToGameS);
-        }
+			var pathToGameS = Path.Combine ( Globals.RootDirectory, "user", "system.ini" );
+			GameSettings = configs.ReadCoreIniSettings ( pathToGameS );
+		}
 
-        private void guna2Button1_Click(object sender, System.EventArgs e)
-        {
-            backgroundWorker1.Dispose();
-            configs = null;
-            CandyFXsettings = null;
-            GlobalSettings = null;
-            GameSettings = null;
-            Close();
-        }
-    }
+		private void guna2Button1_Click ( object sender, EventArgs e )
+		{
+			backgroundWorker1.Dispose ( );
+			configs         = null;
+			CandyFXsettings = null;
+			GlobalSettings  = null;
+			GameSettings    = null;
+			Close ( );
+		}
+	}
 }

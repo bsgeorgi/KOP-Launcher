@@ -1,11 +1,15 @@
-﻿namespace kop_launcher
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Guna.UI2.WinForms;
+
+namespace kop_launcher
 {
-    partial class kopmainF
+    partial class KopmainF
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -29,7 +33,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(kopmainF));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KopmainF));
             this.mainPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
@@ -800,7 +804,7 @@
             this.Font = new System.Drawing.Font("Roboto", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "kopmainF";
+            this.Name = "KopmainF";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "King of Pirates Online";
             this.TransparencyKey = System.Drawing.Color.Yellow;
@@ -830,63 +834,63 @@
 
         #endregion
 
-        private Guna.UI2.WinForms.Guna2Panel mainPanel;
-        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
-        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl2;
-        private Guna.UI2.WinForms.Guna2Panel leftSidebar;
-        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl3;
-        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl4;
-        private Guna.UI2.WinForms.Guna2Panel topContainer;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private Guna.UI2.WinForms.Guna2PictureBox StartGameButton;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.PictureBox faDiscordBtn;
-        private System.Windows.Forms.PictureBox facebookButton;
-        private System.Windows.Forms.PictureBox settingsButton;
-        private System.Windows.Forms.PictureBox forumButton;
-        private System.Windows.Forms.PictureBox mailButton;
-        private System.Windows.Forms.PictureBox instagramButton;
-        private Guna.UI2.WinForms.Guna2PictureBox rankingPanel;
-        private Guna.UI2.WinForms.Guna2PictureBox itemShopPanel;
-        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl5;
-        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl6;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label20;
-        private Guna.UI2.WinForms.Guna2ControlBox minimiseButton;
-        private Guna.UI2.WinForms.Guna2ControlBox closeButton;
-        private System.Windows.Forms.NotifyIcon notifyIcon;
-        private Guna.UI2.WinForms.Guna2ComboBox regionsBox;
-        private Guna.UI2.WinForms.Guna2PictureBox package4;
-        private Guna.UI2.WinForms.Guna2PictureBox package3;
-        private Guna.UI2.WinForms.Guna2PictureBox package2;
-        private Guna.UI2.WinForms.Guna2PictureBox package1;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Timer updateStatisticsTimer;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Timer SecurityTimer;
-        private System.ComponentModel.BackgroundWorker SecurityBackgroundWorker;
-        private System.ComponentModel.BackgroundWorker CheckHasheshBW;
-        private System.Windows.Forms.Timer UpdateHashesTimer;
-        private Guna.UI2.WinForms.Guna2PictureBox mainBanner;
+        private Guna2Panel mainPanel;
+        private Guna2DragControl guna2DragControl1;
+        private Guna2DragControl guna2DragControl2;
+        private Guna2Panel leftSidebar;
+        private Guna2DragControl guna2DragControl3;
+        private Guna2DragControl guna2DragControl4;
+        private Guna2Panel topContainer;
+        private Label label1;
+        private Label label4;
+        private Label label3;
+        private Label label2;
+        private Guna2PictureBox StartGameButton;
+        private Label label5;
+        private Label label6;
+        private Label label9;
+        private Label label10;
+        private Label label7;
+        private Label label8;
+        private Label label15;
+        private Label label16;
+        private Label label13;
+        private Label label14;
+        private Label label11;
+        private Label label12;
+        private PictureBox faDiscordBtn;
+        private PictureBox facebookButton;
+        private PictureBox settingsButton;
+        private PictureBox forumButton;
+        private PictureBox mailButton;
+        private PictureBox instagramButton;
+        private Guna2PictureBox rankingPanel;
+        private Guna2PictureBox itemShopPanel;
+        private Guna2DragControl guna2DragControl5;
+        private Guna2DragControl guna2DragControl6;
+        private Label label17;
+        private Label label18;
+        private Label label19;
+        private Label label20;
+        private Guna2ControlBox minimiseButton;
+        private Guna2ControlBox closeButton;
+        private NotifyIcon notifyIcon;
+        private Guna2ComboBox regionsBox;
+        private Guna2PictureBox package4;
+        private Guna2PictureBox package3;
+        private Guna2PictureBox package2;
+        private Guna2PictureBox package1;
+        private Label label21;
+        private Timer timer1;
+        private Timer updateStatisticsTimer;
+        private Label label22;
+        private Label label23;
+        private Label label24;
+        private Timer SecurityTimer;
+        private BackgroundWorker SecurityBackgroundWorker;
+        private BackgroundWorker CheckHasheshBW;
+        private Timer UpdateHashesTimer;
+        private Guna2PictureBox mainBanner;
     }
 }
 

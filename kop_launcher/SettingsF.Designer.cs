@@ -1,11 +1,15 @@
-﻿namespace kop_launcher
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Guna.UI2.WinForms;
+
+namespace kop_launcher
 {
     partial class SettingsF
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -1563,83 +1567,83 @@
 
         #endregion
 
-        private Guna.UI2.WinForms.Guna2GradientPanel settingsPanel;
-        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
-        private Guna.UI2.WinForms.Guna2ControlBox minimiseButton;
-        private Guna.UI2.WinForms.Guna2ControlBox closeButton;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox guna2CustomCheckBox2;
-        private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox2;
-        private Guna.UI2.WinForms.Guna2CustomRadioButton cameraLowCheckbox;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private Guna.UI2.WinForms.Guna2CustomRadioButton cameraUHighCheckbox;
-        private Guna.UI2.WinForms.Guna2CustomRadioButton cameraHighCheckbox;
-        private Guna.UI2.WinForms.Guna2CustomRadioButton cameraMedCheckbox;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label12;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox guna2CustomCheckBox7;
-        private System.Windows.Forms.Label label11;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox guna2CustomCheckBox6;
-        private System.Windows.Forms.Label label10;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox guna2CustomCheckBox5;
-        private System.Windows.Forms.Label label9;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox guna2CustomCheckBox4;
-        private System.Windows.Forms.Label label8;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox guna2CustomCheckBox3;
-        private System.Windows.Forms.Label label7;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox guna2CustomCheckBox1;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label13;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox guna2CustomCheckBox8;
-        private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox3;
-        private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox1;
-        private System.Windows.Forms.Label label14;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox guna2CustomCheckBox9;
-        private Guna.UI2.WinForms.Guna2HScrollBar GammaScrollbar;
-        private System.Windows.Forms.Label label23;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox CoreSettings8;
-        private System.Windows.Forms.Label label22;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox CoreSettings7;
-        private System.Windows.Forms.Label label21;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox CoreSettings6;
-        private System.Windows.Forms.Label label20;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox CoreSettings5;
-        private System.Windows.Forms.Label label19;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox CoreSettings4;
-        private System.Windows.Forms.Label label18;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox CoreSettings3;
-        private System.Windows.Forms.Label label17;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox CoreSettings2;
-        private System.Windows.Forms.Label label16;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox CoreSettings1;
-        private System.Windows.Forms.Label label15;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox CoreSettings0;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label CurvesCLabel;
-        private System.Windows.Forms.Label label30;
-        private Guna.UI2.WinForms.Guna2HScrollBar CurvesScrollbar;
-        private System.Windows.Forms.Label bloomTLabel;
-        private System.Windows.Forms.Label label28;
-        private Guna.UI2.WinForms.Guna2HScrollBar BthresScrollbar;
-        private System.Windows.Forms.Label expLabel;
-        private System.Windows.Forms.Label label26;
-        private Guna.UI2.WinForms.Guna2HScrollBar ExpScrollbar;
-        private System.Windows.Forms.Label gammaLabel;
-        private Guna.UI2.WinForms.Guna2TextBox guna2TextBox1;
-        private System.Windows.Forms.Label label32;
-        private Guna.UI2.WinForms.Guna2GradientButton ResetButton;
-        private Guna.UI2.WinForms.Guna2GradientButton ApplyButton;
-        private System.Windows.Forms.Label label25;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox guna2CustomCheckBox10;
-        private System.Windows.Forms.Label label27;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox guna2CustomCheckBox11;
-        private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox4;
-        private System.Windows.Forms.Label label29;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox guna2CustomCheckBox12;
-        private System.Windows.Forms.Label label31;
-        private System.Windows.Forms.Label label33;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox guna2CustomCheckBox13;
+        private Guna2GradientPanel settingsPanel;
+        private Guna2DragControl guna2DragControl1;
+        private Guna2ControlBox minimiseButton;
+        private Guna2ControlBox closeButton;
+        private Guna2CustomCheckBox guna2CustomCheckBox2;
+        private Guna2PictureBox guna2PictureBox2;
+        private Guna2CustomRadioButton cameraLowCheckbox;
+        private Label label5;
+        private Label label4;
+        private Label label3;
+        private Label label2;
+        private Guna2CustomRadioButton cameraUHighCheckbox;
+        private Guna2CustomRadioButton cameraHighCheckbox;
+        private Guna2CustomRadioButton cameraMedCheckbox;
+        private Label label1;
+        private Label label12;
+        private Guna2CustomCheckBox guna2CustomCheckBox7;
+        private Label label11;
+        private Guna2CustomCheckBox guna2CustomCheckBox6;
+        private Label label10;
+        private Guna2CustomCheckBox guna2CustomCheckBox5;
+        private Label label9;
+        private Guna2CustomCheckBox guna2CustomCheckBox4;
+        private Label label8;
+        private Guna2CustomCheckBox guna2CustomCheckBox3;
+        private Label label7;
+        private Guna2CustomCheckBox guna2CustomCheckBox1;
+        private Label label6;
+        private Label label13;
+        private Guna2CustomCheckBox guna2CustomCheckBox8;
+        private Guna2PictureBox guna2PictureBox3;
+        private Guna2PictureBox guna2PictureBox1;
+        private Label label14;
+        private Guna2CustomCheckBox guna2CustomCheckBox9;
+        private Guna2HScrollBar GammaScrollbar;
+        private Label label23;
+        private Guna2CustomCheckBox CoreSettings8;
+        private Label label22;
+        private Guna2CustomCheckBox CoreSettings7;
+        private Label label21;
+        private Guna2CustomCheckBox CoreSettings6;
+        private Label label20;
+        private Guna2CustomCheckBox CoreSettings5;
+        private Label label19;
+        private Guna2CustomCheckBox CoreSettings4;
+        private Label label18;
+        private Guna2CustomCheckBox CoreSettings3;
+        private Label label17;
+        private Guna2CustomCheckBox CoreSettings2;
+        private Label label16;
+        private Guna2CustomCheckBox CoreSettings1;
+        private Label label15;
+        private Guna2CustomCheckBox CoreSettings0;
+        private Label label24;
+        private Label CurvesCLabel;
+        private Label label30;
+        private Guna2HScrollBar CurvesScrollbar;
+        private Label bloomTLabel;
+        private Label label28;
+        private Guna2HScrollBar BthresScrollbar;
+        private Label expLabel;
+        private Label label26;
+        private Guna2HScrollBar ExpScrollbar;
+        private Label gammaLabel;
+        private Guna2TextBox guna2TextBox1;
+        private Label label32;
+        private Guna2GradientButton ResetButton;
+        private Guna2GradientButton ApplyButton;
+        private Label label25;
+        private Guna2CustomCheckBox guna2CustomCheckBox10;
+        private Label label27;
+        private Guna2CustomCheckBox guna2CustomCheckBox11;
+        private Guna2PictureBox guna2PictureBox4;
+        private Label label29;
+        private Guna2CustomCheckBox guna2CustomCheckBox12;
+        private Label label31;
+        private Label label33;
+        private Guna2CustomCheckBox guna2CustomCheckBox13;
     }
 }

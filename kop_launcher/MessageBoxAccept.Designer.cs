@@ -1,11 +1,15 @@
-﻿namespace kop_launcher
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Guna.UI2.WinForms;
+
+namespace kop_launcher
 {
     partial class MessageBoxAccept
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -144,11 +148,11 @@
 
         #endregion
 
-        private Guna.UI2.WinForms.Guna2GradientPanel thisPanel;
-        private Guna.UI2.WinForms.Guna2Button guna2Button2;
-        private System.Windows.Forms.Label label3;
-        private Guna.UI2.WinForms.Guna2Button guna2Button1;
-        private System.Windows.Forms.Label label1;
-        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
+        private Guna2GradientPanel thisPanel;
+        private Guna2Button guna2Button2;
+        private Label label3;
+        private Guna2Button guna2Button1;
+        private Label label1;
+        private Guna2DragControl guna2DragControl1;
     }
 }
