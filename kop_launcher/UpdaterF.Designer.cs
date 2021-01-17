@@ -105,10 +105,10 @@ namespace kop_launcher
 
         #endregion
 
-        private Button CancelButton;
-        private Label label2;
-        private Label label1;
-        private ProgressBar progressBar1;
-        private BackgroundWorker backgroundWorker1;
+        private new Button           CancelButton;
+        private     Label            label2;
+        private     Label            label1;
+        private     ProgressBar      progressBar1;
+        private     BackgroundWorker backgroundWorker1;
     }
 }

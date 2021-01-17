@@ -28,17 +28,11 @@ namespace Discord.Webhook.HookRequest
 							  string FooterIconUrl = "",
 							  DiscordEmbedField[] Fields = null )
 		{
-			var embedData = new JObject ( );
-			embedData.Add ( "title", Title );
-			embedData.Add ( "description", Description );
-			embedData.Add ( "color", Color );
+			var embedData = new JObject {{"title", Title}, {"description", Description}, {"color", Color}};
 
-			var imageData = new JObject ( );
-			imageData.Add ( "url", ImageUrl );
+			var imageData = new JObject {{"url", ImageUrl}};
 
-			var footerData = new JObject ( );
-			footerData.Add ( "text", FooterText );
-			footerData.Add ( "icon_url", FooterIconUrl );
+			var footerData = new JObject {{"text", FooterText}, {"icon_url", FooterIconUrl}};
 
 			embedData.Add ( "image", imageData );
 			embedData.Add ( "footer", footerData );

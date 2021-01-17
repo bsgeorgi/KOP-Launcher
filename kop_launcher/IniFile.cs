@@ -7,12 +7,12 @@ namespace kop_launcher
 {
 	internal class IniFile
 	{
-		private readonly string Path;
-		private readonly string EXE = Assembly.GetExecutingAssembly ( ).GetName ( ).Name;
+		private readonly string _path;
+		private readonly string _exe = Assembly.GetExecutingAssembly ( ).GetName ( ).Name;
 
 		public IniFile ( string IniPath = null )
 		{
-			Path = new FileInfo ( IniPath ?? EXE + ".ini" ).FullName;
+			_path = new FileInfo ( IniPath ?? _exe + ".ini" ).FullName;
 		}
 
 		[DllImport ( "kernel32", CharSet = CharSet.Unicode )]
@@ -32,23 +32,23 @@ namespace kop_launcher
 		public string Read ( string Key, string Section = null )
 		{
 			var RetVal = new StringBuilder ( 255 );
-			GetPrivateProfileString ( Section ?? EXE, Key, "", RetVal, 255, Path );
+			GetPrivateProfileString ( Section ?? _exe, Key, "", RetVal, 255, _path );
 			return RetVal.ToString ( );
 		}
 
 		public void Write ( string Key, string Value, string Section = null )
 		{
-			WritePrivateProfileString ( Section ?? EXE, Key, Value, Path );
+			WritePrivateProfileString ( Section ?? _exe, Key, Value, _path );
 		}
 
 		public void DeleteKey ( string Key, string Section = null )
 		{
-			Write ( Key, null, Section ?? EXE );
+			Write ( Key, null, Section ?? _exe );
 		}
 
 		public void DeleteSection ( string Section = null )
 		{
-			Write ( null, null, Section ?? EXE );
+			Write ( null, null, Section ?? _exe );
 		}
 
 		public bool KeyExists ( string Key, string Section = null )

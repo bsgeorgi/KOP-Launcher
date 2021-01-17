@@ -288,11 +288,10 @@ namespace kop_launcher
 		/* Sidebar Events Begin */
 		private void ButtonS_MouseEnter ( object sender, EventArgs e )
 		{
-			var b      = sender as PictureBox;
-			var uiPath = Path.Combine ( Globals.RootDirectory, "texture", "launcher", "sidebar_buttons" );
-			if ( b is null )
+			if ( !( sender is PictureBox b ) )
 				return;
 
+			var uiPath = Path.Combine ( Globals.RootDirectory, "texture", "launcher", "sidebar_buttons" );
 			string buttonPath;
 
 			switch ( b.Name )
@@ -319,11 +318,10 @@ namespace kop_launcher
 
 		private void ButtonS_MouseLeave ( object sender, EventArgs e )
 		{
-			var b      = sender as PictureBox;
-			var uiPath = Path.Combine ( Globals.RootDirectory, "texture", "launcher", "sidebar_buttons" );
-			if ( b is null )
+			if ( !( sender is PictureBox b ) )
 				return;
 
+			var    uiPath = Path.Combine ( Globals.RootDirectory, "texture", "launcher", "sidebar_buttons" );
 			string buttonPath;
 
 			switch ( b.Name )
@@ -418,11 +416,10 @@ namespace kop_launcher
 		/* Package Hover Events Begin */
 		private void package1_MouseEnter ( object sender, EventArgs e )
 		{
-			var b      = sender as PictureBox;
-			var uiPath = Path.Combine ( Globals.RootDirectory, "texture", "launcher", "packages" );
-			if ( b is null )
+			if ( !( sender is PictureBox b ) )
 				return;
 
+			var uiPath = Path.Combine ( Globals.RootDirectory, "texture", "launcher", "packages" );
 			var buttonPath = "";
 
 			switch ( b.Name )
@@ -451,10 +448,10 @@ namespace kop_launcher
 
 		private void package1_MouseLeave ( object sender, EventArgs e )
 		{
-			var b      = sender as PictureBox;
-			var uiPath = Path.Combine ( Globals.RootDirectory, "texture", "launcher", "packages" );
-			if ( b is null )
+			if ( !( sender is PictureBox b ) )
 				return;
+
+			var uiPath = Path.Combine ( Globals.RootDirectory, "texture", "launcher", "packages" );
 
 			var buttonPath = "";
 
@@ -539,8 +536,8 @@ namespace kop_launcher
 
 						_gameVersion = data.version;
 
-						string hashstring = data.hashsum;
-						var contents = hashstring.Split ( new[] {Resources.StatHashSumDelimiter},
+						string hashes = data.hashsum;
+						var contents = hashes.Split ( new[] {Resources.StatHashSumDelimiter},
 														  StringSplitOptions.None );
 						foreach ( var hash in contents )
 							if ( !string.IsNullOrEmpty ( hash ) )
@@ -627,7 +624,7 @@ namespace kop_launcher
 		private void StartCheckGameUpdate ( )
 		{
 			var region = Globals.GetIpByServer ( regionsBox.Text );
-			if ( Application.OpenForms.OfType<UpdaterF> ( ).Count ( ) == 0 )
+			if ( !Application.OpenForms.OfType<UpdaterF> ( ).Any() )
 			{
 				if ( !string.IsNullOrEmpty ( _gameVersion ) )
 				{

@@ -8,11 +8,11 @@ namespace kop_launcher
 {
 	internal class DiscordWebHookHandler
 	{
-		private readonly DiscordWebhook hook;
+		private readonly DiscordWebhook _hook;
 
 		public DiscordWebHookHandler ( string uri )
 		{
-			hook = new DiscordWebhook
+			_hook = new DiscordWebhook
 			{
 				HookUrl = uri
 			};
@@ -40,7 +40,8 @@ namespace kop_launcher
 
 				builder.Message = messageContent;
 
-				if ( addFile ) builder.FileUpload = new FileInfo ( filePath );
+				if ( addFile )
+					builder.FileUpload = new FileInfo ( filePath ?? throw new ArgumentNullException ( nameof ( filePath ) ) );
 
 				var fields = embedFields;
 
@@ -57,7 +58,7 @@ namespace kop_launcher
 				builder.Embeds.Add ( embed );
 
 				var discordHook = builder.Build ( );
-				hook.Hook ( discordHook );
+				_hook.Hook ( discordHook );
 
 				return true;
 			}

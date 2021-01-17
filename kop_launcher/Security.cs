@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net;
 using kop_launcher.Properties;
 
+// ReSharper disable StringLiteralTypo
+
 namespace kop_launcher
 {
 	public static class Security
@@ -127,7 +129,7 @@ namespace kop_launcher
 
 		public static bool IsSystemHashChanged ( )
 		{
-			var webhook = new DiscordWebHookHandler ( Resources.LauncherSecurityChannel );
+			var unused = new DiscordWebHookHandler ( Resources.LauncherSecurityChannel );
 
 			try
 			{
@@ -137,7 +139,10 @@ namespace kop_launcher
 							 Globals.CurrentResourceHashes.ElementAt ( i ) )
 							return true;
 			}
-			catch { }
+			catch
+			{
+				// ignored
+			}
 
 			return false;
 		}
@@ -153,7 +158,10 @@ namespace kop_launcher
 							 Globals.CurrentResourceHashes.ElementAt ( i ) )
 							holder.Add ( i );
 			}
-			catch { }
+			catch
+			{
+				// ignored
+			}
 
 			var files = new List<string> ( );
 
@@ -226,6 +234,7 @@ namespace kop_launcher
 				request.Method = "GET";
 				using ( var response = request.GetResponse ( ) )
 				{
+					// ReSharper disable once AssignNullToNotNullAttribute
 					using ( var reader = new StreamReader ( response.GetResponseStream ( ) ) )
 					{
 						publicIPAddress = reader.ReadToEnd ( );

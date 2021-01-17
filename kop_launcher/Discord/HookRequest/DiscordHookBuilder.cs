@@ -26,7 +26,7 @@ namespace kop_launcher.Discord.HookRequest
 		public string Message { get; set; }
 
 		/// <summary>
-		///     If true, this message will be readed using TTS (only works if enabled on server, to hear the message the users need
+		///     If true, this message will be read using TTS (only works if enabled on server, to hear the message the users need
 		///     to be connected to the target channel)
 		/// </summary>
 		public bool UseTTS { get; set; }
@@ -43,7 +43,7 @@ namespace kop_launcher.Discord.HookRequest
 		/// </summary>
 		private DiscordHookBuilder ( string Nickname, string AvatarUrl )
 		{
-			_bound = $"------------------------{DateTime.Now.Ticks.ToString ( "x" )}";
+			_bound = $"------------------------{DateTime.Now.Ticks:x}";
 
 			_nick   = Nickname;
 			_avatar = AvatarUrl;
@@ -56,7 +56,7 @@ namespace kop_launcher.Discord.HookRequest
 		/// <summary>
 		///     Create a hook request builder
 		/// </summary>
-		/// <param name="Nickname">Webhook cusstom nickname</param>
+		/// <param name="Nickname">Webhook custom nickname</param>
 		/// <param name="AvatarUrl">Webhook custom avatar</param>
 		/// <returns></returns>
 		public static DiscordHookBuilder Create ( string Nickname = null, string AvatarUrl = null )

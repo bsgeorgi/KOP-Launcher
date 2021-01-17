@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,9 +15,9 @@ namespace kop_launcher
 				var path = Path.Combine ( Globals.RootDirectory, "system", "CandyFX", fileName );
 				var line = "";
 
-				using ( var Reader = new StreamReader ( path ) )
+				using ( var reader = new StreamReader ( path ) )
 				{
-					while ( ( line = Reader.ReadLine ( ) ) != null )
+					while ( ( line = reader.ReadLine ( ) ) != null )
 						if ( !string.IsNullOrEmpty ( line ) )
 						{
 							var value = line.Trim ( ).Split ( ' ' ).Last ( );
@@ -28,7 +27,10 @@ namespace kop_launcher
 						}
 				}
 			}
-			catch { }
+			catch
+			{
+				// ignored
+			}
 
 			return configs;
 		}
@@ -42,60 +44,63 @@ namespace kop_launcher
 				{
 					var iniReader = new IniFile ( path );
 
-					if ( iniReader.KeyExists ( "musicSound", "audio" ) )
-						configs.Add ( "musicSound", iniReader.Read ( "musicSound", "audio" ) );
-					else
-						configs.Add ( "musicSound", "100" );
+					configs.Add ( "musicSound",
+								  iniReader.KeyExists ( "musicSound", "audio" )
+									  ? iniReader.Read ( "musicSound", "audio" )
+									  : "100" );
 
-					if ( iniReader.KeyExists ( "musicEffect", "audio" ) )
-						configs.Add ( "musicEffect", iniReader.Read ( "musicEffect", "audio" ) );
-					else
-						configs.Add ( "musicEffect", "100" );
+					configs.Add ( "musicEffect",
+								  iniReader.KeyExists ( "musicEffect", "audio" )
+									  ? iniReader.Read ( "musicEffect", "audio" )
+									  : "100" );
 
-					if ( iniReader.KeyExists ( "fullScreen", "video" ) )
-						configs.Add ( "fullScreen", iniReader.Read ( "fullScreen", "video" ) );
-					else
-						configs.Add ( "fullScreen", "0" );
+					configs.Add ( "fullScreen",
+								  iniReader.KeyExists ( "fullScreen", "video" )
+									  ? iniReader.Read ( "fullScreen", "video" )
+									  : "0" );
 
-					if ( iniReader.KeyExists ( "pixel1024", "video" ) )
-						configs.Add ( "pixel1024", iniReader.Read ( "pixel1024", "video" ) );
-					else
-						configs.Add ( "pixel1024", "1" );
+					configs.Add ( "pixel1024",
+								  iniReader.KeyExists ( "pixel1024", "video" )
+									  ? iniReader.Read ( "pixel1024", "video" )
+									  : "1" );
 
-					if ( iniReader.KeyExists ( "depth32", "video" ) )
-						configs.Add ( "depth32", iniReader.Read ( "depth32", "video" ) );
-					else
-						configs.Add ( "depth32", "0" );
+					configs.Add (
+						"depth32",
+						iniReader.KeyExists ( "depth32", "video" ) ? iniReader.Read ( "depth32", "video" ) : "0" );
 
-					if ( iniReader.KeyExists ( "apparel", "gameOption" ) )
-						configs.Add ( "apparel", iniReader.Read ( "apparel", "gameOption" ) );
-					else
-						configs.Add ( "apparel", "1" );
+					configs.Add (
+						"apparel",
+						iniReader.KeyExists ( "apparel", "gameOption" )
+							? iniReader.Read ( "apparel", "gameOption" )
+							: "1" );
 
-					if ( iniReader.KeyExists ( "effect", "gameOption" ) )
-						configs.Add ( "effect", iniReader.Read ( "effect", "gameOption" ) );
-					else
-						configs.Add ( "effect", "1" );
+					configs.Add (
+						"effect",
+						iniReader.KeyExists ( "effect", "gameOption" )
+							? iniReader.Read ( "effect", "gameOption" )
+							: "1" );
 
-					if ( iniReader.KeyExists ( "state", "gameOption" ) )
-						configs.Add ( "state", iniReader.Read ( "state", "gameOption" ) );
-					else
-						configs.Add ( "state", "0" );
+					configs.Add (
+						"state",
+						iniReader.KeyExists ( "state", "gameOption" )
+							? iniReader.Read ( "state", "gameOption" )
+							: "0" );
 
-					if ( iniReader.KeyExists ( "quality", "video" ) )
-						configs.Add ( "quality", iniReader.Read ( "quality", "video" ) );
-					else
-						configs.Add ( "quality", "0" );
+					configs.Add (
+						"quality",
+						iniReader.KeyExists ( "quality", "video" ) ? iniReader.Read ( "quality", "video" ) : "0" );
 
-					if ( iniReader.KeyExists ( "frames", "gameOption" ) )
-						configs.Add ( "frames", iniReader.Read ( "frames", "gameOption" ) );
-					else
-						configs.Add ( "frames", "1" );
+					configs.Add (
+						"frames",
+						iniReader.KeyExists ( "frames", "gameOption" )
+							? iniReader.Read ( "frames", "gameOption" )
+							: "1" );
 
-					if ( iniReader.KeyExists ( "stalls", "gameOption" ) )
-						configs.Add ( "stalls", iniReader.Read ( "stalls", "gameOption" ) );
-					else
-						configs.Add ( "stalls", "1" );
+					configs.Add (
+						"stalls",
+						iniReader.KeyExists ( "stalls", "gameOption" )
+							? iniReader.Read ( "stalls", "gameOption" )
+							: "1" );
 				}
 				else
 				{
@@ -113,7 +118,10 @@ namespace kop_launcher
 					configs.Add ( "stalls", "1" );
 				}
 			}
-			catch { }
+			catch
+			{
+				// ignored
+			}
 
 			return configs;
 		}
@@ -125,25 +133,12 @@ namespace kop_launcher
 			try
 			{
 				foreach ( var kv in settings )
-					if ( kv.Key.Contains ( "key_toggle_candyfx" ) || kv.Key.Contains ( "key_toggle_candyfx" )
-																  || kv.Key.Contains ( "key_toggle_candyfx" ) )
-					{
-						sb.Append ( "// #define" );
-						sb.Append ( " " );
-						sb.Append ( kv.Key );
-						sb.Append ( " " );
-						sb.Append ( kv.Value );
-						sb.Append ( Environment.NewLine );
-					}
+					if ( kv.Key.Contains ( "key_toggle_candyfx" )
+						 || kv.Key.Contains ( "key_toggle_candyfx" )
+						 || kv.Key.Contains ( "key_toggle_candyfx" ) )
+						sb.AppendLine ( $"// #define {kv.Key} {kv.Value}" );
 					else
-					{
-						sb.Append ( "#define" );
-						sb.Append ( " " );
-						sb.Append ( kv.Key );
-						sb.Append ( " " );
-						sb.Append ( kv.Value );
-						sb.Append ( Environment.NewLine );
-					}
+						sb.AppendLine ( $"#define {kv.Key} {kv.Value}" );
 
 				using ( var writer = new StreamWriter ( fileName, false ) )
 				{
@@ -241,12 +236,10 @@ namespace kop_launcher
 				var tempPath    = "";
 				var destination = Path.Combine ( Globals.RootDirectory, "scripts", "txt", "CharacterAction.tx" );
 
-				if ( regular )
-					tempPath = Path.Combine ( regPath, "reg", "CharacterAction.tx" );
-				else
-					tempPath = Path.Combine ( regPath, "patched", "CharacterAction.tx" );
+				tempPath = Path.Combine ( regPath, regular ? "reg" : "patched", "CharacterAction.tx" );
 
-				if ( File.Exists ( destination ) ) File.Delete ( destination );
+				if ( File.Exists ( destination ) )
+					File.Delete ( destination );
 
 				File.Copy ( tempPath, destination );
 				return true;

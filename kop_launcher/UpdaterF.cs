@@ -35,7 +35,7 @@ namespace kop_launcher
 			backgroundWorker1.DoWork             += BackgroundWorker1_DoWork;
 			backgroundWorker1.RunWorkerCompleted += BackgroundWorker1_RunWorkerCompleted;
 
-			Task.Run ( async ( ) => { await CheckGameNeedsUpdate ( ); } );
+			var _ = CheckGameNeedsUpdate ( );
 		}
 
 		private async Task CheckGameNeedsUpdate ( )
@@ -43,7 +43,8 @@ namespace kop_launcher
 			_gameUpdater = new AutoUpdate ( _remoteVersion );
 			if ( _gameUpdater.IsGameUpToDate ( ) )
 			{
-				SetControlThreadSafe ( label2, ( ) => { label2.Text = "Game is up to date..."; } );
+				label2.Text = "Game is up to date...";
+				//SetControlThreadSafe ( label2, ( ) => { label2.Text = "Game is up to date..."; } );
 				await Task.Run ( ( ) =>
 				{
 					if ( !StartGameInstance ( ) )
@@ -53,7 +54,8 @@ namespace kop_launcher
 			}
 			else
 			{
-				SetControlThreadSafe ( label2, ( ) => { label2.Text = "Receiving Update Information..."; } );
+				label2.Text = "Receiving Update Information...";
+				//SetControlThreadSafe ( label2, ( ) => { label2.Text = "Receiving Update Information..."; } );
 				_downloadedFiles = new List<string> ( );
 
 				var (patches, lastVersion) = _gameUpdater.GetRequiredUpdates (
@@ -63,12 +65,15 @@ namespace kop_launcher
 
 				if ( patches.Count > 0 && lastVersion > 0 )
 				{
-					SetControlThreadSafe ( progressBar1, ( ) => { progressBar1.Value = 0; } );
-					SetControlThreadSafe ( progressBar1, ( ) => { progressBar1.Style = ProgressBarStyle.Blocks; } );
-					SetControlThreadSafe ( label2, ( ) => { label2.Text = "Downloading Game Updates..."; } );
+					progressBar1.Value = 0;
+					progressBar1.Style = ProgressBarStyle.Blocks;
+					label2.Text        = "Downloading Game Updates...";
+					//SetControlThreadSafe ( progressBar1, ( ) => { progressBar1.Value = 0; } );
+					//SetControlThreadSafe ( progressBar1, ( ) => { progressBar1.Style = ProgressBarStyle.Blocks; } );
+					//SetControlThreadSafe ( label2, ( ) => { label2.Text = "Downloading Game Updates..."; } );
 					_totalUpdates = patches.Count;
 
-					await DownloadMultipleFilesAsync ( patches );
+					await DownloadMultipleFilesAsync ( patches ).ConfigureAwait ( false );
 					backgroundWorker1.RunWorkerAsync ( );
 				}
 				else
@@ -110,7 +115,8 @@ namespace kop_launcher
 					var fastZip = new FastZip ( );
 					fastZip.ExtractZip ( path, Globals.RootDirectory, null );
 
-					DeleteFileAndWait ( path );
+					//DeleteFileAndWait ( path );
+					File.Delete ( path );
 					backgroundWorker1.ReportProgress ( current * 100 / _totalUpdates );
 					++current;
 				}

@@ -17,10 +17,7 @@ namespace kop_launcher.Discord.HookRequest
 		/// </param>
 		public DiscordEmbedField ( string Name, string Value, bool Line = true )
 		{
-			var fieldData = new JObject ( );
-			fieldData.Add ( "name", Name );
-			fieldData.Add ( "value", Value );
-			fieldData.Add ( "inline", Line );
+			var fieldData = new JObject {{"name", Name}, {"value", Value}, {"inline", Line}};
 
 			JsonData = fieldData;
 		}
