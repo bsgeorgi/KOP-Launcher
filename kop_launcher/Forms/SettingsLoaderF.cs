@@ -1,4 +1,5 @@
-﻿using System;
+﻿using kop_launcher.ConfigReaders;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -8,11 +9,11 @@ namespace kop_launcher
 {
 	public partial class SettingsLoaderF : Form
 	{
-		private ConfigFileReaderWriter     configs;
-		private Dictionary<string, string> CandyFXsettings;
-		private Dictionary<string, string> GlobalSettings;
-		private Dictionary<string, string> GameSettings;
-		private SettingsF                  settingsForm;
+		private ConfigFileReaderWriter     _configs;
+		private Dictionary<string, string> _candyFXsettings;
+		private Dictionary<string, string> _globalSettings;
+		private Dictionary<string, string> _gameSettings;
+		private SettingsF                  _settingsForm;
 
 		public SettingsLoaderF ( )
 		{
@@ -44,46 +45,47 @@ namespace kop_launcher
 		{
 			if ( !CheckOpened ( "SettingsF" ) )
 			{
-				settingsForm = new SettingsF ( CandyFXsettings, GlobalSettings, GameSettings );
-				settingsForm.Show ( );
-				settingsForm.IsOpen = true;
+				_settingsForm = new SettingsF ( _candyFXsettings, _globalSettings, _gameSettings );
+				_settingsForm.Show ( );
+				_settingsForm.IsOpen = true;
 
-				backgroundWorker1.Dispose ( );
-				configs         = null;
-				CandyFXsettings = null;
-				GlobalSettings  = null;
-				GameSettings    = null;
+                DisposeForm();
 				Close ( );
 			}
 			else
 			{
-				backgroundWorker1.Dispose ( );
-				configs         = null;
-				CandyFXsettings = null;
-				GlobalSettings  = null;
-				GameSettings    = null;
-				Close ( );
+                DisposeForm();
 				BringToFront ( "SettingsF" );
 			}
 		}
 
+        private void DisposeForm()
+        {
+            backgroundWorker1.Dispose();
+            _configs = null;
+            _candyFXsettings = null;
+            _globalSettings = null;
+            _gameSettings = null;
+            Close();
+		}
+
 		private void BackgroundWorker1_DoWork ( object sender, DoWorkEventArgs e )
 		{
-			configs         = new ConfigFileReaderWriter ( );
-			CandyFXsettings = configs.ReadConfigFile ( "CandyFX_settings.txt" );
-			GlobalSettings  = configs.ReadConfigFile ( "Global_settings.txt" );
+            _configs         = new ConfigFileReaderWriter ( );
+            _candyFXsettings = _configs.ReadConfigFile ( "CandyFX_settings.txt" );
+            _globalSettings  = _configs.ReadConfigFile ( "Global_settings.txt" );
 
 			var pathToGameS = Path.Combine ( Globals.RootDirectory, "user", "system.ini" );
-			GameSettings = configs.ReadCoreIniSettings ( pathToGameS );
+            _gameSettings = _configs.ReadCoreIniSettings ( pathToGameS );
 		}
 
 		private void guna2Button1_Click ( object sender, EventArgs e )
 		{
 			backgroundWorker1.Dispose ( );
-			configs         = null;
-			CandyFXsettings = null;
-			GlobalSettings  = null;
-			GameSettings    = null;
+            _configs         = null;
+            _candyFXsettings = null;
+            _globalSettings  = null;
+            _gameSettings    = null;
 			Close ( );
 		}
 	}

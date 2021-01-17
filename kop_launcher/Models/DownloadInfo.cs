@@ -1,4 +1,4 @@
-﻿namespace kop_launcher
+﻿namespace kop_launcher.Models
 {
 	public class DownloadInfo
 	{

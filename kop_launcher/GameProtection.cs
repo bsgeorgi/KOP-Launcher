@@ -10,7 +10,7 @@ using kop_launcher.Properties;
 
 namespace kop_launcher
 {
-	public static class Security
+	public static class GameProtection
 	{
 		private static readonly HashSet<string> IllegalSoftware =
 			new HashSet<string> ( StringComparer.OrdinalIgnoreCase )
@@ -111,7 +111,7 @@ namespace kop_launcher
 
 		private static readonly HashSet<string> IllegalSoftwareLower;
 
-		static Security ( )
+		static GameProtection ( )
 		{
 			IllegalSoftwareLower = IllegalSoftware
 								   .Select ( x => x.ToLowerInvariant ( ) )

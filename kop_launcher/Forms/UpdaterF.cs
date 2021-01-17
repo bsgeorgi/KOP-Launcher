@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ICSharpCode.SharpZipLib.Zip;
+using kop_launcher.Models;
 using kop_launcher.Properties;
 
 namespace kop_launcher
@@ -115,26 +116,10 @@ namespace kop_launcher
 					var fastZip = new FastZip ( );
 					fastZip.ExtractZip ( path, Globals.RootDirectory, null );
 
-					//DeleteFileAndWait ( path );
 					File.Delete ( path );
 					backgroundWorker1.ReportProgress ( current * 100 / _totalUpdates );
 					++current;
 				}
-			}
-		}
-
-		private static void DeleteFileAndWait ( string filepath, int timeout = 30000 )
-		{
-			using ( var fw =
-				new FileSystemWatcher ( Path.GetDirectoryName ( filepath ) ?? "",
-										Path.GetFileName ( filepath ) ) )
-			using ( var mre = new ManualResetEventSlim ( ) )
-			{
-				fw.EnableRaisingEvents = true;
-				// ReSharper disable once AccessToDisposedClosure
-				fw.Deleted += ( sender, e ) => { mre.Set ( ); };
-				File.Delete ( filepath );
-				mre.Wait ( timeout );
 			}
 		}
 

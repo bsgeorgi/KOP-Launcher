@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace kop_launcher
+namespace kop_launcher.ConfigReaders
 {
 	internal class ConfigFileReaderWriter
 	{
@@ -133,12 +133,7 @@ namespace kop_launcher
 			try
 			{
 				foreach ( var kv in settings )
-					if ( kv.Key.Contains ( "key_toggle_candyfx" )
-						 || kv.Key.Contains ( "key_toggle_candyfx" )
-						 || kv.Key.Contains ( "key_toggle_candyfx" ) )
-						sb.AppendLine ( $"// #define {kv.Key} {kv.Value}" );
-					else
-						sb.AppendLine ( $"#define {kv.Key} {kv.Value}" );
+                    sb.AppendLine ( $"#define {kv.Key} {kv.Value}" );
 
 				using ( var writer = new StreamWriter ( fileName, false ) )
 				{

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
+using kop_launcher.Models;
 using kop_launcher.Properties;
 
 namespace kop_launcher

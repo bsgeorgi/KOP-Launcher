@@ -114,8 +114,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoUpdate.cs" />
-    <Compile Include="Camera.cs" />
-    <Compile Include="ConfigFileReaderWriter.cs" />
+    <Compile Include="CameraHandler.cs" />
+    <Compile Include="ConfigReaders\ConfigFileReaderWriter.cs" />
     <Compile Include="Discord.cs" />
     <Compile Include="Discord\DiscordWebHook.cs" />
     <Compile Include="Discord\HookRequest\DiscordEmbed.cs" />
@@ -123,58 +123,58 @@
     <Compile Include="Discord\HookRequest\DiscordHook.cs" />
     <Compile Include="Discord\HookRequest\DiscordHookBuilder.cs" />
     <Compile Include="Discord\Utils\DiscordConverter.cs" />
-    <Compile Include="DownloadInfo.cs" />
+    <Compile Include="Models\DownloadInfo.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="IniFile.cs" />
-    <Compile Include="kopMainF.cs">
+    <Compile Include="ConfigReaders\IniFile.cs" />
+    <Compile Include="Forms\kopMainF.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="kopMainF.Designer.cs">
+    <Compile Include="Forms\kopMainF.Designer.cs">
       <DependentUpon>kopMainF.cs</DependentUpon>
     </Compile>
-    <Compile Include="MessageBoxA.cs">
+    <Compile Include="Forms\MessageBoxA.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MessageBoxA.Designer.cs">
+    <Compile Include="Forms\MessageBoxA.Designer.cs">
       <DependentUpon>MessageBoxA.cs</DependentUpon>
     </Compile>
-    <Compile Include="MessageBoxAccept.cs">
+    <Compile Include="Forms\MessageBoxAccept.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MessageBoxAccept.Designer.cs">
+    <Compile Include="Forms\MessageBoxAccept.Designer.cs">
       <DependentUpon>MessageBoxAccept.cs</DependentUpon>
     </Compile>
-    <Compile Include="Patch.cs" />
+    <Compile Include="Models\Patch.cs" />
     <Compile Include="ProcessExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security.cs" />
-    <Compile Include="SettingsF.cs">
+    <Compile Include="GameProtection.cs" />
+    <Compile Include="Forms\SettingsF.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsF.Designer.cs">
+    <Compile Include="Forms\SettingsF.Designer.cs">
       <DependentUpon>SettingsF.cs</DependentUpon>
     </Compile>
-    <Compile Include="SettingsLoaderF.cs">
+    <Compile Include="Forms\SettingsLoaderF.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsLoaderF.Designer.cs">
+    <Compile Include="Forms\SettingsLoaderF.Designer.cs">
       <DependentUpon>SettingsLoaderF.cs</DependentUpon>
     </Compile>
-    <Compile Include="UpdaterF.cs">
+    <Compile Include="Forms\UpdaterF.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UpdaterF.Designer.cs">
+    <Compile Include="Forms\UpdaterF.Designer.cs">
       <DependentUpon>UpdaterF.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils.cs" />
-    <EmbeddedResource Include="kopMainF.resx">
+    <EmbeddedResource Include="Forms\kopMainF.resx">
       <DependentUpon>kopMainF.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MessageBoxA.resx">
+    <EmbeddedResource Include="Forms\MessageBoxA.resx">
       <DependentUpon>MessageBoxA.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MessageBoxAccept.resx">
+    <EmbeddedResource Include="Forms\MessageBoxAccept.resx">
       <DependentUpon>MessageBoxAccept.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -187,13 +187,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SettingsF.resx">
+    <EmbeddedResource Include="Forms\SettingsF.resx">
       <DependentUpon>SettingsF.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsLoaderF.resx">
+    <EmbeddedResource Include="Forms\SettingsLoaderF.resx">
       <DependentUpon>SettingsLoaderF.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UpdaterF.resx">
+    <EmbeddedResource Include="Forms\UpdaterF.resx">
       <DependentUpon>UpdaterF.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
@@ -226,6 +226,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

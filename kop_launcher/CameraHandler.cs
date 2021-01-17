@@ -2,7 +2,7 @@
 
 namespace kop_launcher
 {
-	public class Camera
+	public class CameraHandler
 	{
 		public bool IsAnimationTweaked ( )
 		{

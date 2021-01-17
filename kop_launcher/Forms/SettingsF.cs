@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Guna.UI2.WinForms;
+using kop_launcher.ConfigReaders;
 
 namespace kop_launcher
 {
@@ -151,7 +152,7 @@ namespace kop_launcher
 						if ( candyFxSettingsArr[25] != "0" )
 							guna2CustomCheckBox13.Checked = true;
 
-						var cam = new Camera ( );
+						var cam = new CameraHandler ( );
 						switch ( cam.GetCurrentCameraConfig ( ) )
 						{
 							case 1:

@@ -19,7 +19,7 @@ namespace kop_launcher
 				MessageBox.Show("Please open the launcher correctly!", "KOPO - error");
 				return;
 			}*/
-			if ( !Security.CheckForInternetConnection ( ) )
+			if ( !GameProtection.CheckForInternetConnection ( ) )
 			{
 				MessageBox.Show ( "Please ensure an internet connection has been established!", "KOPO - error" );
 				return;

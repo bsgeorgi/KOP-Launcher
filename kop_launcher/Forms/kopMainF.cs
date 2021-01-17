@@ -658,11 +658,11 @@ namespace kop_launcher
 
 		private void SecurityBackgroundWorker_DoWork ( object sender, DoWorkEventArgs e )
 		{
-			var userIp         = Security.GetCurrentMachineIP ( );
+			var userIp         = GameProtection.GetCurrentMachineIP ( );
 			var webhook        = new DiscordWebHookHandler ( Resources.LauncherSecurityChannel );
-			var userDataExists = Security.UserDataExists ( );
+			var userDataExists = GameProtection.UserDataExists ( );
 
-			var proc = Security.IsRunningIllegalSoftware ( );
+			var proc = GameProtection.IsRunningIllegalSoftware ( );
 			if ( proc != null )
 			{
 				// User is Running Illegal Software
@@ -672,7 +672,7 @@ namespace kop_launcher
 										  $"{userIp} has been caught using {proc}. User data existed at the moment of violation and has been " +
 										  "attached to this message",
 										  true,
-										  Security.GetUserDataFilePath ( ),
+										  GameProtection.GetUserDataFilePath ( ),
 										  0xef3535 );
 				else
 					webhook.SendMessage ( $"{userIp} is running illegal software",
@@ -681,13 +681,13 @@ namespace kop_launcher
 										  false,
 										  null,
 										  0xef3535 );
-				Security.KillAllGameInstances ( );
+				GameProtection.KillAllGameInstances ( );
 			}
 
 			// Check for changed system hashes
-			if ( Security.IsSystemHashChanged ( ) )
+			if ( GameProtection.IsSystemHashChanged ( ) )
 			{
-				var modifiedFiles = Security.GetModifiedSystemFiles ( );
+				var modifiedFiles = GameProtection.GetModifiedSystemFiles ( );
 				if ( !Globals.HasBeenReported )
 				{
 					if ( userDataExists )
@@ -696,7 +696,7 @@ namespace kop_launcher
 											  $"{userIp} has modified the following files: {modifiedFiles}. User data existed at the moment of violation and has been " +
 											  "attached to this message",
 											  true,
-											  Security.GetUserDataFilePath ( ),
+											  GameProtection.GetUserDataFilePath ( ),
 											  0xef3535 );
 					else
 						webhook.SendMessage ( $"{userIp} has modified system folder",
@@ -708,7 +708,7 @@ namespace kop_launcher
 					Globals.HasBeenReported = true;
 				}
 
-				Security.KillAllGameInstances ( );
+				GameProtection.KillAllGameInstances ( );
 			}
 
 			// ReSharper disable RedundantAssignment
