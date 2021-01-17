@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,101 +12,111 @@ namespace kop_launcher
 {
 	public static class Security
 	{
-		private static readonly string[] IllegalSoftware =
-		{
-			/* Packet Editors */
-			"Tsearch",
-			"ArtMoney",
-			"Cheat Engine",
-			"Kiki",
-			"GhostKiller",
-			"MoonLight",
-			"Winsock Packet Editor",
-			"Redox Packet Editor",
-			"WPE",
-			"RPE",
-			"Squalr",
-			"CrySearch",
-			"Binwalk",
-			"PSR (Pointer Sequence Reverser)",
-			"PSR",
-			"XenoScan",
-			"Hack",
-			"Cheat",
-			"Packet",
+		private static readonly HashSet<string> IllegalSoftware =
+			new HashSet<string> ( StringComparer.OrdinalIgnoreCase )
+			{
+				/* Packet Editors */
+				"Tsearch",
+				"ArtMoney",
+				"Cheat Engine",
+				"Kiki",
+				"GhostKiller",
+				"MoonLight",
+				"Winsock Packet Editor",
+				"Redox Packet Editor",
+				"WPE",
+				"RPE",
+				"Squalr",
+				"CrySearch",
+				"Binwalk",
+				"PSR (Pointer Sequence Reverser)",
+				"PSR",
+				"XenoScan",
+				"Hack",
+				"Cheat",
+				"Packet",
 
-			/* Debuggers */
-			"PINCE",
-			"Binary Ninja",
-			"Ghidra",
-			"x64dbg",
-			"x32dbg",
-			"WinDbg",
-			"Hopper",
-			"Ninja Ripper",
-			"PIX",
-			"Ollydbg",
-			"IDA",
-			"IDA Pro",
-			"radare2",
-			"GNU Project Debugger",
-			"Cutter",
-			"REDasm",
-			"Debugger",
-			"Disassembler",
-			"Decompiler",
-			"RenderDoc",
-			"Process Hacker",
-			"WinExplorer",
-			"CDA: Code Dynamic Analysis",
-			"CDA",
-			"QuickBMS",
-			"MultiEx Commander",
-			"YARA",
+				/* Debuggers */
+				"PINCE",
+				"Binary Ninja",
+				"Ghidra",
+				"x64dbg",
+				"x32dbg",
+				"WinDbg",
+				"Hopper",
+				"Ninja Ripper",
+				"PIX",
+				"Ollydbg",
+				"IDA",
+				"IDA Pro",
+				"radare2",
+				"GNU Project Debugger",
+				"Cutter",
+				"REDasm",
+				"Debugger",
+				"Disassembler",
+				"Decompiler",
+				"RenderDoc",
+				"Process Hacker",
+				"WinExplorer",
+				"CDA: Code Dynamic Analysis",
+				"CDA",
+				"QuickBMS",
+				"MultiEx Commander",
+				"YARA",
 
-			/* NET Debuggers */
-			"dnSpy",
-			"ILSpy",
-			"ReClassEx",
-			"ReClass.NET",
-			"NET Reflector",
-			"DotNet Resolver",
-			"dotPeek",
+				/* NET Debuggers */
+				"dnSpy",
+				"ILSpy",
+				"ReClassEx",
+				"ReClass.NET",
+				"NET Reflector",
+				"DotNet Resolver",
+				"dotPeek",
 
-			/* Injectors */
-			"CFF Explorer",
-			"Xenos",
-			"CCI Explorer",
-			"DLL Injector",
-			"DLL Vaccine",
-			"Injector",
-			"Lunar",
-			"Inject",
-			"Memject",
+				/* Injectors */
+				"CFF Explorer",
+				"Xenos",
+				"CCI Explorer",
+				"DLL Injector",
+				"DLL Vaccine",
+				"Injector",
+				"Lunar",
+				"Inject",
+				"Memject",
 
-			/* Sniffers */
-			"Fiddler",
-			"Wireshark",
-			"Microsoft Message Analyzer",
-			"Sysinternals - Process Monitor",
-			"Sysinternals - Process Explorer",
-			"WinDump",
-			"NetworkMiner",
-			"Colasoft Capsa",
-			"Network Protocol Analyzer",
-			"Capsa",
-			"Network Packet Sniffer",
-			"Paessler",
-			"PRTG",
-			"NetFlow Analyzer",
-			"TCPdump"
-		};
+				/* Sniffers */
+				"Fiddler",
+				"Wireshark",
+				"Microsoft Message Analyzer",
+				"Sysinternals - Process Monitor",
+				"Sysinternals - Process Explorer",
+				"WinDump",
+				"NetworkMiner",
+				"Colasoft Capsa",
+				"Network Protocol Analyzer",
+				"Capsa",
+				"Network Packet Sniffer",
+				"Paessler",
+				"PRTG",
+				"NetFlow Analyzer",
+				"TCPdump"
+			};
 
-		private static readonly string[] Exclude =
+		private static readonly HashSet<string> Exclude = new HashSet<string> ( StringComparer.OrdinalIgnoreCase )
 		{
 			"dllhost",
 			"hamachi"
 		};
+
+		private static readonly HashSet<string> IllegalSoftwareLower;
+
+		static Security ( )
+		{
+			IllegalSoftwareLower = IllegalSoftware
+								   .Select ( x => x.ToLowerInvariant ( ) )
+								   .ToHashSet ( StringComparer.OrdinalIgnoreCase );
+		}
 
 		public static string GetUserDataFilePath ( )
 		{
@@ -118,10 +129,19 @@ namespace kop_launcher
 
 			foreach ( var proc in processlist )
 			{
-				if ( Exclude.Any ( proc.ProcessName.ToLowerInvariant ( ).Contains ) ) continue;
+				try
+				{
+					var procLower = proc.ProcessName.ToLowerInvariant ( );
+					if ( Exclude.Any ( procLower.Contains ) )
+						continue;
 
-				if ( IllegalSoftware.Any ( s => proc.ProcessName.ToLowerInvariant ( )
-													.Contains ( s.ToLowerInvariant ( ) ) ) ) return proc.ProcessName;
+					if ( IllegalSoftwareLower.Any ( s => procLower.Contains ( s ) ) )
+						return proc.ProcessName;
+				}
+				catch
+				{
+					// ignored
+				}
 			}
 
 			return null;
