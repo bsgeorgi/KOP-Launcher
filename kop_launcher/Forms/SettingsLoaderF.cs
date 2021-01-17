@@ -66,7 +66,6 @@ namespace kop_launcher
             _candyFXsettings = null;
             _globalSettings = null;
             _gameSettings = null;
-            Close();
 		}
 
 		private void BackgroundWorker1_DoWork ( object sender, DoWorkEventArgs e )
