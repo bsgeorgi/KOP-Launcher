@@ -37,15 +37,8 @@ namespace kop_launcher
             string path = Path.Combine(Globals.rootDirectory, "scripts", "update");
             try
             {
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                    return true;
-                }
-                else
-                {
-                    return true;
-                }
+                Directory.CreateDirectory(path);
+                return true;
             }
             catch
             {
@@ -66,7 +59,6 @@ namespace kop_launcher
                  * Check if update path exists
                  * Returns true if exists or was created successfully
                  */
-
                 if (CheckCreateUpdatePath())
                 {
                     string path = Path.Combine(Globals.rootDirectory, "scripts", "update", ".version");
@@ -86,7 +78,6 @@ namespace kop_launcher
                         {
                             tw.WriteLine(Properties.Resources.DefaultGameVersion);
                         }
-                        return Properties.Resources.DefaultGameVersion;
                     }
                 }
             }

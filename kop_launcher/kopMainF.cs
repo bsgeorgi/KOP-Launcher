@@ -203,19 +203,7 @@ namespace kop_launcher
 
         private void ForceGameUpdate(object sender, EventArgs e)
         {
-            if (Application.OpenForms.OfType<UpdaterF>().Count() == 0)
-            {
-                if (!string.IsNullOrEmpty(GameVersion))
-                {
-                    string region = Globals.GetIPByServer(regionsBox.Text);
-                    UpdaterF updater = new UpdaterF(GameVersion, region, true);
-                    updater.Show();
-                }
-                else
-                {
-                    utils.ShowMessageA("Please ensure you have a valid internet connection!");
-                }
-            }
+            StartCheckGameUpdate();
         }
 
         private void OpenGameSettings(object sender, EventArgs e)
@@ -263,22 +251,7 @@ namespace kop_launcher
 
         private void ToolstripLaunchGame_Click(object sender, EventArgs e)
         {
-            if (Application.OpenForms.OfType<UpdaterF>().Count() == 0)
-            {
-                if (!string.IsNullOrEmpty(GameVersion))
-                {
-                    string lastIP = Globals.lastOpenedRegion;
-                    if (string.IsNullOrEmpty(lastIP))
-                        lastIP = Globals.GetIPByServer(regionsBox.Text);
-
-                    UpdaterF updater = new UpdaterF(GameVersion, lastIP);
-                    updater.Show();
-                }
-                else
-                {
-                    utils.ShowMessageA("Please ensure you have a valid internet connection!");
-                }
-            }
+            StartCheckGameUpdate();
         }
 
         private void closeButton_Click(object sender, EventArgs e)
@@ -625,22 +598,28 @@ namespace kop_launcher
                 string region = Globals.GetIPByServer(regionsBox.Text);
                 if (!string.IsNullOrEmpty(region))
                 {
-                    if (Application.OpenForms.OfType<UpdaterF>().Count() == 0)
-                    {
-                        if (!string.IsNullOrEmpty(GameVersion))
-                        {
-                            UpdaterF updater = new UpdaterF(GameVersion, region);
-                            updater.Show();
-                        }
-                        else
-                        {
-                            utils.ShowMessageA("Please ensure you have a valid internet connection!");
-                        }
-                    }
+                    StartCheckGameUpdate();
                 }
                 else
                 {
                     utils.ShowMessageA("Please choose a region you would like to play on!");
+                }
+            }
+        }
+
+        private void StartCheckGameUpdate()
+        {
+            string region = Globals.GetIPByServer(regionsBox.Text);
+            if (Application.OpenForms.OfType<UpdaterF>().Count() == 0)
+            {
+                if (!string.IsNullOrEmpty(GameVersion))
+                {
+                    UpdaterF updater = new UpdaterF(GameVersion, region);
+                    updater.Show();
+                }
+                else
+                {
+                    utils.ShowMessageA("Retrieving update information, please try again in a few seconds.");
                 }
             }
         }

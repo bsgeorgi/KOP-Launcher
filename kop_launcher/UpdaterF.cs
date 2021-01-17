@@ -45,52 +45,36 @@ namespace kop_launcher
             GameUpdater = new AutoUpdate(RemoteVersion);
             if (GameUpdater.IsGameUpToDate())
             {
-                Close();
-                if (!StartGameInstance())
+                SetControlThreadSafe(label2, (arg) => { label2.Text = "Game is up to date..."; }, null);
+                await Task.Run(() =>
                 {
-                    utils.ShowMessageA("An error occured while opening a game instance");
-                }
+                    if (!StartGameInstance())
+                    {
+                        MessageBox.Show("An error occured while opening a game instance");
+                    }
+                });
+                Close();
             }
             else
             {
-                if (ForceUpdate)
+                SetControlThreadSafe(label2, (arg) => { label2.Text = "Receiving Update Information..."; }, null);
+                DownloadedFiles = new List<string>();
+
+                var PatchInfo = GameUpdater.GetRequiredUpdates(RemoteVersion, Properties.Resources.UpdateXMLFile, ForceUpdate);
+                if (PatchInfo.PatchList.Count > 0 && PatchInfo.LastVersion > 0)
                 {
-                    SetControlThreadSafe(label2, (arg) => { label2.Text = "Receiving Update Information..."; }, null);
-                    DownloadedFiles = new List<string>();
+                    SetControlThreadSafe(progressBar1, (arg) => { progressBar1.Value = 0; }, null);
+                    SetControlThreadSafe(progressBar1, (arg) => { progressBar1.Style = ProgressBarStyle.Blocks; }, null);
+                    SetControlThreadSafe(label2, (arg) => { label2.Text = "Downloading Game Updates..."; }, null);
+                    TotalUpdates = PatchInfo.PatchList.Count;
 
-                    var PatchInfo = GameUpdater.GetRequiredUpdates(RemoteVersion, Properties.Resources.UpdateXMLFile, true);
-                    if (PatchInfo.PatchList.Count > 0 && PatchInfo.LastVersion > 0)
-                    {
-                        SetControlThreadSafe(progressBar1, (arg) => { progressBar1.Value = 0; }, null);
-                        SetControlThreadSafe(progressBar1, (arg) => { progressBar1.Style = ProgressBarStyle.Blocks; }, null);
-                        SetControlThreadSafe(label2, (arg) => { label2.Text = "Downloading Game Updates..."; }, null);
-                        TotalUpdates = PatchInfo.PatchList.Count;
-
-                        await DownloadMultipleFilesAsync(PatchInfo.PatchList);
-                        backgroundWorker1.RunWorkerAsync();
-                    }
+                    await DownloadMultipleFilesAsync(PatchInfo.PatchList);
+                    backgroundWorker1.RunWorkerAsync();
                 }
                 else
                 {
-                    SetControlThreadSafe(label2, (arg) => { label2.Text = "Receiving Update Information..."; }, null);
-                    DownloadedFiles = new List<string>();
-
-                    var PatchInfo = GameUpdater.GetRequiredUpdates(RemoteVersion, Properties.Resources.UpdateXMLFile, false);
-                    if (PatchInfo.PatchList.Count > 0 && PatchInfo.LastVersion > 0)
-                    {
-                        SetControlThreadSafe(progressBar1, (arg) => { progressBar1.Value = 0; }, null);
-                        SetControlThreadSafe(progressBar1, (arg) => { progressBar1.Style = ProgressBarStyle.Blocks; }, null);
-                        SetControlThreadSafe(label2, (arg) => { label2.Text = "Downloading Game Updates..."; }, null);
-                        TotalUpdates = PatchInfo.PatchList.Count;
-
-                        await DownloadMultipleFilesAsync(PatchInfo.PatchList);
-                        backgroundWorker1.RunWorkerAsync();
-                    }
-                    else
-                    {
-                        MessageBox.Show("An error occured while retrieving update information, please contact a Game Master!");
-                        Close();
-                    }
+                    MessageBox.Show("An error occured while retrieving update information!");
+                    Close();
                 }
             }
         }
@@ -103,7 +87,6 @@ namespace kop_launcher
             GameUpdater.OverrideLocalGameVersion(RemoteVersion);
             if (!ForceUpdate)
             {
-                Close();
                 if (!StartGameInstance())
                 {
                     utils.ShowMessageA("An error occured while opening a game instance");
@@ -176,9 +159,9 @@ namespace kop_launcher
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
-                throw e;
+                MessageBox.Show("An error occured while downloading updates!");
             }
         }
         private async Task DownloadMultipleFilesAsync(List<Patch> Patches)
@@ -188,9 +171,27 @@ namespace kop_launcher
 
         private bool StartGameInstance()
         {
-            if (WasUpdated)
+            try
             {
-                if (utils.ShowMessageOK("Game has been updated to the last available version, would you like to start the game now?"))
+                if (WasUpdated)
+                {
+                    if (utils.ShowMessageOK("Game has been updated to the last available version, would you like to start the game now?"))
+                    {
+                        int procID = Globals.StartGameInstance(RegionIP);
+
+                        if (procID != -1)
+                        {
+                            Globals.lastOpenedRegion = RegionIP;
+                            Globals.GameInstances.Add(procID);
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
                 {
                     int procID = Globals.StartGameInstance(RegionIP);
 
@@ -206,32 +207,14 @@ namespace kop_launcher
                     }
                 }
             }
-            else
-            {
-                int procID = Globals.StartGameInstance(RegionIP);
+            catch { }
 
-                if (procID != -1)
-                {
-                    Globals.lastOpenedRegion = RegionIP;
-                    Globals.GameInstances.Add(procID);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
             return false;
-        }
-
-        private void DisposeAll()
-        {
-            Close();
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            DisposeAll();
+            Close();
         }
 
         private void SetControlThreadSafe(Control control, Action<object[]> action, object[] args)
