@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace kop_launcher
 {
@@ -157,5 +160,21 @@ namespace kop_launcher
 				}
 			}
 		}
+
+        public static async Task<bool> UrlIsReachable(string url)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var response = await client.GetAsync(url);
+                    return response.StatusCode == HttpStatusCode.OK;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
 	}
 }

@@ -5,12 +5,10 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Guna.UI2.WinForms;
 using kop_launcher.Properties;
-using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 
 namespace kop_launcher
@@ -40,7 +38,7 @@ namespace kop_launcher
 			SetCurrentTime ( );
 
 			/* DPI Fix For older Windows Versions */
-			if ( GetIsWindowsOld ( ) )
+			if ( Utils.GetIsWindowsOld ( ) )
 			{
 				label23.Location = new Point ( 860, label23.Location.Y );
 				label22.Location = new Point ( label22.Location.X, 446 );
@@ -77,22 +75,9 @@ namespace kop_launcher
 			}
 		}
 
-		private bool GetIsWindowsOld ( )
-		{
-			var loc    = @"SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion";
-			var key    = Registry.LocalMachine;
-			var subKey = key.OpenSubKey ( loc );
-			if ( subKey?.GetValue ( "ProductName" ).ToString ( ).Contains ( "Windows 7" ) == true )
-				return true;
-
-			return false;
-		}
-
-		private void SetCurrentTime ( )
-		{
-			var serverTime = TimeZoneInfo.ConvertTime ( DateTime.Now,
-														TimeZoneInfo.FindSystemTimeZoneById (
-															"Central Europe Standard Time" ) );
+        private void SetCurrentTime ( )
+        {
+            var serverTime = Utils.GetServerTime();
 
 			label21.Text = $"Server Time: {serverTime:HH:mm:ss}";
 		}
@@ -100,10 +85,10 @@ namespace kop_launcher
 		/* Regions Selection Box Handlers Begin */
 		private void InitialiseRegionsBox ( )
 		{
-			regionsBox.Items.Add ( "Morgan" );
-			regionsBox.Items.Add ( "Local" );
-			regionsBox.Items.Add ( "Jan" );
-			regionsBox.SelectedItem = "Select Region";
+            if ( !Utils.PopulateRegion(regionsBox) )
+            {
+				Utils.ShowMessageA( "An error occured while populating game regions!" );
+            }
 		}
 		/* Regions Selection Box Handlers END */
 
@@ -146,7 +131,7 @@ namespace kop_launcher
 				ShowCheckMargin = false,
 				ShowImageMargin = false,
 				Width           = 114,
-				Height          = GetIsWindowsOld ( ) ? 154 : 170
+				Height          = Utils.GetIsWindowsOld ( ) ? 154 : 170
 			};
 
 
@@ -200,13 +185,9 @@ namespace kop_launcher
 		}
 
 		private void OpenGameSettings ( object sender, EventArgs e )
-		{
-			if ( !Application.OpenForms.OfType<SettingsLoaderF> ( ).Any ( ) )
-			{
-				var settingsLoader = new SettingsLoaderF ( );
-				settingsLoader.Show ( );
-			}
-		}
+        {
+            Utils.OpenGameSettingsForm ();
+        }
 
 		private void ExitApp_Click ( object sender, EventArgs e )
 		{
@@ -291,29 +272,7 @@ namespace kop_launcher
 			if ( !( sender is PictureBox b ) )
 				return;
 
-			var uiPath = Path.Combine ( Globals.RootDirectory, "texture", "launcher", "sidebar_buttons" );
-			string buttonPath;
-
-			switch ( b.Name )
-			{
-				case string facebook when facebook.Contains ( "facebook" ):
-					buttonPath = Path.Combine ( uiPath, "facebook_btn_hover.png" );
-					break;
-				case string instagram when instagram.Contains ( "insta" ):
-					buttonPath = Path.Combine ( uiPath, "insta_btn_hover.png" );
-					break;
-				case string mail when mail.Contains ( "mail" ):
-					buttonPath = Path.Combine ( uiPath, "mail_btn_hover.png" );
-					break;
-				case string forum when forum.Contains ( "forum" ):
-					buttonPath = Path.Combine ( uiPath, "forum_btn_hover.png" );
-					break;
-				default:
-					buttonPath = Path.Combine ( uiPath, "settings_btn_hover.png" );
-					break;
-			}
-
-			b.Image = Image.FromFile ( buttonPath );
+            b.Image = Image.FromFile ( GetImageOnEvent.GetImageOnEnterSidebar(b.Name) );
 		}
 
 		private void ButtonS_MouseLeave ( object sender, EventArgs e )
@@ -321,29 +280,7 @@ namespace kop_launcher
 			if ( !( sender is PictureBox b ) )
 				return;
 
-			var    uiPath = Path.Combine ( Globals.RootDirectory, "texture", "launcher", "sidebar_buttons" );
-			string buttonPath;
-
-			switch ( b.Name )
-			{
-				case string facebook when facebook.Contains ( "facebook" ):
-					buttonPath = Path.Combine ( uiPath, "facebook_btn.png" );
-					break;
-				case string instagram when instagram.Contains ( "insta" ):
-					buttonPath = Path.Combine ( uiPath, "insta_btn.png" );
-					break;
-				case string mail when mail.Contains ( "mail" ):
-					buttonPath = Path.Combine ( uiPath, "mail_btn.png" );
-					break;
-				case string forum when forum.Contains ( "forum" ):
-					buttonPath = Path.Combine ( uiPath, "forum_btn.png" );
-					break;
-				default:
-					buttonPath = Path.Combine ( uiPath, "settings_btn.png" );
-					break;
-			}
-
-			b.Image = Image.FromFile ( buttonPath );
+            b.Image = Image.FromFile ( GetImageOnEvent.GetImageOnLeaveSidebar(b.Name) );
 		}
 
 		private void faDiscordBtn_Click ( object sender, EventArgs e )
@@ -419,60 +356,20 @@ namespace kop_launcher
 			if ( !( sender is PictureBox b ) )
 				return;
 
-			var uiPath = Path.Combine ( Globals.RootDirectory, "texture", "launcher", "packages" );
-			var buttonPath = "";
-
-			switch ( b.Name )
-			{
-				case string facebook when facebook.Contains ( "1" ):
-					buttonPath = Path.Combine ( uiPath, "1_hover.png" );
-					break;
-				case string instagram when instagram.Contains ( "2" ):
-					buttonPath = Path.Combine ( uiPath, "2_hover.png" );
-					break;
-				case string mail when mail.Contains ( "3" ):
-					buttonPath = Path.Combine ( uiPath, "3_hover.png" );
-					break;
-				case string forum when forum.Contains ( "4" ):
-					buttonPath = Path.Combine ( uiPath, "4_hover.png" );
-					break;
-			}
-
-			b.Image = Image.FromFile ( buttonPath );
+            b.Image = Image.FromFile ( GetImageOnEvent.GetImageOnEnterPackage(b.Name) );
 		}
 
-		private void package4_Click ( object sender, EventArgs e )
-		{
-			Process.Start ( Resources.ItemShopPackagesURL );
-		}
-
-		private void package1_MouseLeave ( object sender, EventArgs e )
+        private void package1_MouseLeave ( object sender, EventArgs e )
 		{
 			if ( !( sender is PictureBox b ) )
 				return;
 
-			var uiPath = Path.Combine ( Globals.RootDirectory, "texture", "launcher", "packages" );
-
-			var buttonPath = "";
-
-			switch ( b.Name )
-			{
-				case string facebook when facebook.Contains ( "1" ):
-					buttonPath = Path.Combine ( uiPath, "1.png" );
-					break;
-				case string instagram when instagram.Contains ( "2" ):
-					buttonPath = Path.Combine ( uiPath, "2.png" );
-					break;
-				case string mail when mail.Contains ( "3" ):
-					buttonPath = Path.Combine ( uiPath, "3.png" );
-					break;
-				case string forum when forum.Contains ( "4" ):
-					buttonPath = Path.Combine ( uiPath, "4.png" );
-					break;
-			}
-
-			b.Image = Image.FromFile ( buttonPath );
+            b.Image = Image.FromFile ( GetImageOnEvent.GetImageOnLeavePackage(b.Name) );
 		}
+        private void package4_Click(object sender, EventArgs e)
+        {
+            Process.Start(Resources.ItemShopPackagesURL);
+        }
 		/* Package Hover Events END */
 
 		/* TOP Nav Links Events Begin */
@@ -561,27 +458,11 @@ namespace kop_launcher
 			}
 		}
 
-		private async Task<bool> UrlIsReachable ( string url )
+        private async Task UpdateWebsiteStatus ( )
 		{
 			try
 			{
-				using ( var client = new HttpClient ( ) )
-				{
-					var response = await client.GetAsync ( url );
-					return response.StatusCode == HttpStatusCode.OK;
-				}
-			}
-			catch
-			{
-				return false;
-			}
-		}
-
-		private async Task UpdateWebsiteStatus ( )
-		{
-			try
-			{
-				var websiteReachable = await UrlIsReachable ( Resources.MainWebsiteURL );
+				var websiteReachable = await Globals.UrlIsReachable ( Resources.MainWebsiteURL );
 
 				if ( websiteReachable )
 					SetControlThreadSafe ( label13, arg => { label13.Text = "Online"; }, null );
@@ -750,17 +631,5 @@ namespace kop_launcher
 				// ignored
 			}
 		}
-
-		/* Custom Colour Table for Tray Menu */
-		private class CustomColorTable : ProfessionalColorTable
-		{
-			public override Color MenuItemSelected => Color.Transparent;
-
-			public override Color MenuBorder => Color.Transparent;
-
-			public override Color MenuItemBorder => Color.Transparent;
-
-			public override Color SeparatorDark => Color.FromArgb ( 72, 80, 88 );
-		}
-	}
+    }
 }

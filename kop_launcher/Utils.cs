@@ -1,4 +1,8 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using Guna.UI2.WinForms;
 
 namespace kop_launcher
 {
@@ -27,5 +31,62 @@ namespace kop_launcher
 
 			return q;
 		}
+
+        public static bool GetIsWindowsOld()
+        {
+            var loc = @"SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion";
+            var key = Microsoft.Win32.Registry.LocalMachine;
+            var subKey = key.OpenSubKey(loc);
+            if (subKey?.GetValue("ProductName").ToString().Contains("Windows 7") == true)
+                return true;
+
+            return false;
+        }
+
+        public static DateTime GetServerTime()
+        {
+            return TimeZoneInfo.ConvertTime(DateTime.Now,
+                TimeZoneInfo.FindSystemTimeZoneById(
+                    "Central Europe Standard Time"));
+		}
+
+        public static bool PopulateRegion(Guna2ComboBox Control)
+        {
+            try
+            {
+                if (Control == null) return false;
+      
+                Control.Items.Add("Morgan");
+                Control.Items.Add("Local");
+                Control.Items.Add("Jan");
+                Control.SelectedItem = "Select Region";
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static void OpenGameSettingsForm()
+        {
+            if (!Application.OpenForms.OfType<SettingsLoaderF>().Any())
+            {
+                var settingsLoader = new SettingsLoaderF();
+                settingsLoader.Show();
+            }
+        }
 	}
+    /* Custom Colour Table for Tray Menu */
+    public class CustomColorTable : ProfessionalColorTable
+    {
+        public override Color MenuItemSelected => Color.Transparent;
+
+        public override Color MenuBorder => Color.Transparent;
+
+        public override Color MenuItemBorder => Color.Transparent;
+
+        public override Color SeparatorDark => Color.FromArgb(72, 80, 88);
+    }
 }

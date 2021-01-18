@@ -69,6 +69,7 @@ namespace kop_launcher
             this.instagramButton = new System.Windows.Forms.PictureBox();
             this.facebookButton = new System.Windows.Forms.PictureBox();
             this.faDiscordBtn = new System.Windows.Forms.PictureBox();
+            this.mainBanner = new Guna.UI2.WinForms.Guna2PictureBox();
             this.topContainer = new Guna.UI2.WinForms.Guna2Panel();
             this.label21 = new System.Windows.Forms.Label();
             this.minimiseButton = new Guna.UI2.WinForms.Guna2ControlBox();
@@ -90,7 +91,7 @@ namespace kop_launcher
             this.SecurityBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.CheckHasheshBW = new System.ComponentModel.BackgroundWorker();
             this.UpdateHashesTimer = new System.Windows.Forms.Timer(this.components);
-            this.mainBanner = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.package4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.package3)).BeginInit();
@@ -106,12 +107,13 @@ namespace kop_launcher
             ((System.ComponentModel.ISupportInitialize)(this.instagramButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.facebookButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.faDiscordBtn)).BeginInit();
-            this.topContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainBanner)).BeginInit();
+            this.topContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainPanel
             // 
+            this.mainPanel.Controls.Add(this.panel1);
             this.mainPanel.Controls.Add(this.label24);
             this.mainPanel.Controls.Add(this.label23);
             this.mainPanel.Controls.Add(this.label22);
@@ -158,7 +160,7 @@ namespace kop_launcher
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(387, 21);
             this.label24.TabIndex = 29;
-            this.label24.Text = "Ranking is based on experience, gold and overall play time";
+            this.label24.Text = "King of Pirates. The data below is updated every 5 minutes.";
             // 
             // label23
             // 
@@ -311,7 +313,7 @@ namespace kop_launcher
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(387, 21);
             this.label18.TabIndex = 19;
-            this.label18.Text = "The ranking below displays the best 3 players in King of Pirates";
+            this.label18.Text = "The table below displays the most recently opened maps in";
             // 
             // label17
             // 
@@ -321,9 +323,9 @@ namespace kop_launcher
             this.label17.ForeColor = System.Drawing.Color.White;
             this.label17.Location = new System.Drawing.Point(102, 406);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(144, 21);
+            this.label17.Size = new System.Drawing.Size(176, 21);
             this.label17.TabIndex = 18;
-            this.label17.Text = "PIRATE RANKING";
+            this.label17.Text = "MAP OPENING TIMES";
             // 
             // itemShopPanel
             // 
@@ -606,6 +608,17 @@ namespace kop_launcher
             this.faDiscordBtn.TabStop = false;
             this.faDiscordBtn.Click += new System.EventHandler(this.faDiscordBtn_Click);
             // 
+            // mainBanner
+            // 
+            this.mainBanner.BackColor = System.Drawing.Color.Transparent;
+            this.mainBanner.Image = ((System.Drawing.Image)(resources.GetObject("mainBanner.Image")));
+            this.mainBanner.Location = new System.Drawing.Point(83, 65);
+            this.mainBanner.Name = "mainBanner";
+            this.mainBanner.ShadowDecoration.Parent = this.mainBanner;
+            this.mainBanner.Size = new System.Drawing.Size(1014, 313);
+            this.mainBanner.TabIndex = 2;
+            this.mainBanner.TabStop = false;
+            // 
             // topContainer
             // 
             this.topContainer.Controls.Add(this.label21);
@@ -730,26 +743,32 @@ namespace kop_launcher
             // 
             // guna2DragControl1
             // 
+            this.guna2DragControl1.ContainerControl = this;
             this.guna2DragControl1.TargetControl = this.mainPanel;
             // 
             // guna2DragControl2
             // 
+            this.guna2DragControl2.ContainerControl = this;
             this.guna2DragControl2.TargetControl = this.leftSidebar;
             // 
             // guna2DragControl3
             // 
+            this.guna2DragControl3.ContainerControl = this;
             this.guna2DragControl3.TargetControl = this.topContainer;
             // 
             // guna2DragControl4
             // 
+            this.guna2DragControl4.ContainerControl = this;
             this.guna2DragControl4.TargetControl = this.mainBanner;
             // 
             // guna2DragControl5
             // 
+            this.guna2DragControl5.ContainerControl = this;
             this.guna2DragControl5.TargetControl = this.rankingPanel;
             // 
             // guna2DragControl6
             // 
+            this.guna2DragControl6.ContainerControl = this;
             this.guna2DragControl6.TargetControl = this.itemShopPanel;
             // 
             // notifyIcon
@@ -783,18 +802,14 @@ namespace kop_launcher
             this.UpdateHashesTimer.Interval = 10000;
             this.UpdateHashesTimer.Tick += new System.EventHandler(this.UpdateHashesTimer_Tick);
             // 
-            // mainBanner
+            // panel1
             // 
-            this.mainBanner.BackColor = System.Drawing.Color.Transparent;
-            this.mainBanner.Image = ((System.Drawing.Image)(resources.GetObject("mainBanner.Image")));
-            this.mainBanner.Location = new System.Drawing.Point(83, 65);
-            this.mainBanner.Name = "mainBanner";
-            this.mainBanner.ShadowDecoration.Parent = this.mainBanner;
-            this.mainBanner.Size = new System.Drawing.Size(1014, 313);
-            this.mainBanner.TabIndex = 2;
-            this.mainBanner.TabStop = false;
+            this.panel1.Location = new System.Drawing.Point(106, 476);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(376, 29);
+            this.panel1.TabIndex = 30;
             // 
-            // kopmainF
+            // KopmainF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -825,9 +840,9 @@ namespace kop_launcher
             ((System.ComponentModel.ISupportInitialize)(this.instagramButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.facebookButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.faDiscordBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mainBanner)).EndInit();
             this.topContainer.ResumeLayout(false);
             this.topContainer.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mainBanner)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -891,6 +906,7 @@ namespace kop_launcher
         private BackgroundWorker CheckHasheshBW;
         private Timer UpdateHashesTimer;
         private Guna2PictureBox mainBanner;
+        private Panel panel1;
     }
 }
 
