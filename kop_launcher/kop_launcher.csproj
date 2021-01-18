@@ -146,6 +146,7 @@
       <DependentUpon>MessageBoxAccept.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Patch.cs" />
+    <Compile Include="Portals.cs" />
     <Compile Include="ProcessExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

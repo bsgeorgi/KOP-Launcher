@@ -18,8 +18,9 @@ namespace kop_launcher
 		/* kopMainF Class attributes begin */
 		private bool _isLauncherHidden;
 		private bool _playButtonEnabled;
-
 		private string _gameVersion;
+
+        private PortalsOnDraw portals;
 		/* kopMainF Class attributes END */
 
 		public KopmainF ( )
@@ -51,6 +52,8 @@ namespace kop_launcher
 			CheckHasheshBW.DoWork             += CheckHasheshBW_DoWork;
 			CheckHasheshBW.RunWorkerCompleted += CheckHasheshBW_RunWorkerCompleted;
 
+            portals = new PortalsOnDraw ( );
+
 			//SecurityTimer.Enabled = true;
 			//SecurityTimer.Start();
 
@@ -58,6 +61,21 @@ namespace kop_launcher
 			//UpdateHashesTimer.Enabled = true;
 			//UpdateHashesTimer.Start();
 		}
+
+        private void KopmainF_Load(object sender, EventArgs e)
+        {
+            foreach (var tableHeading in portals.tableHeadings)
+            {
+                Controls.Add(tableHeading);
+                tableHeading.BringToFront();
+            }
+
+			foreach (var portalControl in portals.PortalPanels)
+            {
+                Controls.Add(portalControl);
+                portalControl.BringToFront();
+			}
+        }
 
 		/* Overriding Separator Due to it not being aligned correctly by default thanks to Microsoft*/
 		private void stripSeparator_Paint ( object sender, PaintEventArgs e )
