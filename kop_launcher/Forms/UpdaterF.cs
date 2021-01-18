@@ -44,15 +44,24 @@ namespace kop_launcher
 			_gameUpdater = new AutoUpdate ( _remoteVersion );
 			if ( _gameUpdater.IsGameUpToDate ( ) )
 			{
-				label2.Text = "Game is up to date...";
-				//SetControlThreadSafe ( label2, ( ) => { label2.Text = "Game is up to date..."; } );
-				await Task.Run ( ( ) =>
+                if (_forceUpdate)
 				{
-					if ( !StartGameInstance ( ) )
-						Utils.ShowMessageA ( "An error occurred while opening a game instance" );
-				} );
-				SetControlThreadSafe ( this, Close );
-			}
+                    Utils.ShowMessageA("King of Pirates game client is up to date!");
+					SetControlThreadSafe(this, Hide);
+                }
+                else
+                {
+					label2.Text = "Game is up to date...";
+
+                    await Task.Run(() =>
+                    {
+                        if (!StartGameInstance())
+                            Utils.ShowMessageA("An error occurred while opening a game instance");
+                    });
+
+                    SetControlThreadSafe(this, Close);
+				}
+            }
 			else
 			{
 				label2.Text = "Receiving Update Information...";
@@ -68,10 +77,7 @@ namespace kop_launcher
 				{
 					progressBar1.Value = 0;
 					progressBar1.Style = ProgressBarStyle.Blocks;
-					label2.Text        = "Downloading Game Updates...";
-					//SetControlThreadSafe ( progressBar1, ( ) => { progressBar1.Value = 0; } );
-					//SetControlThreadSafe ( progressBar1, ( ) => { progressBar1.Style = ProgressBarStyle.Blocks; } );
-					//SetControlThreadSafe ( label2, ( ) => { label2.Text = "Downloading Game Updates..."; } );
+					label2.Text        = "Downloading Updates...";
 					_totalUpdates = patches.Count;
 
 					await DownloadMultipleFilesAsync ( patches ).ConfigureAwait ( false );
@@ -79,8 +85,7 @@ namespace kop_launcher
 				}
 				else
 				{
-					// TODO: Show Utils.MessageBox* ?
-					MessageBox.Show ( "An error occurred while retrieving update information!" );
+					Utils.ShowMessageA ( "An error occurred while retrieving update information!" );
 					SetControlThreadSafe ( this, Close );
 				}
 			}
@@ -92,23 +97,27 @@ namespace kop_launcher
 			SetControlThreadSafe ( label2, ( ) => { label2.Text              = "Game Updated Successfully..."; } );
 			_wasUpdated = true;
 			AutoUpdate.OverrideLocalGameVersion ( _remoteVersion );
-			if ( !_forceUpdate )
-				if ( !StartGameInstance ( ) )
-					Utils.ShowMessageA ( "An error occurred while opening a game instance" );
+            if (!_forceUpdate)
+                if (!StartGameInstance())
+                    Utils.ShowMessageA("An error occurred while opening a game instance");
+            else
+				Utils.ShowMessageA("King of Pirates game client is up to date!");
 
-			SetControlThreadSafe ( this, Close );
+            SetControlThreadSafe(this, Close);
 		}
 
 		private void BackgroundWorker1_DoWork ( object sender, DoWorkEventArgs e )
 		{
 			var current = 1;
 			SetControlThreadSafe ( label2,
-								   ( ) => { label2.Text = "Installing Game Updates..."; } );
+								   ( ) => { label2.Text = "Installing Updates..."; } );
 			SetControlThreadSafe ( progressBar1,
 								   ( ) => { progressBar1.Value = 0; } );
 
 			if ( _downloadedFiles.Count > 0 )
 			{
+                SetControlThreadSafe(label2,
+                    () => { label2.Text = "Installing Updates..."; });
 				foreach ( var file in _downloadedFiles )
 				{
 					var path = Path.Combine ( Globals.SaveDownloadsPath, file );

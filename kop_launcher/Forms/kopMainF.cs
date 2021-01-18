@@ -174,7 +174,7 @@ namespace kop_launcher
 			notifyIcon.ContextMenuStrip.Items.Add ( "KOP Website", null, null );
 			notifyIcon.ContextMenuStrip.Items.Add ( "Downloads", null, null );
 			notifyIcon.ContextMenuStrip.Items.Add ( "Settings", null, OpenGameSettings );
-			notifyIcon.ContextMenuStrip.Items.Add ( "Force Update", null, ForceGameUpdate );
+			notifyIcon.ContextMenuStrip.Items.Add ( "Version Check", null, ForceGameUpdate );
 			notifyIcon.ContextMenuStrip.Items.Add ( stripSeparator1 );
 			notifyIcon.ContextMenuStrip.Items.Add ( exitApp );
 
@@ -196,7 +196,7 @@ namespace kop_launcher
 
 		private void ForceGameUpdate ( object sender, EventArgs e )
 		{
-			StartCheckGameUpdate ( );
+			StartCheckGameUpdate ( true );
 		}
 
 		private void OpenGameSettings ( object sender, EventArgs e )
@@ -240,7 +240,7 @@ namespace kop_launcher
 
 		private void ToolstripLaunchGame_Click ( object sender, EventArgs e )
 		{
-			StartCheckGameUpdate ( );
+			StartCheckGameUpdate ( false );
 		}
 
 		private void closeButton_Click ( object sender, EventArgs e )
@@ -615,21 +615,23 @@ namespace kop_launcher
 			{
 				var region = Globals.GetIpByServer ( regionsBox.Text );
 				if ( !string.IsNullOrEmpty ( region ) )
-					StartCheckGameUpdate ( );
+					StartCheckGameUpdate ( false );
 				else
 					Utils.ShowMessageA ( "Please choose a region you would like to play on!" );
 			}
 		}
 
-		private void StartCheckGameUpdate ( )
+		private void StartCheckGameUpdate ( bool forceUpdate )
 		{
 			var region = Globals.GetIpByServer ( regionsBox.Text );
 			if ( !Application.OpenForms.OfType<UpdaterF> ( ).Any() )
 			{
 				if ( !string.IsNullOrEmpty ( _gameVersion ) )
 				{
-					var updater = new UpdaterF ( _gameVersion, region );
-					updater.Show ( );
+                    using ( var updater = new UpdaterF( _gameVersion, region, forceUpdate ) )
+                    {
+                        updater.Show ();
+                    }
 				}
 				else
 				{
