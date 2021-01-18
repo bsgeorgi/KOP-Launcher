@@ -80,7 +80,7 @@ namespace kop_launcher
             }
         }
 
-        public static IEnumerable<Portal> GetStandartPortals()
+        public static IEnumerable<Portal> GetDefaultPortals()
         {
             return new List<Portal>()
             {
