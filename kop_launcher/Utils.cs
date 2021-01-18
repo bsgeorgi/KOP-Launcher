@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Guna.UI2.WinForms;
+using kop_launcher.Models;
 
 namespace kop_launcher
 {
@@ -77,7 +79,17 @@ namespace kop_launcher
                 settingsLoader.Show();
             }
         }
-	}
+
+        public static IEnumerable<Portal> GetStandartPortals()
+        {
+            return new List<Portal>()
+            {
+                new Portal ( ) { PortalName = "Forsaken City", PortalOpeningInfo = new [] { "", "", ""} },
+                new Portal ( ) { PortalName = "Chaos Argent",  PortalOpeningInfo = new [] { "", "", ""} },
+                new Portal ( ) { PortalName = "Demonic World", PortalOpeningInfo = new [] { "", "", ""} },
+            };
+        }
+    }
     /* Custom Colour Table for Tray Menu */
     public class CustomColorTable : ProfessionalColorTable
     {

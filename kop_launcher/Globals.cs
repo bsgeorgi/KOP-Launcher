@@ -18,6 +18,8 @@ namespace kop_launcher
 		public static bool   HasBeenReported         = false;
 		public static string LastOpenedRegion;
 
+        public static short MaximumPortals = 3;
+
 		public static readonly List<int>    GameInstances         = new List<int> ( );
 		public static readonly List<string> GenuineResourceHashes = new List<string> ( );
 		public static readonly List<string> CurrentResourceHashes = new List<string> ( );

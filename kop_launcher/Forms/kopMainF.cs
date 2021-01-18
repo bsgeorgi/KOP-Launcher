@@ -52,7 +52,8 @@ namespace kop_launcher
 			CheckHasheshBW.DoWork             += CheckHasheshBW_DoWork;
 			CheckHasheshBW.RunWorkerCompleted += CheckHasheshBW_RunWorkerCompleted;
 
-            portals = new PortalsOnDraw ( );
+            new Portals( Utils.GetStandartPortals() ).UpdatePortalNames( );
+			portals = new PortalsOnDraw ( );
 
 			//SecurityTimer.Enabled = true;
 			//SecurityTimer.Start();

@@ -1,16 +1,55 @@
-﻿using System;
+﻿using kop_launcher.Models;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Guna.UI2.WinForms;
 
 namespace kop_launcher
 {
     class Portals
     {
+        private readonly IEnumerable<Portal> _portals;
+        private readonly List<PortalInfo> _portalInfo;
+
+        public Portals ( IEnumerable<Portal> portals )
+        {
+            _portals = portals;
+            _portalInfo = GetPortalInfo ( );
+        }
+
+        private List<PortalInfo> GetPortalInfo ( )
+        {
+            var portalsInformation = new List<PortalInfo> ( );
+            var serverTime         = Utils.GetServerTime ( );
+
+            foreach ( var portal in _portals )
+            {
+                var singlePortalInfo = new PortalInfo()
+                {
+                    PortalName    = portal.PortalName,
+                    IsPortalOpen  = true,
+                    RemainingTime = "00:32:12",
+                    NextOpenIn    = "02:12:53" 
+                };
+
+                if ( !portalsInformation.Contains( singlePortalInfo ) )
+                    portalsInformation.Add ( singlePortalInfo );
+            }
+
+            return portalsInformation;
+        }
+
+        public void UpdatePortalNames()
+        {
+            Utils.ShowMessageA( "Updating portal info!" );
+            /*for ( var i = 0; i < _portalInfo.Count; i++ )
+            {
+                if (i == --Globals.MaximumPortals)
+                    break;
+
+                // TODO: Update main panel portals controls from here
+
+            }*/
+        }
     }
 
     public class PortalsOnDraw
@@ -20,7 +59,6 @@ namespace kop_launcher
         private readonly Color _panelColor      = ColorTranslator.FromHtml( "#131521" );
         private readonly Font _defaultFont      = new Font("Montserrat", 7, FontStyle.Regular);
 
-        private const short MaximumPortals = 3;
         private const short PanelOffset    = 40;
         private const short LabelsOffset   = 100;
 
@@ -28,14 +66,14 @@ namespace kop_launcher
         private static readonly Color TableHeadingBackColor = ColorTranslator.FromHtml( "#131521" );
         private static readonly Font  TableHeadingFont      = new Font("Montserrat", 7, FontStyle.Regular);
 
-        public Panel[] PortalPanels = new Panel [MaximumPortals]
+        public Panel[] PortalPanels = new []
         {
             new Panel(),
             new Panel(),
             new Panel()
         };
 
-        public readonly Label[] tableHeadings = new Label[4]
+        public readonly Label[] tableHeadings = new []
         {
             new Label()
             {
@@ -81,7 +119,7 @@ namespace kop_launcher
 
         public PortalsOnDraw ( )
         {
-            for ( var i = 0; i < MaximumPortals; i++ )
+            for ( var i = 0; i < Globals.MaximumPortals; i++ )
             {
                 var location = new Point( _initialLocation.X, _initialLocation.Y + (i * PanelOffset) );
 
@@ -96,7 +134,7 @@ namespace kop_launcher
                 var portalHeading = new Label()
                 {
                     Name      = $"PortalHeading{ i }",
-                    Text      = $"Portal { i }",
+                    Text      = "--",
                     ForeColor = Color.White,
                     Location  = new Point (0, 5 ),
                     Font      = _defaultFont,
@@ -106,7 +144,7 @@ namespace kop_launcher
                 var isPortalOpen = new Label()
                 {
                     Name      = $"IsPortalOpen{ i }",
-                    Text      = "Open",
+                    Text      = "--",
                     ForeColor = Color.Green,
                     Location  = new Point(100, 5 ),
                     Font      = _defaultFont,
@@ -116,7 +154,7 @@ namespace kop_launcher
                 var portalRemainingTime = new Label()
                 {
                     Name      = $"portalRemainingTime{ i }",
-                    Text      = "00:34:58",
+                    Text      = "--:--:--",
                     ForeColor = Color.White,
                     Location  = new Point(200, 5),
                     Font      = _defaultFont,
