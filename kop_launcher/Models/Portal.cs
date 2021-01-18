@@ -6,17 +6,15 @@ namespace kop_launcher.Models
     {
         public string PortalName { get; set; }
 
-        private string[] _portalInfo = new string[3];
+        private string[] _portalInfo = new string[1];
         public string[] PortalOpeningInfo
         {
             get => _portalInfo;
 
             set
             {
-                if (value.Length < 2)
-                {
+                if ( value.Length != 2 )
                     throw new Exception("Portal model requires 3 params!");
-                }
 
                 _portalInfo = value;
             }

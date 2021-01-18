@@ -20,7 +20,7 @@ namespace kop_launcher
 		private bool _playButtonEnabled;
 		private string _gameVersion;
 
-        private PortalsOnDraw portals;
+        private readonly PortalsOnDraw _portals;
 		/* kopMainF Class attributes END */
 
 		public KopmainF ( )
@@ -52,8 +52,7 @@ namespace kop_launcher
 			CheckHasheshBW.DoWork             += CheckHasheshBW_DoWork;
 			CheckHasheshBW.RunWorkerCompleted += CheckHasheshBW_RunWorkerCompleted;
 
-            new Portals( Utils.GetStandartPortals() ).UpdatePortalNames( );
-			portals = new PortalsOnDraw ( );
+            _portals = new PortalsOnDraw ( );
 
 			//SecurityTimer.Enabled = true;
 			//SecurityTimer.Start();
@@ -65,13 +64,13 @@ namespace kop_launcher
 
         private void KopmainF_Load(object sender, EventArgs e)
         {
-            foreach (var tableHeading in portals.tableHeadings)
+            foreach (var tableHeading in _portals.TableHeadings)
             {
                 Controls.Add(tableHeading);
                 tableHeading.BringToFront();
             }
 
-			foreach (var portalControl in portals.PortalPanels)
+			foreach (var portalControl in _portals.PortalPanels)
             {
                 Controls.Add(portalControl);
                 portalControl.BringToFront();
