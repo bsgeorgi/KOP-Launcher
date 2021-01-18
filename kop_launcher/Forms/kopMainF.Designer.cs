@@ -815,7 +815,6 @@ namespace kop_launcher
             this.Text = "King of Pirates Online";
             this.TransparencyKey = System.Drawing.Color.Yellow;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.kopmainF_FormClosing);
-            this.Load += new System.EventHandler(this.KopmainF_Load);
             this.topContainer.ResumeLayout(false);
             this.topContainer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainBanner)).EndInit();

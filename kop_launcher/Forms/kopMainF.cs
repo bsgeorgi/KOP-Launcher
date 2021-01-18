@@ -20,7 +20,7 @@ namespace kop_launcher
 		private bool _playButtonEnabled;
 		private string _gameVersion;
 
-        private readonly PortalsOnDraw _portals;
+        private PortalsOnDraw _portals;
 		/* kopMainF Class attributes END */
 
 		public KopmainF ( )
@@ -29,8 +29,11 @@ namespace kop_launcher
 			TrayMenuContext ( );
 
 			/* Server Statistics and Update Timer */
-			Task.WaitAll ( Task.Factory.StartNew ( UpdateServerStatistics ),
-						   Task.Factory.StartNew ( UpdateWebsiteStatus ) );
+            Task.WaitAll(
+                Task.Factory.StartNew(UpdateServerStatistics),
+                Task.Factory.StartNew(UpdateWebsiteStatus),
+                Task.Factory.StartNew(GetPortalInfo)
+            );
 
 			updateStatisticsTimer.Enabled = true;
 			updateStatisticsTimer.Start ( );
@@ -52,30 +55,13 @@ namespace kop_launcher
 			CheckHasheshBW.DoWork             += CheckHasheshBW_DoWork;
 			CheckHasheshBW.RunWorkerCompleted += CheckHasheshBW_RunWorkerCompleted;
 
-            _portals = new PortalsOnDraw ( );
-
-			//SecurityTimer.Enabled = true;
+            //SecurityTimer.Enabled = true;
 			//SecurityTimer.Start();
 
 			// Timer to check for hash changes in game.exe and dlls
 			//UpdateHashesTimer.Enabled = true;
 			//UpdateHashesTimer.Start();
 		}
-
-        private void KopmainF_Load(object sender, EventArgs e)
-        {
-            foreach (var tableHeading in _portals.TableHeadings)
-            {
-                Controls.Add(tableHeading);
-                tableHeading.BringToFront();
-            }
-
-			foreach (var portalControl in _portals.PortalPanels)
-            {
-                Controls.Add(portalControl);
-                portalControl.BringToFront();
-			}
-        }
 
 		/* Overriding Separator Due to it not being aligned correctly by default thanks to Microsoft*/
 		private void stripSeparator_Paint ( object sender, PaintEventArgs e )
@@ -120,8 +106,11 @@ namespace kop_launcher
 
 		private void updateStatisticsTimer_Tick ( object sender, EventArgs e )
 		{
-			Task.WaitAll ( Task.Factory.StartNew ( UpdateServerStatistics ),
-						   Task.Factory.StartNew ( UpdateWebsiteStatus ) );
+			Task.WaitAll ( 
+                Task.Factory.StartNew ( UpdateServerStatistics ),
+						   Task.Factory.StartNew ( UpdateWebsiteStatus ),
+                           Task.Factory.StartNew ( GetPortalInfo )
+                );
 
 			if ( Globals.HasBeenReported )
 				Globals.HasBeenReported = false;
@@ -278,8 +267,11 @@ namespace kop_launcher
 				notifyIcon.Visible = false;
 
 				// Update Statistics
-				Task.WaitAll ( Task.Factory.StartNew ( UpdateServerStatistics ),
-							   Task.Factory.StartNew ( UpdateWebsiteStatus ) );
+                Task.WaitAll(
+                    Task.Factory.StartNew(UpdateServerStatistics),
+                    Task.Factory.StartNew(UpdateWebsiteStatus),
+                    Task.Factory.StartNew(GetPortalInfo)
+                );
 			}
 		}
 		/* Notification Tray Functions END */
@@ -475,6 +467,34 @@ namespace kop_launcher
 				// ignored
 			}
 		}
+
+        private async Task GetPortalInfo()
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    _portals = new PortalsOnDraw();
+
+                    foreach (var tableHeading in _portals.TableHeadings)
+                    {
+                        Controls.Add(tableHeading);
+                        tableHeading.BringToFront();
+                    }
+
+                    foreach (var portalControl in _portals.PortalPanels)
+                    {
+                        Controls.Add(portalControl);
+                        portalControl.BringToFront();
+                    }
+
+                });
+			}
+            catch
+            {
+                // ignored
+            }
+        }
 
         private async Task UpdateWebsiteStatus ( )
 		{
