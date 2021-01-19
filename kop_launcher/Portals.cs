@@ -20,9 +20,19 @@ namespace kop_launcher
             if ( string.IsNullOrEmpty( portal.PortalName ) ) return null;
 
             var serverTime        = Utils.GetServerTime ( );
-            var openInterval      = new PortalTime( portal.PortalOpeningInfo[0] );
-            var openDuration      = new PortalTime ( portal.PortalOpeningInfo[1] );
-            var openHours = Enumerable.Range(1, 24).Where(i => i % openInterval.Hour == 0).ToList();
+            var openingTimes      = new PortalOpeningTIme ( portal.PortalOpeningInfo[0] );
+            var openInterval      = new PortalIntervalTime( portal.PortalOpeningInfo[1] );
+            var openDuration      = new PortalIntervalTime ( portal.PortalOpeningInfo[2] );
+
+            var openHours = new List<int> ( );
+
+            if (openingTimes.Hour == 0 && openingTimes.Minute == 0)
+                openHours = Enumerable.Range(1, 24).Where(i => i % openInterval.Hour == 0).ToList();
+            else
+            {
+                var initialOpenAt = openingTimes.Hour * 60 + openingTimes.Minute;
+                openHours = Enumerable.Range(1, 24).Where(i => i * 60 % initialOpenAt == 0).ToList();
+            }
 
             var isThisPortalOpen = CheckIsPortalOpen ( openHours, serverTime, openDuration );
             var query = isThisPortalOpen ? serverTime.Hour + 1 : serverTime.Hour;
@@ -40,7 +50,7 @@ namespace kop_launcher
             return portalInfo;
         }
 
-        private static bool CheckIsPortalOpen ( IEnumerable<int> openHours, DateTime currentTime, PortalTime portalTime )
+        private static bool CheckIsPortalOpen ( IEnumerable<int> openHours, DateTime currentTime, PortalIntervalTime portalTime )
         {
             return openHours.Contains(currentTime.Hour) && currentTime.Minute < portalTime.Minute;
         }

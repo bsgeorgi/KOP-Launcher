@@ -148,7 +148,8 @@
     <Compile Include="Models\Patch.cs" />
     <Compile Include="Models\Portal.cs" />
     <Compile Include="Models\PortalInfo.cs" />
-    <Compile Include="Models\PortalTime.cs" />
+    <Compile Include="Models\PortalIntervalTime.cs" />
+    <Compile Include="Models\PortalOpeningTime.cs" />
     <Compile Include="Portals.cs" />
     <Compile Include="ProcessExtensions.cs" />
     <Compile Include="Program.cs" />

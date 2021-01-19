@@ -64,7 +64,7 @@ namespace kop_launcher
 			//UpdateHashesTimer.Start();
 		}
 
-		/* Overriding Separator Due to it not being aligned correctly by default thanks to Microsoft*/
+        /* Overriding Separator Due to it not being aligned correctly by default thanks to Microsoft*/
 		private void stripSeparator_Paint ( object sender, PaintEventArgs e )
 		{
 			if ( !( sender is ToolStripSeparator stripSeparator ) )

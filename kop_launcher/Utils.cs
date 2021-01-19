@@ -84,9 +84,9 @@ namespace kop_launcher
         {
             return new List<Portal>()
             {
-                new Portal ( ) { PortalName = "Forsaken City", PortalOpeningInfo = new [] { "0/2/0", "0/0/55" } },
-                new Portal ( ) { PortalName = "Chaos Argent",  PortalOpeningInfo = new [] { "0/6/0", "0/0/30" } },
-                new Portal ( ) { PortalName = "Demonic World", PortalOpeningInfo = new [] { "0/4/0", "0/0/40" } },
+                new Portal ( ) { PortalName = "Forsaken City", PortalOpeningInfo = new [] { "0/0",  "0/2/0",   "0/0/55" } },
+                new Portal ( ) { PortalName = "Chaos Argent",  PortalOpeningInfo = new [] { "11/0", "0/12/0", "0/0/30" } },
+                new Portal ( ) { PortalName = "Demonic World", PortalOpeningInfo = new [] { "0/0",  "0/4/0",  "0/0/40" } },
             };
         }
     }

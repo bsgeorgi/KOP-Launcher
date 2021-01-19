@@ -2,9 +2,9 @@
 
 namespace kop_launcher.Models
 {
-    internal class PortalTime
+    internal class PortalIntervalTime
     {
-        public PortalTime( string portalTime )
+        public PortalIntervalTime( string portalTime )
         {
             var results = portalTime.Split('/');
             Day    = Convert.ToInt16( results[0] );
