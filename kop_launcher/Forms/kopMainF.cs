@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -19,9 +20,7 @@ namespace kop_launcher
 		private bool _isLauncherHidden;
 		private bool _playButtonEnabled;
 		private string _gameVersion;
-        private Timer _timer;
-        private DateTime serverTime;
-
+        private DateTime _serverTime;
         private PortalsOnDraw _portals;
 		/* kopMainF Class attributes END */
 
@@ -36,9 +35,6 @@ namespace kop_launcher
                 Task.Factory.StartNew(UpdateWebsiteStatus),
                 Task.Factory.StartNew(GetPortalInfo)
             );
-
-
-            StartUpdateTimer();
 
 			updateStatisticsTimer.Enabled = true;
 			updateStatisticsTimer.Start ( );
@@ -86,9 +82,9 @@ namespace kop_launcher
 
         private void SetCurrentTime ( )
         {
-            serverTime = Utils.GetServerTime();
+            _serverTime = Utils.GetServerTime();
 
-			label21.Text = $"Server Time: {serverTime:HH:mm:ss}";
+			label21.Text = $"Server Time: {_serverTime:HH:mm:ss}";
 		}
 
 		/* Regions Selection Box Handlers Begin */
@@ -492,7 +488,6 @@ namespace kop_launcher
                         Controls.Add(portalControl);
                         portalControl.BringToFront();
                     }
-
                 });
             }
             catch
@@ -501,47 +496,6 @@ namespace kop_launcher
             }
         }
 
-        private void StartUpdateTimer()
-        {
-            var portalPanels = Controls.OfType<Panel>()
-                .Where(c => c.Name.Contains("PortalPanel"));
-
-			_timer = null;
-            _timer = new Timer { Interval = 1000 };
-
-            double totalSeconds = 0;
-
-            _timer.Tick += (o, args) =>
-            {
-                foreach (var panel in portalPanels)
-                {
-                    var getControl = panel.Controls.OfType<Label>()
-                        .Where(c => c.Name.ToLowerInvariant().Contains("portalremainingime") ||
-                                    c.Name.ToLowerInvariant().Contains("portalnexttime") &&
-                                    c.Name != "--;--;--");
-
-                    foreach (var control in getControl)
-                    {
-                        DateTime castToDate;
-                        var newDate = serverTime.AddDays(1);
-
-						if ( control.Text == "00:00:00" )
-                            DateTime.TryParse($"{newDate.Month}/{newDate.Day}/{newDate.Year} 12:00:00 AM", out castToDate);
-						else
-                            DateTime.TryParse($"{newDate.Month}/{newDate.Day}/{newDate.Year} 12:00:00 AM", out castToDate); ;
-
-                        totalSeconds = (castToDate - serverTime).TotalSeconds;
-                        totalSeconds -= 1;
-                        //var ts = TimeSpan.FromSeconds(totalSeconds--);
-
-						MessageBox.Show(totalSeconds.ToString());
-                        //control.Text = ts.ToString("hh\\:mm\\:ss");
-                        totalSeconds = 0;
-                    }
-                }
-            };
-            _timer.Start();
-		}
 		private async Task UpdateWebsiteStatus ( )
 		{
 			try
