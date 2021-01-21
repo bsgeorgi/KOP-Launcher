@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using Guna.UI2.WinForms;
 using kop_launcher.Properties;
 using Newtonsoft.Json.Linq;
@@ -17,24 +17,26 @@ namespace kop_launcher
 	public partial class KopmainF : Form
 	{
 		/* kopMainF Class attributes begin */
-		private bool _isLauncherHidden;
-		private bool _playButtonEnabled;
-		private string _gameVersion;
-        private DateTime _serverTime;
-        private PortalsOnDraw _portals;
+		private bool     _isLauncherHidden;
+		private bool     _playButtonEnabled;
+		private string   _gameVersion;
+		private DateTime _serverTime;
+
+		private PortalsOnDraw _portals;
 		/* kopMainF Class attributes END */
 
 		public KopmainF ( )
 		{
+			Globals.UIDispatcher = Dispatcher.CurrentDispatcher;
 			InitializeComponent ( );
 			TrayMenuContext ( );
 
 			/* Server Statistics and Update Timer */
-            Task.WaitAll(
-                Task.Factory.StartNew(UpdateServerStatistics),
-                Task.Factory.StartNew(UpdateWebsiteStatus),
-                Task.Factory.StartNew(GetPortalInfo)
-            );
+			Task.WaitAll (
+				Task.Factory.StartNew ( UpdateServerStatistics ),
+				Task.Factory.StartNew ( UpdateWebsiteStatus ),
+				Task.Factory.StartNew ( GetPortalInfo )
+			);
 
 			updateStatisticsTimer.Enabled = true;
 			updateStatisticsTimer.Start ( );
@@ -56,7 +58,7 @@ namespace kop_launcher
 			CheckHasheshBW.DoWork             += CheckHasheshBW_DoWork;
 			CheckHasheshBW.RunWorkerCompleted += CheckHasheshBW_RunWorkerCompleted;
 
-            //SecurityTimer.Enabled = true;
+			//SecurityTimer.Enabled = true;
 			//SecurityTimer.Start();
 
 			// Timer to check for hash changes in game.exe and dlls
@@ -64,7 +66,7 @@ namespace kop_launcher
 			//UpdateHashesTimer.Start();
 		}
 
-        /* Overriding Separator Due to it not being aligned correctly by default thanks to Microsoft*/
+		/* Overriding Separator Due to it not being aligned correctly by default thanks to Microsoft*/
 		private void stripSeparator_Paint ( object sender, PaintEventArgs e )
 		{
 			if ( !( sender is ToolStripSeparator stripSeparator ) )
@@ -80,9 +82,9 @@ namespace kop_launcher
 			}
 		}
 
-        private void SetCurrentTime ( )
-        {
-            _serverTime = Utils.GetServerTime();
+		private void SetCurrentTime ( )
+		{
+			_serverTime = Utils.GetServerTime ( );
 
 			label21.Text = $"Server Time: {_serverTime:HH:mm:ss}";
 		}
@@ -90,10 +92,10 @@ namespace kop_launcher
 		/* Regions Selection Box Handlers Begin */
 		private void InitialiseRegionsBox ( )
 		{
-            if ( !Utils.PopulateRegion(regionsBox) )
-            {
-				Utils.ShowMessageA( "An error occured while populating game regions!" );
-            }
+			if ( !Utils.PopulateRegion ( regionsBox ) )
+			{
+				Utils.ShowMessageA ( "An error occured while populating game regions!" );
+			}
 		}
 		/* Regions Selection Box Handlers END */
 
@@ -107,11 +109,11 @@ namespace kop_launcher
 
 		private void updateStatisticsTimer_Tick ( object sender, EventArgs e )
 		{
-			Task.WaitAll ( 
-                Task.Factory.StartNew ( UpdateServerStatistics ),
-						   Task.Factory.StartNew ( UpdateWebsiteStatus ),
-                           Task.Factory.StartNew ( GetPortalInfo )
-                );
+			Task.WaitAll (
+				Task.Factory.StartNew ( UpdateServerStatistics ),
+				Task.Factory.StartNew ( UpdateWebsiteStatus ),
+				Task.Factory.StartNew ( GetPortalInfo )
+			);
 
 			if ( Globals.HasBeenReported )
 				Globals.HasBeenReported = false;
@@ -193,9 +195,9 @@ namespace kop_launcher
 		}
 
 		private void OpenGameSettings ( object sender, EventArgs e )
-        {
-            Utils.OpenGameSettingsForm ();
-        }
+		{
+			Utils.OpenGameSettingsForm ( );
+		}
 
 		private void ExitApp_Click ( object sender, EventArgs e )
 		{
@@ -268,11 +270,11 @@ namespace kop_launcher
 				notifyIcon.Visible = false;
 
 				// Update Statistics
-                Task.WaitAll(
-                    Task.Factory.StartNew(UpdateServerStatistics),
-                    Task.Factory.StartNew(UpdateWebsiteStatus),
-                    Task.Factory.StartNew(GetPortalInfo)
-                );
+				Task.WaitAll (
+					Task.Factory.StartNew ( UpdateServerStatistics ),
+					Task.Factory.StartNew ( UpdateWebsiteStatus ),
+					Task.Factory.StartNew ( GetPortalInfo )
+				);
 			}
 		}
 		/* Notification Tray Functions END */
@@ -283,7 +285,7 @@ namespace kop_launcher
 			if ( !( sender is PictureBox b ) )
 				return;
 
-            b.Image = Image.FromFile ( GetImageOnEvent.GetImageOnEnterSidebar(b.Name) );
+			b.Image = Image.FromFile ( GetImageOnEvent.GetImageOnEnterSidebar ( b.Name ) );
 		}
 
 		private void ButtonS_MouseLeave ( object sender, EventArgs e )
@@ -291,7 +293,7 @@ namespace kop_launcher
 			if ( !( sender is PictureBox b ) )
 				return;
 
-            b.Image = Image.FromFile ( GetImageOnEvent.GetImageOnLeaveSidebar(b.Name) );
+			b.Image = Image.FromFile ( GetImageOnEvent.GetImageOnLeaveSidebar ( b.Name ) );
 		}
 
 		private void faDiscordBtn_Click ( object sender, EventArgs e )
@@ -367,20 +369,21 @@ namespace kop_launcher
 			if ( !( sender is PictureBox b ) )
 				return;
 
-            b.Image = Image.FromFile ( GetImageOnEvent.GetImageOnEnterPackage(b.Name) );
+			b.Image = Image.FromFile ( GetImageOnEvent.GetImageOnEnterPackage ( b.Name ) );
 		}
 
-        private void package1_MouseLeave ( object sender, EventArgs e )
+		private void package1_MouseLeave ( object sender, EventArgs e )
 		{
 			if ( !( sender is PictureBox b ) )
 				return;
 
-            b.Image = Image.FromFile ( GetImageOnEvent.GetImageOnLeavePackage(b.Name) );
+			b.Image = Image.FromFile ( GetImageOnEvent.GetImageOnLeavePackage ( b.Name ) );
 		}
-        private void package4_Click(object sender, EventArgs e)
-        {
-            Process.Start(Resources.ItemShopPackagesURL);
-        }
+
+		private void package4_Click ( object sender, EventArgs e )
+		{
+			Process.Start ( Resources.ItemShopPackagesURL );
+		}
 		/* Package Hover Events END */
 
 		/* TOP Nav Links Events Begin */
@@ -446,7 +449,7 @@ namespace kop_launcher
 
 						string hashes = data.hashsum;
 						var contents = hashes.Split ( new[] {Resources.StatHashSumDelimiter},
-														  StringSplitOptions.None );
+													  StringSplitOptions.None );
 						foreach ( var hash in contents )
 							if ( !string.IsNullOrEmpty ( hash ) )
 								Globals.GenuineResourceHashes.Add ( hash );
@@ -469,32 +472,29 @@ namespace kop_launcher
 			}
 		}
 
-        private async Task GetPortalInfo()
-        {
-            try
-            {
-                await Task.Run(() =>
-                {
-                    _portals = new PortalsOnDraw();
+		private void GetPortalInfo ( )
+		{
+			try
+			{
+				_portals = new PortalsOnDraw ( );
 
-                    foreach (var tableHeading in _portals.TableHeadings)
-                    {
-                        Controls.Add(tableHeading);
-                        tableHeading.BringToFront();
-                    }
+				foreach ( var tableHeading in _portals.TableHeadings )
+				{
+					Controls.Add ( tableHeading );
+					tableHeading.BringToFront ( );
+				}
 
-                    foreach (var portalControl in _portals.PortalPanels)
-                    {
-                        Controls.Add(portalControl);
-                        portalControl.BringToFront();
-                    }
-                });
-            }
-            catch
-            {
-                // ignored
-            }
-        }
+				foreach ( var portalControl in _portals.PortalPanels )
+				{
+					Controls.Add ( portalControl );
+					portalControl.BringToFront ( );
+				}
+			}
+			catch
+			{
+				// ignored
+			}
+		}
 
 		private async Task UpdateWebsiteStatus ( )
 		{
@@ -543,14 +543,14 @@ namespace kop_launcher
 		private void StartCheckGameUpdate ( bool forceUpdate )
 		{
 			var region = Globals.GetIpByServer ( regionsBox.Text );
-			if ( !Application.OpenForms.OfType<UpdaterF> ( ).Any() )
+			if ( !Application.OpenForms.OfType<UpdaterF> ( ).Any ( ) )
 			{
 				if ( !string.IsNullOrEmpty ( _gameVersion ) )
 				{
-                    using ( var updater = new UpdaterF( _gameVersion, region, forceUpdate ) )
-                    {
-                        updater.Show ();
-                    }
+					using ( var updater = new UpdaterF ( _gameVersion, region, forceUpdate ) )
+					{
+						updater.Show ( );
+					}
 				}
 				else
 				{
@@ -669,5 +669,5 @@ namespace kop_launcher
 				// ignored
 			}
 		}
-    }
+	}
 }

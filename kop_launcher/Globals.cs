@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace kop_launcher
 {
@@ -18,8 +19,8 @@ namespace kop_launcher
 		public static bool   HasBeenReported         = false;
 		public static string LastOpenedRegion;
 
-        public static short MaximumPortals     = 3;
-        public const short MaximumPortalPanels = 3;
+		public static short MaximumPortals      = 3;
+		public const  short MaximumPortalPanels = 3;
 
 		public static readonly List<int>    GameInstances         = new List<int> ( );
 		public static readonly List<string> GenuineResourceHashes = new List<string> ( );
@@ -29,6 +30,8 @@ namespace kop_launcher
 			Path.GetDirectoryName ( Assembly.GetExecutingAssembly ( ).Location );
 
 		public static readonly string SaveDownloadsPath = Path.Combine ( RootDirectory, "scripts", "update" );
+
+		public static Dispatcher UIDispatcher;
 
 		public static bool KillProcess ( int pid )
 		{
@@ -64,7 +67,7 @@ namespace kop_launcher
 			return ip;
 		}
 
-		public static int StartGameInstance ( string Region )
+		public static int StartGameInstance ( string region )
 		{
 			var systemPath = Path.Combine ( RootDirectory, "system" );
 			var gameExe    = File.Exists ( Path.Combine ( systemPath, "game.exe" ) ) ? "game.exe" : "Game.exe";
@@ -75,7 +78,7 @@ namespace kop_launcher
 				StartInfo =
 				{
 					FileName         = startPath,
-					Arguments        = $"startgame ip:{Region}",
+					Arguments        = $"startgame ip:{region}",
 					WorkingDirectory = RootDirectory
 				}
 			};
@@ -164,20 +167,20 @@ namespace kop_launcher
 			}
 		}
 
-        public static async Task<bool> UrlIsReachable(string url)
-        {
-            try
-            {
-                using (var client = new HttpClient())
-                {
-                    var response = await client.GetAsync(url);
-                    return response.StatusCode == HttpStatusCode.OK;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
+		public static async Task<bool> UrlIsReachable ( string url )
+		{
+			try
+			{
+				using ( var client = new HttpClient ( ) )
+				{
+					var response = await client.GetAsync ( url );
+					return response.StatusCode == HttpStatusCode.OK;
+				}
+			}
+			catch
+			{
+				return false;
+			}
+		}
 	}
 }

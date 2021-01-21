@@ -3,128 +3,15 @@ using kop_launcher.Models;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Threading;
 
 namespace kop_launcher
 {
-	class Portals
+	public class PortalsOnDraw : IDisposable
 	{
-		private readonly IEnumerable<Portal> _portals;
+		private const int MAX_PORTALS = 3;
 
-		public Portals ( IEnumerable<Portal> portals )
-		{
-			_portals = portals;
-		}
-
-		private PortalInfo FormatPortalInfo ( Portal portal )
-		{
-			if ( string.IsNullOrEmpty ( portal.PortalName ) ) return null;
-
-			var serverTime = Utils.GetServerTime ( );
-			//var openingTimes = new PortalOpeningTIme ( portal.PortalOpeningInfo[0] );
-			//var openInterval = new PortalIntervalTime ( portal.PortalOpeningInfo[1] );
-			//var openDuration = new PortalIntervalTime ( portal.PortalOpeningInfo[2] );
-
-			//var openHours = new List<int> ( );
-
-			//if ( openingTimes.Hour == 0 && openingTimes.Minute == 0 )
-			//	openHours = Enumerable.Range ( 1, 24 ).Where ( i => i % openInterval.Hour == 0 ).ToList ( );
-			//else
-			//{
-			//	var initialOpenAt = openingTimes.Hour * 60 + openingTimes.Minute;
-			//	openHours = Enumerable.Range ( 1, 24 ).Where ( i => i * 60 % initialOpenAt == 0 ).ToList ( );
-			//}
-
-			//var isThisPortalOpen = CheckIsPortalOpen ( openHours, serverTime, openDuration );
-			//var query            = isThisPortalOpen ? serverTime.Hour + 1 : serverTime.Hour;
-
-			//var portalInfo = new PortalInfo
-			//{
-			//	PortalName   = portal.PortalName,
-			//	IsPortalOpen = CheckIsPortalOpen ( openHours, serverTime, openDuration ),
-			//	NextOpenIn   = FormatFromTimeSpan ( GetTimeUntilNextOpen ( openHours, query, serverTime ) ),
-			//	RemainingTime = isThisPortalOpen
-			//		? FormatFromTimeSpan ( TimeSpan.FromMinutes ( openDuration.Minute - serverTime.Minute ) )
-			//		: "--;--;--"
-			//};
-
-			return portal.ToPortalInfo ( serverTime );
-		}
-
-		private static bool CheckIsPortalOpen ( IEnumerable<int> openHours,
-												DateTime currentTime,
-												PortalIntervalTime portalTime )
-		{
-			return openHours.Contains ( currentTime.Hour ) && currentTime.Minute < portalTime.Minute;
-		}
-
-		private static string FormatFromTimeSpan ( TimeSpan t )
-		{
-			return $"{t:hh\\:mm\\:ss}";
-		}
-
-		private static int GetNextHour ( ICollection<int> openHours, int hour )
-		{
-			if ( hour < 0 || hour > 24 ) return 0;
-			if ( openHours.Contains ( hour ) ) return hour;
-
-			var newHour = hour;
-			var found   = openHours.Contains ( hour );
-
-			while ( !found )
-			{
-				newHour++;
-				found = openHours.Contains ( newHour );
-
-				if ( found )
-					break;
-			}
-
-			return newHour;
-		}
-
-		private static TimeSpan GetTimeUntilNextOpen ( ICollection<int> openHours, int hour, DateTime serverTime )
-		{
-			var      nextHour = GetNextHour ( openHours, hour );
-			DateTime nextHourDatetime;
-
-			if ( nextHour == 24 )
-			{
-				var newDate = serverTime.AddDays ( 1 );
-				DateTime.TryParse ( $"{newDate.Month}/{newDate.Day}/{newDate.Year} 12:00:00 AM", out nextHourDatetime );
-			}
-			else
-				DateTime.TryParse ( $"{serverTime.Month}/{serverTime.Day}/{serverTime.Year} {nextHour}:00:00",
-									out nextHourDatetime );
-
-
-			var difference = ( nextHourDatetime - serverTime ).TotalSeconds;
-
-			return TimeSpan.FromSeconds ( difference );
-		}
-
-		public List<PortalInfo> GetPortalInfo ( )
-		{
-			var portalsInformation = new List<PortalInfo> ( );
-
-			foreach ( var portal in _portals )
-			{
-				var singlePortalInfo = FormatPortalInfo ( portal );
-
-				if ( !portalsInformation.Contains ( singlePortalInfo ) )
-					portalsInformation.Add ( singlePortalInfo );
-			}
-
-			return portalsInformation;
-		}
-	}
-
-	public class PortalsOnDraw
-	{
 		private readonly Point _initialLocation = new Point ( 106, 500 );
 		private readonly Size  _portalPanelSize = new Size ( 370, 29 );
 		private readonly Color _panelColor      = ColorTranslator.FromHtml ( "#131521" );
@@ -200,7 +87,7 @@ namespace kop_launcher
 		{
 			InitAllPanels ( );
 			InitAllLabels ( );
-            _portals = Utils.GetDefaultPortals().Take(3).ToList();
+			_portals = Utils.GetDefaultPortals ( ).ToList ( );
 			//UpdatePortalData ( );
 			RenderPortals ( );
 
@@ -275,7 +162,8 @@ namespace kop_launcher
 		private void UpdatePortalData ( )
 		{
 			var serverTime = Utils.GetServerTime ( );
-			var portalInfo = _portals
+			var portalInfo = SortPortals ( serverTime )
+							 .Take ( MAX_PORTALS )
 							 .Select ( x => x.ToPortalInfo ( serverTime ) )
 							 .ToList ( );
 
@@ -291,6 +179,23 @@ namespace kop_launcher
 			}
 		}
 
+		private List<Portal> SortPortals ( DateTime ServerDateTime )
+		{
+			foreach ( var portal in _portals )
+				portal.OpeningInfo.CheckTime ( ServerDateTime );
+
+			var open   = _portals.Where ( x => x.OpeningInfo.IsOpen );
+			var closed = _portals.Where ( x => !x.OpeningInfo.IsOpen );
+
+			open   = open.OrderBy ( x => x.OpeningInfo.GetRemainingTime ( ServerDateTime ) );
+			closed = closed.OrderBy ( x => x.OpeningInfo.GetTimeUntilNextOpen ( ServerDateTime ) );
+
+			var all = open.ToList ( );
+			all.AddRange ( closed );
+
+			return all;
+		}
+
 		private void RenderPortals ( )
 		{
 			for ( var i = 0; i < Globals.MaximumPortals; i++ )
@@ -300,6 +205,11 @@ namespace kop_launcher
 				PortalPanels[i].Controls.Add ( _portalsRemainingTime[i] );
 				PortalPanels[i].Controls.Add ( _portalsNextTime[i] );
 			}
+		}
+
+		public void Dispose ( )
+		{
+			_sub.Dispose ( );
 		}
 	}
 }

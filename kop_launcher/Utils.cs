@@ -34,71 +34,97 @@ namespace kop_launcher
 			return q;
 		}
 
-        public static bool GetIsWindowsOld()
-        {
-            var loc = @"SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion";
-            var key = Microsoft.Win32.Registry.LocalMachine;
-            var subKey = key.OpenSubKey(loc);
-            if (subKey?.GetValue("ProductName").ToString().Contains("Windows 7") == true)
-                return true;
+		public static bool GetIsWindowsOld ( )
+		{
+			var loc    = @"SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion";
+			var key    = Microsoft.Win32.Registry.LocalMachine;
+			var subKey = key.OpenSubKey ( loc );
+			if ( subKey?.GetValue ( "ProductName" ).ToString ( ).Contains ( "Windows 7" ) == true )
+				return true;
 
-            return false;
-        }
-
-        public static DateTime GetServerTime()
-        {
-            return TimeZoneInfo.ConvertTime(DateTime.Now,
-                TimeZoneInfo.FindSystemTimeZoneById(
-                    "Central Europe Standard Time"));
+			return false;
 		}
 
-        public static bool PopulateRegion(Guna2ComboBox Control)
-        {
-            try
-            {
-                if (Control == null) return false;
-      
-                Control.Items.Add("Morgan");
-                Control.Items.Add("Local");
-                Control.Items.Add("Jan");
-                Control.SelectedItem = "Select Region";
+		public static DateTime GetServerTime ( )
+		{
+			return TimeZoneInfo.ConvertTime ( DateTime.Now,
+											  TimeZoneInfo.FindSystemTimeZoneById (
+												  "Central Europe Standard Time" ) );
+		}
 
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+		public static bool PopulateRegion ( Guna2ComboBox Control )
+		{
+			try
+			{
+				if ( Control == null ) return false;
 
-        public static void OpenGameSettingsForm()
-        {
-            if (!Application.OpenForms.OfType<SettingsLoaderF>().Any())
-            {
-                var settingsLoader = new SettingsLoaderF();
-                settingsLoader.Show();
-            }
-        }
+				Control.Items.Add ( "Morgan" );
+				Control.Items.Add ( "Local" );
+				Control.Items.Add ( "Jan" );
+				Control.SelectedItem = "Select Region";
 
-        public static IEnumerable<Portal> GetDefaultPortals()
-        {
-            return new List<Portal>()
-            {
-                new Portal ( ) { PortalName = "Forsaken City", PortalOpeningInfo = new [] { "0/0",  "0/2/0",   "0/0/55" } },
-                new Portal ( ) { PortalName = "Chaos Argent",  PortalOpeningInfo = new [] { "11/0", "0/12/0", "0/0/30" } },
-                new Portal ( ) { PortalName = "Demonic World", PortalOpeningInfo = new [] { "0/0",  "0/4/0",  "0/0/40" } },
-            };
-        }
-    }
-    /* Custom Colour Table for Tray Menu */
-    public class CustomColorTable : ProfessionalColorTable
-    {
-        public override Color MenuItemSelected => Color.Transparent;
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
 
-        public override Color MenuBorder => Color.Transparent;
+		public static void OpenGameSettingsForm ( )
+		{
+			if ( !Application.OpenForms.OfType<SettingsLoaderF> ( ).Any ( ) )
+			{
+				var settingsLoader = new SettingsLoaderF ( );
+				settingsLoader.Show ( );
+			}
+		}
 
-        public override Color MenuItemBorder => Color.Transparent;
+		public static IEnumerable<Portal> GetDefaultPortals ( )
+		{
+			return new List<Portal>
+			{
+				new Portal
+				{
+					PortalName = "Forsaken City",
+					OpeningInfo = new PortalOpeningInfo ( TimeSpan.Zero,
+														  TimeSpan.FromHours ( 3 ),
+														  TimeSpan.FromMinutes ( 60 ) )
+				},
+				new Portal
+				{
+					PortalName = "Dark Swamp",
+					OpeningInfo = new PortalOpeningInfo ( TimeSpan.Zero,
+														  TimeSpan.FromHours ( 3 ),
+														  TimeSpan.FromMinutes ( 60 ) )
+				},
+				new Portal
+				{
+					PortalName = "Chaos Argent",
+					OpeningInfo = new PortalOpeningInfo ( TimeSpan.FromHours ( 11 ),
+														  TimeSpan.FromHours ( 12 ),
+														  TimeSpan.FromMinutes ( 30 ) )
+				},
+				new Portal
+				{
+					PortalName = "Demonic World",
+					OpeningInfo = new PortalOpeningInfo ( TimeSpan.Zero,
+														  TimeSpan.FromHours ( 3 ),
+														  TimeSpan.FromMinutes ( 40 ) )
+				},
+			};
+		}
+	}
 
-        public override Color SeparatorDark => Color.FromArgb(72, 80, 88);
-    }
+	/* Custom Colour Table for Tray Menu */
+	public class CustomColorTable : ProfessionalColorTable
+	{
+		public override Color MenuItemSelected => Color.Transparent;
+
+		public override Color MenuBorder => Color.Transparent;
+
+		public override Color MenuItemBorder => Color.Transparent;
+
+		public override Color SeparatorDark => Color.FromArgb ( 72, 80, 88 );
+	}
 }
