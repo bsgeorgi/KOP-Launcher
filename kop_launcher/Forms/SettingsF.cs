@@ -618,5 +618,15 @@ namespace kop_launcher
 		{
 			IsOpen = false;
 		}
-	}
+
+        private void label34_Click(object sender, EventArgs e)
+        {
+            Utils.OpenGameLoginsForm();
+        }
+
+        private void label34_Click_1(object sender, EventArgs e)
+        {
+            Utils.OpenGameLoginsForm();
+        }
+    }
 }

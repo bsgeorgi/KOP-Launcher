@@ -130,6 +130,12 @@
     <Compile Include="Discord\HookRequest\DiscordHook.cs" />
     <Compile Include="Discord\HookRequest\DiscordHookBuilder.cs" />
     <Compile Include="Discord\Utils\DiscordConverter.cs" />
+    <Compile Include="Forms\ManageGameLoginsF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ManageGameLoginsF.Designer.cs">
+      <DependentUpon>ManageGameLoginsF.cs</DependentUpon>
+    </Compile>
     <Compile Include="GetImageOnEvent.cs" />
     <Compile Include="Models\DownloadInfo.cs" />
     <Compile Include="Globals.cs" />
@@ -152,6 +158,7 @@
     <Compile Include="Forms\MessageBoxAccept.Designer.cs">
       <DependentUpon>MessageBoxAccept.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\GameAccount.cs" />
     <Compile Include="Models\Patch.cs" />
     <Compile Include="Models\Portal.cs" />
     <Compile Include="Models\PortalInfo.cs" />
@@ -179,9 +186,13 @@
     <Compile Include="Forms\UpdaterF.Designer.cs">
       <DependentUpon>UpdaterF.cs</DependentUpon>
     </Compile>
+    <Compile Include="SecurePasswordHasher.cs" />
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="Forms\kopMainF.resx">
       <DependentUpon>kopMainF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ManageGameLoginsF.resx">
+      <DependentUpon>ManageGameLoginsF.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MessageBoxA.resx">
       <DependentUpon>MessageBoxA.cs</DependentUpon>

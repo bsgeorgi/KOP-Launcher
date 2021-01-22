@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Guna.UI2.WinForms;
+using kop_launcher.Forms;
 using kop_launcher.Models;
 
 namespace kop_launcher
@@ -36,14 +37,12 @@ namespace kop_launcher
 
 		public static bool GetIsWindowsOld ( )
 		{
-			var loc    = @"SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion";
-			var key    = Microsoft.Win32.Registry.LocalMachine;
-			var subKey = key.OpenSubKey ( loc );
-			if ( subKey?.GetValue ( "ProductName" ).ToString ( ).Contains ( "Windows 7" ) == true )
-				return true;
+			const string loc = @"SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion";
+			var key          = Microsoft.Win32.Registry.LocalMachine;
+			var subKey       = key.OpenSubKey ( loc );
 
-			return false;
-		}
+			return subKey?.GetValue ( "ProductName" ).ToString ( ).Contains ( "Windows 7" ) == true;
+        }
 
 		public static DateTime GetServerTime ( )
 		{
@@ -72,13 +71,20 @@ namespace kop_launcher
 		}
 
 		public static void OpenGameSettingsForm ( )
-		{
-			if ( !Application.OpenForms.OfType<SettingsLoaderF> ( ).Any ( ) )
-			{
-				var settingsLoader = new SettingsLoaderF ( );
-				settingsLoader.Show ( );
-			}
-		}
+        {
+            if (Application.OpenForms.OfType<SettingsLoaderF>().Any()) return;
+
+            var settingsLoader = new SettingsLoaderF ( );
+            settingsLoader.Show ( );
+        }
+
+        public static void OpenGameLoginsForm()
+        {
+            if (Application.OpenForms.OfType<ManageGameLoginsF>().Any()) return;
+
+            var settingsLoader = new ManageGameLoginsF();
+            settingsLoader.Show();
+        }
 
 		public static IEnumerable<Portal> GetDefaultPortals ( )
 		{
