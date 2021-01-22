@@ -22,13 +22,15 @@ namespace kop_launcher
 		private          int          _totalUpdates;
 		private readonly bool         _forceUpdate;
 		private          bool         _wasUpdated;
+        private readonly GameAccount  _account;
 
-		public UpdaterF ( string remoteVersion, string region, bool forceUpdate = false )
+		public UpdaterF ( string remoteVersion, string region, GameAccount account, bool forceUpdate = false )
 		{
 			InitializeComponent ( );
 			_remoteVersion = remoteVersion;
 			_forceUpdate   = forceUpdate;
 			_regionIp      = region;
+            _account       = account;
 
 			progressBar1.Focus ( );
 			progressBar1.Select ( );
@@ -178,12 +180,12 @@ namespace kop_launcher
 					if ( Utils.ShowMessageOK (
 						"Game has been updated to the last available version, would you like to start the game now?" ) )
 					{
-						var procID = Globals.StartGameInstance ( _regionIp );
+						var procId = Globals.StartGameInstance ( _regionIp, _account );
 
-						if ( procID != -1 )
+						if ( procId != -1 )
 						{
 							Globals.LastOpenedRegion = _regionIp;
-							Globals.GameInstances.Add ( procID );
+							Globals.GameInstances.Add ( procId );
 							return true;
 						}
 
@@ -192,12 +194,13 @@ namespace kop_launcher
 				}
 				else
 				{
-					var procID = Globals.StartGameInstance ( _regionIp );
 
-					if ( procID != -1 )
+					var procId = Globals.StartGameInstance ( _regionIp, _account );
+
+					if ( procId != -1 )
 					{
 						Globals.LastOpenedRegion = _regionIp;
-						Globals.GameInstances.Add ( procID );
+						Globals.GameInstances.Add ( procId );
 						return true;
 					}
 

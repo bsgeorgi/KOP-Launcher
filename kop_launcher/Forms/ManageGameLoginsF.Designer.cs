@@ -30,8 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManageGameLoginsF));
             this.guna2GradientPanel1 = new Guna.UI2.WinForms.Guna2GradientPanel();
-            this.ResetButton = new Guna.UI2.WinForms.Guna2GradientButton();
-            this.ApplyButton = new Guna.UI2.WinForms.Guna2GradientButton();
             this.GroupBox = new Guna.UI2.WinForms.Guna2GroupBox();
             this.CreateCharacterPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.acclabel = new System.Windows.Forms.Label();
@@ -66,8 +64,6 @@
             // guna2GradientPanel1
             // 
             this.guna2GradientPanel1.BackColor = System.Drawing.Color.Transparent;
-            this.guna2GradientPanel1.Controls.Add(this.ResetButton);
-            this.guna2GradientPanel1.Controls.Add(this.ApplyButton);
             this.guna2GradientPanel1.Controls.Add(this.GroupBox);
             this.guna2GradientPanel1.Controls.Add(this.label2);
             this.guna2GradientPanel1.Controls.Add(this.GameCharacters);
@@ -88,54 +84,6 @@
             this.guna2GradientPanel1.ShadowDecoration.Parent = this.guna2GradientPanel1;
             this.guna2GradientPanel1.Size = new System.Drawing.Size(800, 450);
             this.guna2GradientPanel1.TabIndex = 0;
-            // 
-            // ResetButton
-            // 
-            this.ResetButton.Animated = true;
-            this.ResetButton.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(96)))), ((int)(((byte)(100)))));
-            this.ResetButton.BorderThickness = 1;
-            this.ResetButton.CheckedState.Parent = this.ResetButton;
-            this.ResetButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ResetButton.CustomImages.Parent = this.ResetButton;
-            this.ResetButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(63)))), ((int)(((byte)(69)))));
-            this.ResetButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(94)))));
-            this.ResetButton.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.ResetButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(172)))), ((int)(((byte)(173)))));
-            this.ResetButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            this.ResetButton.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(63)))), ((int)(((byte)(69)))));
-            this.ResetButton.HoverState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(94)))));
-            this.ResetButton.HoverState.ForeColor = System.Drawing.Color.White;
-            this.ResetButton.HoverState.Parent = this.ResetButton;
-            this.ResetButton.Location = new System.Drawing.Point(513, 368);
-            this.ResetButton.Name = "ResetButton";
-            this.ResetButton.ShadowDecoration.Parent = this.ResetButton;
-            this.ResetButton.Size = new System.Drawing.Size(110, 34);
-            this.ResetButton.TabIndex = 91;
-            this.ResetButton.Text = "Reset All";
-            // 
-            // ApplyButton
-            // 
-            this.ApplyButton.Animated = true;
-            this.ApplyButton.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(96)))), ((int)(((byte)(100)))));
-            this.ApplyButton.BorderThickness = 1;
-            this.ApplyButton.CheckedState.Parent = this.ApplyButton;
-            this.ApplyButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ApplyButton.CustomImages.Parent = this.ApplyButton;
-            this.ApplyButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(63)))), ((int)(((byte)(69)))));
-            this.ApplyButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(94)))));
-            this.ApplyButton.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.ApplyButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(172)))), ((int)(((byte)(173)))));
-            this.ApplyButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            this.ApplyButton.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(63)))), ((int)(((byte)(69)))));
-            this.ApplyButton.HoverState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(94)))));
-            this.ApplyButton.HoverState.ForeColor = System.Drawing.Color.White;
-            this.ApplyButton.HoverState.Parent = this.ApplyButton;
-            this.ApplyButton.Location = new System.Drawing.Point(645, 369);
-            this.ApplyButton.Name = "ApplyButton";
-            this.ApplyButton.ShadowDecoration.Parent = this.ApplyButton;
-            this.ApplyButton.Size = new System.Drawing.Size(110, 34);
-            this.ApplyButton.TabIndex = 74;
-            this.ApplyButton.Text = "Apply";
             // 
             // GroupBox
             // 
@@ -190,6 +138,7 @@
             this.DeleteAccountBtn.CheckedState.Parent = this.DeleteAccountBtn;
             this.DeleteAccountBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DeleteAccountBtn.CustomImages.Parent = this.DeleteAccountBtn;
+            this.DeleteAccountBtn.Enabled = false;
             this.DeleteAccountBtn.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(33)))), ((int)(((byte)(21)))));
             this.DeleteAccountBtn.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(22)))), ((int)(((byte)(13)))));
             this.DeleteAccountBtn.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -205,6 +154,7 @@
             this.DeleteAccountBtn.Size = new System.Drawing.Size(110, 34);
             this.DeleteAccountBtn.TabIndex = 92;
             this.DeleteAccountBtn.Text = "Delete";
+            this.DeleteAccountBtn.Click += new System.EventHandler(this.DeleteAccountBtn_Click);
             // 
             // AccountUsernameTextBox
             // 
@@ -232,6 +182,7 @@
             this.AccountUsernameTextBox.ShadowDecoration.Parent = this.AccountUsernameTextBox;
             this.AccountUsernameTextBox.Size = new System.Drawing.Size(297, 36);
             this.AccountUsernameTextBox.TabIndex = 0;
+            this.AccountUsernameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AccountUsernameTextBox_KeyDown);
             // 
             // AddAccountBtn
             // 
@@ -296,6 +247,7 @@
             this.AccountPasswordTextBox.ShadowDecoration.Parent = this.AccountPasswordTextBox;
             this.AccountPasswordTextBox.Size = new System.Drawing.Size(297, 36);
             this.AccountPasswordTextBox.TabIndex = 94;
+            this.AccountPasswordTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AccountPasswordTextBox_KeyDown);
             // 
             // AddCharacterBtn
             // 
@@ -321,6 +273,7 @@
             this.AddCharacterBtn.TabIndex = 93;
             this.AddCharacterBtn.Text = "Add";
             this.AddCharacterBtn.Visible = false;
+            this.AddCharacterBtn.Click += new System.EventHandler(this.AddCharacterBtn_Click);
             // 
             // DeleteCharacterBtn
             // 
@@ -330,6 +283,7 @@
             this.DeleteCharacterBtn.CheckedState.Parent = this.DeleteCharacterBtn;
             this.DeleteCharacterBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DeleteCharacterBtn.CustomImages.Parent = this.DeleteCharacterBtn;
+            this.DeleteCharacterBtn.Enabled = false;
             this.DeleteCharacterBtn.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(33)))), ((int)(((byte)(21)))));
             this.DeleteCharacterBtn.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(22)))), ((int)(((byte)(13)))));
             this.DeleteCharacterBtn.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -346,6 +300,7 @@
             this.DeleteCharacterBtn.TabIndex = 92;
             this.DeleteCharacterBtn.Text = "Delete";
             this.DeleteCharacterBtn.Visible = false;
+            this.DeleteCharacterBtn.Click += new System.EventHandler(this.DeleteCharacterBtn_Click);
             // 
             // chalabel
             // 
@@ -376,7 +331,7 @@
             this.CharacterNameTextBox.FocusedState.Parent = this.CharacterNameTextBox;
             this.CharacterNameTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.CharacterNameTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(109)))), ((int)(((byte)(113)))));
-            this.CharacterNameTextBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.CharacterNameTextBox.HoverState.BorderColor = System.Drawing.Color.Transparent;
             this.CharacterNameTextBox.HoverState.Parent = this.CharacterNameTextBox;
             this.CharacterNameTextBox.Location = new System.Drawing.Point(25, 47);
             this.CharacterNameTextBox.Name = "CharacterNameTextBox";
@@ -387,6 +342,7 @@
             this.CharacterNameTextBox.Size = new System.Drawing.Size(297, 36);
             this.CharacterNameTextBox.TabIndex = 0;
             this.CharacterNameTextBox.Visible = false;
+            this.CharacterNameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CharacterNameTextBox_KeyDown);
             // 
             // label2
             // 
@@ -427,6 +383,7 @@
             this.GameCharacters.ShadowDecoration.Parent = this.GameCharacters;
             this.GameCharacters.Size = new System.Drawing.Size(283, 36);
             this.GameCharacters.TabIndex = 88;
+            this.GameCharacters.SelectedIndexChanged += new System.EventHandler(this.GameCharacters_SelectedIndexChanged);
             this.GameCharacters.Click += new System.EventHandler(this.GameCharacters_Click);
             // 
             // label1
@@ -565,6 +522,7 @@
             this.GameAccounts.ShadowDecoration.Parent = this.GameAccounts;
             this.GameAccounts.Size = new System.Drawing.Size(283, 36);
             this.GameAccounts.TabIndex = 10;
+            this.GameAccounts.SelectedIndexChanged += new System.EventHandler(this.GameAccounts_SelectedIndexChanged);
             this.GameAccounts.Click += new System.EventHandler(this.GameAccounts_Click);
             // 
             // minimiseButton
@@ -632,8 +590,6 @@
         private System.Windows.Forms.Label label6;
         private Guna.UI2.WinForms.Guna2CustomCheckBox EncryptCheckBox;
         private Guna.UI2.WinForms.Guna2GroupBox GroupBox;
-        private Guna.UI2.WinForms.Guna2GradientButton ResetButton;
-        private Guna.UI2.WinForms.Guna2GradientButton ApplyButton;
         private Guna.UI2.WinForms.Guna2Panel CreateCharacterPanel;
         private Guna.UI2.WinForms.Guna2GradientButton AddCharacterBtn;
         private Guna.UI2.WinForms.Guna2GradientButton DeleteCharacterBtn;

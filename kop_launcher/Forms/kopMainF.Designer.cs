@@ -91,6 +91,9 @@ namespace kop_launcher
             this.SecurityBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.CheckHasheshBW = new System.ComponentModel.BackgroundWorker();
             this.UpdateHashesTimer = new System.Windows.Forms.Timer(this.components);
+            this.gameAccounts = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.regLabc = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.accLabc = new Guna.UI2.WinForms.Guna2PictureBox();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.package4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.package3)).BeginInit();
@@ -108,6 +111,8 @@ namespace kop_launcher
             ((System.ComponentModel.ISupportInitialize)(this.faDiscordBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainBanner)).BeginInit();
             this.topContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.regLabc)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.accLabc)).BeginInit();
             this.SuspendLayout();
             // 
             // guna2DragControl1
@@ -117,6 +122,9 @@ namespace kop_launcher
             // 
             // mainPanel
             // 
+            this.mainPanel.Controls.Add(this.accLabc);
+            this.mainPanel.Controls.Add(this.regLabc);
+            this.mainPanel.Controls.Add(this.gameAccounts);
             this.mainPanel.Controls.Add(this.label24);
             this.mainPanel.Controls.Add(this.label23);
             this.mainPanel.Controls.Add(this.label22);
@@ -260,6 +268,7 @@ namespace kop_launcher
             // 
             // regionsBox
             // 
+            this.regionsBox.Animated = true;
             this.regionsBox.BackColor = System.Drawing.Color.Transparent;
             this.regionsBox.BorderThickness = 0;
             this.regionsBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
@@ -277,10 +286,10 @@ namespace kop_launcher
             "Select Region"});
             this.regionsBox.ItemsAppearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(51)))), ((int)(((byte)(68)))));
             this.regionsBox.ItemsAppearance.Parent = this.regionsBox;
-            this.regionsBox.Location = new System.Drawing.Point(513, 243);
+            this.regionsBox.Location = new System.Drawing.Point(503, 234);
             this.regionsBox.Name = "regionsBox";
             this.regionsBox.ShadowDecoration.Parent = this.regionsBox;
-            this.regionsBox.Size = new System.Drawing.Size(154, 36);
+            this.regionsBox.Size = new System.Drawing.Size(172, 36);
             this.regionsBox.TabIndex = 22;
             this.regionsBox.SelectedIndexChanged += new System.EventHandler(this.regionsBox_SelectedIndexChanged);
             // 
@@ -800,6 +809,60 @@ namespace kop_launcher
             this.UpdateHashesTimer.Interval = 10000;
             this.UpdateHashesTimer.Tick += new System.EventHandler(this.UpdateHashesTimer_Tick);
             // 
+            // gameAccounts
+            // 
+            this.gameAccounts.Animated = true;
+            this.gameAccounts.BackColor = System.Drawing.Color.Transparent;
+            this.gameAccounts.BorderThickness = 0;
+            this.gameAccounts.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.gameAccounts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.gameAccounts.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(52)))));
+            this.gameAccounts.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.gameAccounts.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.gameAccounts.FocusedState.Parent = this.gameAccounts;
+            this.gameAccounts.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.gameAccounts.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(199)))), ((int)(((byte)(202)))));
+            this.gameAccounts.HoverState.BorderColor = System.Drawing.Color.Transparent;
+            this.gameAccounts.HoverState.Parent = this.gameAccounts;
+            this.gameAccounts.ItemHeight = 30;
+            this.gameAccounts.Items.AddRange(new object[] {
+            "Select Account"});
+            this.gameAccounts.ItemsAppearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(51)))), ((int)(((byte)(68)))));
+            this.gameAccounts.ItemsAppearance.Parent = this.gameAccounts;
+            this.gameAccounts.Location = new System.Drawing.Point(689, 234);
+            this.gameAccounts.Name = "gameAccounts";
+            this.gameAccounts.ShadowDecoration.Parent = this.gameAccounts;
+            this.gameAccounts.Size = new System.Drawing.Size(172, 36);
+            this.gameAccounts.TabIndex = 30;
+            this.gameAccounts.Visible = false;
+            // 
+            // regLabc
+            // 
+            this.regLabc.BackColor = System.Drawing.Color.Transparent;
+            this.regLabc.Image = ((System.Drawing.Image)(resources.GetObject("regLabc.Image")));
+            this.regLabc.Location = new System.Drawing.Point(539, 214);
+            this.regLabc.Name = "regLabc";
+            this.regLabc.ShadowDecoration.Parent = this.regLabc;
+            this.regLabc.Size = new System.Drawing.Size(96, 14);
+            this.regLabc.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.regLabc.TabIndex = 31;
+            this.regLabc.TabStop = false;
+            this.regLabc.UseTransparentBackground = true;
+            // 
+            // accLabc
+            // 
+            this.accLabc.BackColor = System.Drawing.Color.Transparent;
+            this.accLabc.Image = ((System.Drawing.Image)(resources.GetObject("accLabc.Image")));
+            this.accLabc.Location = new System.Drawing.Point(723, 217);
+            this.accLabc.Name = "accLabc";
+            this.accLabc.ShadowDecoration.Parent = this.accLabc;
+            this.accLabc.Size = new System.Drawing.Size(104, 11);
+            this.accLabc.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.accLabc.TabIndex = 32;
+            this.accLabc.TabStop = false;
+            this.accLabc.UseTransparentBackground = true;
+            this.accLabc.Visible = false;
+            // 
             // KopmainF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -834,6 +897,8 @@ namespace kop_launcher
             ((System.ComponentModel.ISupportInitialize)(this.mainBanner)).EndInit();
             this.topContainer.ResumeLayout(false);
             this.topContainer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.regLabc)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.accLabc)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -896,6 +961,9 @@ namespace kop_launcher
         private Label label2;
         private Label label1;
         private Guna2PictureBox rankingPanel;
+        private Guna2ComboBox gameAccounts;
+        private Guna2PictureBox accLabc;
+        private Guna2PictureBox regLabc;
     }
 }
 

@@ -87,5 +87,5 @@ namespace kop_launcher
             _gameSettings    = null;
 			Close ( );
 		}
-	}
+    }
 }

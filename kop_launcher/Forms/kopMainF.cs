@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using Guna.UI2.WinForms;
+using kop_launcher.Models;
 using kop_launcher.Properties;
 using Newtonsoft.Json.Linq;
 
@@ -27,7 +28,7 @@ namespace kop_launcher
 
 		public KopmainF ( )
 		{
-			Globals.UIDispatcher = Dispatcher.CurrentDispatcher;
+			Globals.UiDispatcher = Dispatcher.CurrentDispatcher;
 			InitializeComponent ( );
 			TrayMenuContext ( );
 
@@ -51,6 +52,22 @@ namespace kop_launcher
 				label22.Location = new Point ( label22.Location.X, 446 );
 				label24.Location = new Point ( label24.Location.X, 446 );
 			}
+
+            if (Globals.GameAccounts != null && Globals.GameAccounts.Count > 0)
+            {
+                regLabc.Location = new Point(443,214);
+                regionsBox.Location = new Point(414, 239);
+
+				gameAccounts.Location = new Point(600, 239);
+
+				accLabc.Location = new Point(624, 217);
+                gameAccounts.Visible = true;
+                accLabc.Visible = true;
+				gameAccounts.SelectedItem = gameAccounts.Items[0];
+
+                foreach (var account in Globals.GameAccounts)
+                    gameAccounts.Items.Add(account.Username);
+            }
 
 			SecurityBackgroundWorker.DoWork             += SecurityBackgroundWorker_DoWork;
 			SecurityBackgroundWorker.RunWorkerCompleted += SecurityBackgroundWorker_RunWorkerCompleted;
@@ -191,7 +208,7 @@ namespace kop_launcher
 
 		private void ForceGameUpdate ( object sender, EventArgs e )
 		{
-			StartCheckGameUpdate ( true );
+			StartCheckGameUpdate ( true, null );
 		}
 
 		private void OpenGameSettings ( object sender, EventArgs e )
@@ -231,7 +248,7 @@ namespace kop_launcher
 
 		private void ToolstripLaunchGame_Click ( object sender, EventArgs e )
 		{
-			StartCheckGameUpdate ( false );
+			StartCheckGameUpdate ( false, null );
 		}
 
 		private void closeButton_Click ( object sender, EventArgs e )
@@ -520,44 +537,57 @@ namespace kop_launcher
 		}
 
 		private void settingsButton_Click ( object sender, EventArgs e )
-		{
-			if ( !Application.OpenForms.OfType<SettingsLoaderF> ( ).Any ( ) )
-			{
-				var settingsLoader = new SettingsLoaderF ( );
-				settingsLoader.Show ( );
+        {
+			if (!Application.OpenForms.OfType<SettingsF>().Any())
+            {
+                var settingsLoader = new SettingsLoaderF();
+                settingsLoader.Show();
 			}
-		}
+            else
+                Application.OpenForms["SettingsF"]?.BringToFront();
+        }
 
 		private void StartGameButton_Click ( object sender, EventArgs e )
-		{
-			if ( _playButtonEnabled )
-			{
-				var region = Globals.GetIpByServer ( regionsBox.Text );
-				if ( !string.IsNullOrEmpty ( region ) )
-					StartCheckGameUpdate ( false );
-				else
-					Utils.ShowMessageA ( "Please choose a region you would like to play on!" );
-			}
-		}
+        {
+            if (!_playButtonEnabled) return;
 
-		private void StartCheckGameUpdate ( bool forceUpdate )
-		{
-			var region = Globals.GetIpByServer ( regionsBox.Text );
-			if ( !Application.OpenForms.OfType<UpdaterF> ( ).Any ( ) )
+            var region = Globals.GetIpByServer ( regionsBox.Text );
+            if (!string.IsNullOrEmpty(region))
 			{
-				if ( !string.IsNullOrEmpty ( _gameVersion ) )
-				{
-					using ( var updater = new UpdaterF ( _gameVersion, region, forceUpdate ) )
-					{
-						updater.Show ( );
-					}
+                if (gameAccounts.SelectedIndex > 0)
+                {
+                    var accountUsername = gameAccounts.SelectedItem.ToString();
+
+					var accounts =
+                        Globals.GameAccounts.Where(act => act.Username == gameAccounts.SelectedItem.ToString());
+
+                    foreach (var acc in accounts)
+                        StartCheckGameUpdate(false, acc);
 				}
 				else
-				{
-					Utils.ShowMessageA ( "Retrieving update information, please try again in a few seconds." );
-				}
+                    StartCheckGameUpdate(false, null);
 			}
-		}
+            else
+                Utils.ShowMessageA ( "Please choose a region you would like to play on!" );
+        }
+
+		private void StartCheckGameUpdate ( bool forceUpdate, GameAccount account )
+		{
+            if (Application.OpenForms.OfType<UpdaterF>().Any()) return;
+
+            var region = Globals.GetIpByServer(regionsBox.Text);
+			if ( !string.IsNullOrEmpty ( _gameVersion ) )
+            {
+                using ( var updater = new UpdaterF ( _gameVersion, region, account, forceUpdate) )
+                {
+                    updater.Show ( );
+                }
+            }
+            else
+            {
+                Utils.ShowMessageA ( "Retrieving update information, please try again in a few seconds." );
+            }
+        }
 
 		private void label23_Click ( object sender, EventArgs e )
 		{

@@ -80,6 +80,7 @@ namespace kop_launcher
             this.guna2Button1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(62)))), ((int)(((byte)(63)))));
             this.guna2Button1.BorderThickness = 1;
             this.guna2Button1.CheckedState.Parent = this.guna2Button1;
+            this.guna2Button1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.guna2Button1.CustomImages.Parent = this.guna2Button1;
             this.guna2Button1.FillColor = System.Drawing.Color.Transparent;
             this.guna2Button1.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -138,6 +139,7 @@ namespace kop_launcher
             // 
             // guna2DragControl1
             // 
+            this.guna2DragControl1.ContainerControl = this;
             this.guna2DragControl1.TargetControl = this.thisPanel;
             // 
             // SettingsLoaderF

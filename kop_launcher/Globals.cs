@@ -8,7 +8,9 @@ using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Threading;
+using kop_launcher.Models;
 
 namespace kop_launcher
 {
@@ -31,7 +33,9 @@ namespace kop_launcher
 
 		public static readonly string SaveDownloadsPath = Path.Combine ( RootDirectory, "scripts", "update" );
 
-		public static Dispatcher UIDispatcher;
+		public static Dispatcher UiDispatcher;
+
+        public static List<GameAccount> GameAccounts = new GameAccountsController().GetFileData();
 
 		public static bool KillProcess ( int pid )
 		{
@@ -67,23 +71,41 @@ namespace kop_launcher
 			return ip;
 		}
 
-		public static int StartGameInstance ( string region )
-		{
+		public static int StartGameInstance ( string region, GameAccount account )
+        {
 			var systemPath = Path.Combine ( RootDirectory, "system" );
 			var gameExe    = File.Exists ( Path.Combine ( systemPath, "game.exe" ) ) ? "game.exe" : "Game.exe";
 			var startPath  = Path.Combine ( systemPath, gameExe );
 
-			var process = new Process
-			{
-				StartInfo =
-				{
-					FileName         = startPath,
-					Arguments        = $"startgame ip:{region}",
-					WorkingDirectory = RootDirectory
-				}
-			};
+            Process process;
 
-			if ( process.Start ( ) )
+            if (account == null)
+            {
+                process = new Process
+                {
+                    StartInfo =
+                    {
+                        FileName         = startPath,
+                        Arguments        = $"startgame ip:{region}",
+                        WorkingDirectory = RootDirectory
+                    }
+                };
+			}
+            else
+            {
+                process = new Process
+                {
+                    StartInfo =
+                    {
+                        FileName         = startPath,
+                        Arguments        = account.Character != null ? $"startgame ip:{region} autolog:{account.Username},{account.Password},{account.Character}" : 
+                            $"startgame ip:{region} autolog:{account.Username},{account.Password}",
+						WorkingDirectory = RootDirectory
+                    }
+                };
+			}
+
+            if ( process.Start ( ) )
 				return process.Id;
 			return -1;
 		}
@@ -126,16 +148,16 @@ namespace kop_launcher
 				for ( var i = 0; i < toBeRestarted; i++ )
 				{
 					var region = GetIpByServer ( LastOpenedRegion );
-					var procID = StartGameInstance ( region );
+					var procId = StartGameInstance ( region, null );
 
-					if ( procID != -1 )
+					if ( procId != -1 )
 					{
 						LastOpenedRegion = region;
-						GameInstances.Add ( procID );
+						GameInstances.Add ( procId );
 					}
 					else
 					{
-						Utils.ShowMessageA ( "An error occurred while opening a game instance." );
+						Utils.ShowMessageA ( "An error occurred while opening a game instanc1e." );
 					}
 				}
 			}

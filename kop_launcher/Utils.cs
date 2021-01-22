@@ -80,7 +80,8 @@ namespace kop_launcher
 
         public static void OpenGameLoginsForm()
         {
-            if (Application.OpenForms.OfType<ManageGameLoginsF>().Any()) return;
+            if (Application.OpenForms.OfType<ManageGameLoginsF>().Any())
+                Application.OpenForms["ManageGameLoginsF"]?.BringToFront(); ;
 
             var settingsLoader = new ManageGameLoginsF();
             settingsLoader.Show();

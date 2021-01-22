@@ -92,7 +92,7 @@ namespace kop_launcher
 			RenderPortals ( );
 
 			_sub = Observable.Interval ( TimeSpan.FromSeconds ( 1 ) )
-							 .ObserveOn ( Globals.UIDispatcher )
+							 .ObserveOn ( Globals.UiDispatcher )
 							 //.SubscribeOn ( Dispatcher.CurrentDispatcher )
 							 .Subscribe ( x => UpdatePortalData ( ) );
 		}
