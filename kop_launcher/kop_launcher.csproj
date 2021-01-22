@@ -136,6 +136,7 @@
     <Compile Include="Forms\ManageGameLoginsF.Designer.cs">
       <DependentUpon>ManageGameLoginsF.cs</DependentUpon>
     </Compile>
+    <Compile Include="GameAccountsController.cs" />
     <Compile Include="GetImageOnEvent.cs" />
     <Compile Include="Models\DownloadInfo.cs" />
     <Compile Include="Globals.cs" />
