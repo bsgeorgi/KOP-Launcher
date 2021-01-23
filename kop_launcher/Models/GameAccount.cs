@@ -5,6 +5,8 @@
         public string Username { get; set; }
         public string Character { get; set; }
 
+        public char ForceCharacterLogin { get; set; }
+
         public string Password
         {
             get;

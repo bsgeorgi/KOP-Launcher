@@ -8,7 +8,6 @@ using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Windows.Threading;
 using kop_launcher.Models;
 
@@ -35,7 +34,9 @@ namespace kop_launcher
 
 		public static Dispatcher UiDispatcher;
 
-        public static List<GameAccount> GameAccounts = new GameAccountsController().GetFileData();
+        public static string SecurityCode;
+
+        public static List<GameAccount> GameAccounts;
 
 		public static bool KillProcess ( int pid )
 		{

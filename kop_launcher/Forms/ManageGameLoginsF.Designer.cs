@@ -32,22 +32,17 @@
             this.guna2GradientPanel1 = new Guna.UI2.WinForms.Guna2GradientPanel();
             this.GroupBox = new Guna.UI2.WinForms.Guna2GroupBox();
             this.CreateCharacterPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.DefaultCharacterTextbox = new Guna.UI2.WinForms.Guna2TextBox();
             this.acclabel = new System.Windows.Forms.Label();
             this.DeleteAccountBtn = new Guna.UI2.WinForms.Guna2GradientButton();
             this.AccountUsernameTextBox = new Guna.UI2.WinForms.Guna2TextBox();
-            this.AddAccountBtn = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.ApplyButton = new Guna.UI2.WinForms.Guna2GradientButton();
             this.passlabel = new System.Windows.Forms.Label();
             this.AccountPasswordTextBox = new Guna.UI2.WinForms.Guna2TextBox();
-            this.AddCharacterBtn = new Guna.UI2.WinForms.Guna2GradientButton();
-            this.DeleteCharacterBtn = new Guna.UI2.WinForms.Guna2GradientButton();
             this.chalabel = new System.Windows.Forms.Label();
-            this.CharacterNameTextBox = new Guna.UI2.WinForms.Guna2TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.GameCharacters = new Guna.UI2.WinForms.Guna2ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.LoginCharCheckBox = new Guna.UI2.WinForms.Guna2CustomCheckBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.EncryptCheckBox = new Guna.UI2.WinForms.Guna2CustomCheckBox();
+            this.ForceChaLoginBox = new Guna.UI2.WinForms.Guna2CustomCheckBox();
             this.guna2PictureBox1 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.label29 = new System.Windows.Forms.Label();
             this.guna2PictureBox2 = new Guna.UI2.WinForms.Guna2PictureBox();
@@ -65,12 +60,8 @@
             // 
             this.guna2GradientPanel1.BackColor = System.Drawing.Color.Transparent;
             this.guna2GradientPanel1.Controls.Add(this.GroupBox);
-            this.guna2GradientPanel1.Controls.Add(this.label2);
-            this.guna2GradientPanel1.Controls.Add(this.GameCharacters);
             this.guna2GradientPanel1.Controls.Add(this.label1);
-            this.guna2GradientPanel1.Controls.Add(this.LoginCharCheckBox);
-            this.guna2GradientPanel1.Controls.Add(this.label6);
-            this.guna2GradientPanel1.Controls.Add(this.EncryptCheckBox);
+            this.guna2GradientPanel1.Controls.Add(this.ForceChaLoginBox);
             this.guna2GradientPanel1.Controls.Add(this.guna2PictureBox1);
             this.guna2GradientPanel1.Controls.Add(this.label29);
             this.guna2GradientPanel1.Controls.Add(this.guna2PictureBox2);
@@ -96,27 +87,68 @@
             this.GroupBox.Location = new System.Drawing.Point(404, 53);
             this.GroupBox.Name = "GroupBox";
             this.GroupBox.ShadowDecoration.Parent = this.GroupBox;
-            this.GroupBox.Size = new System.Drawing.Size(351, 277);
+            this.GroupBox.Size = new System.Drawing.Size(351, 366);
             this.GroupBox.TabIndex = 90;
             this.GroupBox.Text = "Account Management";
             // 
             // CreateCharacterPanel
             // 
+            this.CreateCharacterPanel.Controls.Add(this.label3);
+            this.CreateCharacterPanel.Controls.Add(this.DefaultCharacterTextbox);
             this.CreateCharacterPanel.Controls.Add(this.acclabel);
             this.CreateCharacterPanel.Controls.Add(this.DeleteAccountBtn);
             this.CreateCharacterPanel.Controls.Add(this.AccountUsernameTextBox);
-            this.CreateCharacterPanel.Controls.Add(this.AddAccountBtn);
+            this.CreateCharacterPanel.Controls.Add(this.ApplyButton);
             this.CreateCharacterPanel.Controls.Add(this.passlabel);
             this.CreateCharacterPanel.Controls.Add(this.AccountPasswordTextBox);
-            this.CreateCharacterPanel.Controls.Add(this.AddCharacterBtn);
-            this.CreateCharacterPanel.Controls.Add(this.DeleteCharacterBtn);
             this.CreateCharacterPanel.Controls.Add(this.chalabel);
-            this.CreateCharacterPanel.Controls.Add(this.CharacterNameTextBox);
-            this.CreateCharacterPanel.Location = new System.Drawing.Point(0, 40);
+            this.CreateCharacterPanel.Location = new System.Drawing.Point(3, 39);
             this.CreateCharacterPanel.Name = "CreateCharacterPanel";
             this.CreateCharacterPanel.ShadowDecoration.Parent = this.CreateCharacterPanel;
-            this.CreateCharacterPanel.Size = new System.Drawing.Size(351, 237);
+            this.CreateCharacterPanel.Size = new System.Drawing.Size(348, 327);
             this.CreateCharacterPanel.TabIndex = 0;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Font = new System.Drawing.Font("Roboto Medium", 8F);
+            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(122)))), ((int)(((byte)(124)))));
+            this.label3.Location = new System.Drawing.Point(22, 175);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(125, 17);
+            this.label3.TabIndex = 97;
+            this.label3.Text = "Default Character:";
+            // 
+            // DefaultCharacterTextbox
+            // 
+            this.DefaultCharacterTextbox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(65)))), ((int)(((byte)(66)))));
+            this.DefaultCharacterTextbox.BorderThickness = 2;
+            this.DefaultCharacterTextbox.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.DefaultCharacterTextbox.DefaultText = "";
+            this.DefaultCharacterTextbox.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.DefaultCharacterTextbox.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.DefaultCharacterTextbox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.DefaultCharacterTextbox.DisabledState.Parent = this.DefaultCharacterTextbox;
+            this.DefaultCharacterTextbox.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.DefaultCharacterTextbox.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(25)))), ((int)(((byte)(28)))));
+            this.DefaultCharacterTextbox.FocusedState.BorderColor = System.Drawing.Color.Transparent;
+            this.DefaultCharacterTextbox.FocusedState.Parent = this.DefaultCharacterTextbox;
+            this.DefaultCharacterTextbox.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.DefaultCharacterTextbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(109)))), ((int)(((byte)(113)))));
+            this.DefaultCharacterTextbox.HoverState.BorderColor = System.Drawing.Color.Transparent;
+            this.DefaultCharacterTextbox.HoverState.Parent = this.DefaultCharacterTextbox;
+            this.DefaultCharacterTextbox.Location = new System.Drawing.Point(25, 202);
+            this.DefaultCharacterTextbox.Name = "DefaultCharacterTextbox";
+            this.DefaultCharacterTextbox.PasswordChar = '\0';
+            this.DefaultCharacterTextbox.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(109)))), ((int)(((byte)(113)))));
+            this.DefaultCharacterTextbox.PlaceholderText = "";
+            this.DefaultCharacterTextbox.SelectedText = "";
+            this.DefaultCharacterTextbox.ShadowDecoration.Parent = this.DefaultCharacterTextbox;
+            this.DefaultCharacterTextbox.Size = new System.Drawing.Size(297, 36);
+            this.DefaultCharacterTextbox.TabIndex = 96;
+            this.DefaultCharacterTextbox.TextChanged += new System.EventHandler(this.DefaultCharacterTextbox_TextChanged);
+            this.DefaultCharacterTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DefaultCharacterTextbox_KeyDown);
             // 
             // acclabel
             // 
@@ -148,7 +180,7 @@
             this.DeleteAccountBtn.HoverState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(22)))), ((int)(((byte)(13)))));
             this.DeleteAccountBtn.HoverState.ForeColor = System.Drawing.Color.White;
             this.DeleteAccountBtn.HoverState.Parent = this.DeleteAccountBtn;
-            this.DeleteAccountBtn.Location = new System.Drawing.Point(85, 185);
+            this.DeleteAccountBtn.Location = new System.Drawing.Point(83, 262);
             this.DeleteAccountBtn.Name = "DeleteAccountBtn";
             this.DeleteAccountBtn.ShadowDecoration.Parent = this.DeleteAccountBtn;
             this.DeleteAccountBtn.Size = new System.Drawing.Size(110, 34);
@@ -174,7 +206,7 @@
             this.AccountUsernameTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(109)))), ((int)(((byte)(113)))));
             this.AccountUsernameTextBox.HoverState.BorderColor = System.Drawing.Color.Transparent;
             this.AccountUsernameTextBox.HoverState.Parent = this.AccountUsernameTextBox;
-            this.AccountUsernameTextBox.Location = new System.Drawing.Point(25, 47);
+            this.AccountUsernameTextBox.Location = new System.Drawing.Point(25, 40);
             this.AccountUsernameTextBox.Name = "AccountUsernameTextBox";
             this.AccountUsernameTextBox.PasswordChar = '\0';
             this.AccountUsernameTextBox.PlaceholderText = "";
@@ -184,30 +216,30 @@
             this.AccountUsernameTextBox.TabIndex = 0;
             this.AccountUsernameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AccountUsernameTextBox_KeyDown);
             // 
-            // AddAccountBtn
+            // ApplyButton
             // 
-            this.AddAccountBtn.Animated = true;
-            this.AddAccountBtn.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(96)))), ((int)(((byte)(100)))));
-            this.AddAccountBtn.BorderThickness = 1;
-            this.AddAccountBtn.CheckedState.Parent = this.AddAccountBtn;
-            this.AddAccountBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AddAccountBtn.CustomImages.Parent = this.AddAccountBtn;
-            this.AddAccountBtn.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(63)))), ((int)(((byte)(69)))));
-            this.AddAccountBtn.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(94)))));
-            this.AddAccountBtn.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.AddAccountBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(172)))), ((int)(((byte)(173)))));
-            this.AddAccountBtn.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            this.AddAccountBtn.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(63)))), ((int)(((byte)(69)))));
-            this.AddAccountBtn.HoverState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(94)))));
-            this.AddAccountBtn.HoverState.ForeColor = System.Drawing.Color.White;
-            this.AddAccountBtn.HoverState.Parent = this.AddAccountBtn;
-            this.AddAccountBtn.Location = new System.Drawing.Point(212, 185);
-            this.AddAccountBtn.Name = "AddAccountBtn";
-            this.AddAccountBtn.ShadowDecoration.Parent = this.AddAccountBtn;
-            this.AddAccountBtn.Size = new System.Drawing.Size(110, 34);
-            this.AddAccountBtn.TabIndex = 93;
-            this.AddAccountBtn.Text = "Add";
-            this.AddAccountBtn.Click += new System.EventHandler(this.AddAccountBtn_Click);
+            this.ApplyButton.Animated = true;
+            this.ApplyButton.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(96)))), ((int)(((byte)(100)))));
+            this.ApplyButton.BorderThickness = 1;
+            this.ApplyButton.CheckedState.Parent = this.ApplyButton;
+            this.ApplyButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ApplyButton.CustomImages.Parent = this.ApplyButton;
+            this.ApplyButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(63)))), ((int)(((byte)(69)))));
+            this.ApplyButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(94)))));
+            this.ApplyButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.ApplyButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(172)))), ((int)(((byte)(173)))));
+            this.ApplyButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            this.ApplyButton.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(63)))), ((int)(((byte)(69)))));
+            this.ApplyButton.HoverState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(94)))));
+            this.ApplyButton.HoverState.ForeColor = System.Drawing.Color.White;
+            this.ApplyButton.HoverState.Parent = this.ApplyButton;
+            this.ApplyButton.Location = new System.Drawing.Point(212, 262);
+            this.ApplyButton.Name = "ApplyButton";
+            this.ApplyButton.ShadowDecoration.Parent = this.ApplyButton;
+            this.ApplyButton.Size = new System.Drawing.Size(110, 34);
+            this.ApplyButton.TabIndex = 93;
+            this.ApplyButton.Text = "Apply";
+            this.ApplyButton.Click += new System.EventHandler(this.ApplyButtonBtn_Click);
             // 
             // passlabel
             // 
@@ -249,59 +281,6 @@
             this.AccountPasswordTextBox.TabIndex = 94;
             this.AccountPasswordTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AccountPasswordTextBox_KeyDown);
             // 
-            // AddCharacterBtn
-            // 
-            this.AddCharacterBtn.Animated = true;
-            this.AddCharacterBtn.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(96)))), ((int)(((byte)(100)))));
-            this.AddCharacterBtn.BorderThickness = 1;
-            this.AddCharacterBtn.CheckedState.Parent = this.AddCharacterBtn;
-            this.AddCharacterBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AddCharacterBtn.CustomImages.Parent = this.AddCharacterBtn;
-            this.AddCharacterBtn.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(63)))), ((int)(((byte)(69)))));
-            this.AddCharacterBtn.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(94)))));
-            this.AddCharacterBtn.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.AddCharacterBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(172)))), ((int)(((byte)(173)))));
-            this.AddCharacterBtn.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            this.AddCharacterBtn.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(63)))), ((int)(((byte)(69)))));
-            this.AddCharacterBtn.HoverState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(94)))));
-            this.AddCharacterBtn.HoverState.ForeColor = System.Drawing.Color.White;
-            this.AddCharacterBtn.HoverState.Parent = this.AddCharacterBtn;
-            this.AddCharacterBtn.Location = new System.Drawing.Point(212, 185);
-            this.AddCharacterBtn.Name = "AddCharacterBtn";
-            this.AddCharacterBtn.ShadowDecoration.Parent = this.AddCharacterBtn;
-            this.AddCharacterBtn.Size = new System.Drawing.Size(110, 34);
-            this.AddCharacterBtn.TabIndex = 93;
-            this.AddCharacterBtn.Text = "Add";
-            this.AddCharacterBtn.Visible = false;
-            this.AddCharacterBtn.Click += new System.EventHandler(this.AddCharacterBtn_Click);
-            // 
-            // DeleteCharacterBtn
-            // 
-            this.DeleteCharacterBtn.Animated = true;
-            this.DeleteCharacterBtn.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(13)))), ((int)(((byte)(5)))));
-            this.DeleteCharacterBtn.BorderThickness = 1;
-            this.DeleteCharacterBtn.CheckedState.Parent = this.DeleteCharacterBtn;
-            this.DeleteCharacterBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.DeleteCharacterBtn.CustomImages.Parent = this.DeleteCharacterBtn;
-            this.DeleteCharacterBtn.Enabled = false;
-            this.DeleteCharacterBtn.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(33)))), ((int)(((byte)(21)))));
-            this.DeleteCharacterBtn.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(22)))), ((int)(((byte)(13)))));
-            this.DeleteCharacterBtn.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.DeleteCharacterBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(164)))), ((int)(((byte)(156)))));
-            this.DeleteCharacterBtn.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            this.DeleteCharacterBtn.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(63)))), ((int)(((byte)(69)))));
-            this.DeleteCharacterBtn.HoverState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(94)))));
-            this.DeleteCharacterBtn.HoverState.ForeColor = System.Drawing.Color.White;
-            this.DeleteCharacterBtn.HoverState.Parent = this.DeleteCharacterBtn;
-            this.DeleteCharacterBtn.Location = new System.Drawing.Point(85, 185);
-            this.DeleteCharacterBtn.Name = "DeleteCharacterBtn";
-            this.DeleteCharacterBtn.ShadowDecoration.Parent = this.DeleteCharacterBtn;
-            this.DeleteCharacterBtn.Size = new System.Drawing.Size(110, 34);
-            this.DeleteCharacterBtn.TabIndex = 92;
-            this.DeleteCharacterBtn.Text = "Delete";
-            this.DeleteCharacterBtn.Visible = false;
-            this.DeleteCharacterBtn.Click += new System.EventHandler(this.DeleteCharacterBtn_Click);
-            // 
             // chalabel
             // 
             this.chalabel.AutoSize = true;
@@ -315,156 +294,49 @@
             this.chalabel.Text = "Character Name:";
             this.chalabel.Visible = false;
             // 
-            // CharacterNameTextBox
-            // 
-            this.CharacterNameTextBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(65)))), ((int)(((byte)(66)))));
-            this.CharacterNameTextBox.BorderThickness = 2;
-            this.CharacterNameTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.CharacterNameTextBox.DefaultText = "";
-            this.CharacterNameTextBox.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.CharacterNameTextBox.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.CharacterNameTextBox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.CharacterNameTextBox.DisabledState.Parent = this.CharacterNameTextBox;
-            this.CharacterNameTextBox.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.CharacterNameTextBox.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(25)))), ((int)(((byte)(28)))));
-            this.CharacterNameTextBox.FocusedState.BorderColor = System.Drawing.Color.Transparent;
-            this.CharacterNameTextBox.FocusedState.Parent = this.CharacterNameTextBox;
-            this.CharacterNameTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.CharacterNameTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(109)))), ((int)(((byte)(113)))));
-            this.CharacterNameTextBox.HoverState.BorderColor = System.Drawing.Color.Transparent;
-            this.CharacterNameTextBox.HoverState.Parent = this.CharacterNameTextBox;
-            this.CharacterNameTextBox.Location = new System.Drawing.Point(25, 47);
-            this.CharacterNameTextBox.Name = "CharacterNameTextBox";
-            this.CharacterNameTextBox.PasswordChar = '\0';
-            this.CharacterNameTextBox.PlaceholderText = "";
-            this.CharacterNameTextBox.SelectedText = "";
-            this.CharacterNameTextBox.ShadowDecoration.Parent = this.CharacterNameTextBox;
-            this.CharacterNameTextBox.Size = new System.Drawing.Size(297, 36);
-            this.CharacterNameTextBox.TabIndex = 0;
-            this.CharacterNameTextBox.Visible = false;
-            this.CharacterNameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CharacterNameTextBox_KeyDown);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Roboto Medium", 8F);
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(122)))), ((int)(((byte)(124)))));
-            this.label2.Location = new System.Drawing.Point(32, 191);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(227, 17);
-            this.label2.TabIndex = 89;
-            this.label2.Text = "Please Select A Default Character:";
-            // 
-            // GameCharacters
-            // 
-            this.GameCharacters.Animated = true;
-            this.GameCharacters.BackColor = System.Drawing.Color.Transparent;
-            this.GameCharacters.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(65)))), ((int)(((byte)(66)))));
-            this.GameCharacters.BorderThickness = 2;
-            this.GameCharacters.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.GameCharacters.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.GameCharacters.Enabled = false;
-            this.GameCharacters.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(25)))), ((int)(((byte)(28)))));
-            this.GameCharacters.FocusedColor = System.Drawing.Color.Transparent;
-            this.GameCharacters.FocusedState.BorderColor = System.Drawing.Color.Transparent;
-            this.GameCharacters.FocusedState.Parent = this.GameCharacters;
-            this.GameCharacters.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.GameCharacters.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(109)))), ((int)(((byte)(113)))));
-            this.GameCharacters.HoverState.Parent = this.GameCharacters;
-            this.GameCharacters.ItemHeight = 30;
-            this.GameCharacters.ItemsAppearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(25)))), ((int)(((byte)(28)))));
-            this.GameCharacters.ItemsAppearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(170)))), ((int)(((byte)(179)))));
-            this.GameCharacters.ItemsAppearance.Parent = this.GameCharacters;
-            this.GameCharacters.ItemsAppearance.SelectedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(41)))), ((int)(((byte)(45)))));
-            this.GameCharacters.Location = new System.Drawing.Point(35, 224);
-            this.GameCharacters.Name = "GameCharacters";
-            this.GameCharacters.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(73)))), ((int)(((byte)(176)))));
-            this.GameCharacters.ShadowDecoration.Parent = this.GameCharacters;
-            this.GameCharacters.Size = new System.Drawing.Size(283, 36);
-            this.GameCharacters.TabIndex = 88;
-            this.GameCharacters.SelectedIndexChanged += new System.EventHandler(this.GameCharacters_SelectedIndexChanged);
-            this.GameCharacters.Click += new System.EventHandler(this.GameCharacters_Click);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Roboto Medium", 8F);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(122)))), ((int)(((byte)(124)))));
-            this.label1.Location = new System.Drawing.Point(60, 385);
+            this.label1.Location = new System.Drawing.Point(60, 262);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(184, 17);
             this.label1.TabIndex = 87;
             this.label1.Text = "Force Login Main Character";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // LoginCharCheckBox
+            // ForceChaLoginBox
             // 
-            this.LoginCharCheckBox.Animated = true;
-            this.LoginCharCheckBox.BackColor = System.Drawing.Color.Transparent;
-            this.LoginCharCheckBox.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(9)))), ((int)(((byte)(10)))));
-            this.LoginCharCheckBox.CheckedState.BorderRadius = 2;
-            this.LoginCharCheckBox.CheckedState.BorderThickness = 2;
-            this.LoginCharCheckBox.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(214)))), ((int)(((byte)(223)))), ((int)(((byte)(242)))));
-            this.LoginCharCheckBox.CheckedState.Parent = this.LoginCharCheckBox;
-            this.LoginCharCheckBox.CheckMarkColor = System.Drawing.Color.Transparent;
-            this.LoginCharCheckBox.Location = new System.Drawing.Point(34, 383);
-            this.LoginCharCheckBox.Name = "LoginCharCheckBox";
-            this.LoginCharCheckBox.ShadowDecoration.BorderRadius = 0;
-            this.LoginCharCheckBox.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(73)))), ((int)(((byte)(176)))));
-            this.LoginCharCheckBox.ShadowDecoration.Parent = this.LoginCharCheckBox;
-            this.LoginCharCheckBox.Size = new System.Drawing.Size(20, 20);
-            this.LoginCharCheckBox.TabIndex = 86;
-            this.LoginCharCheckBox.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(65)))), ((int)(((byte)(66)))));
-            this.LoginCharCheckBox.UncheckedState.BorderRadius = 2;
-            this.LoginCharCheckBox.UncheckedState.BorderThickness = 2;
-            this.LoginCharCheckBox.UncheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(4)))), ((int)(((byte)(5)))));
-            this.LoginCharCheckBox.UncheckedState.Parent = this.LoginCharCheckBox;
-            this.LoginCharCheckBox.UseTransparentBackground = true;
-            this.LoginCharCheckBox.CheckedChanged += new System.EventHandler(this.guna2CustomCheckBox2_CheckedChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.Transparent;
-            this.label6.Font = new System.Drawing.Font("Roboto Medium", 8F);
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(122)))), ((int)(((byte)(124)))));
-            this.label6.Location = new System.Drawing.Point(60, 356);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(159, 17);
-            this.label6.TabIndex = 85;
-            this.label6.Text = "Encrypt Account Details";
-            // 
-            // EncryptCheckBox
-            // 
-            this.EncryptCheckBox.Animated = true;
-            this.EncryptCheckBox.BackColor = System.Drawing.Color.Transparent;
-            this.EncryptCheckBox.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(9)))), ((int)(((byte)(10)))));
-            this.EncryptCheckBox.CheckedState.BorderRadius = 2;
-            this.EncryptCheckBox.CheckedState.BorderThickness = 2;
-            this.EncryptCheckBox.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(214)))), ((int)(((byte)(223)))), ((int)(((byte)(242)))));
-            this.EncryptCheckBox.CheckedState.Parent = this.EncryptCheckBox;
-            this.EncryptCheckBox.CheckMarkColor = System.Drawing.Color.Transparent;
-            this.EncryptCheckBox.Location = new System.Drawing.Point(34, 354);
-            this.EncryptCheckBox.Name = "EncryptCheckBox";
-            this.EncryptCheckBox.ShadowDecoration.BorderRadius = 0;
-            this.EncryptCheckBox.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(73)))), ((int)(((byte)(176)))));
-            this.EncryptCheckBox.ShadowDecoration.Parent = this.EncryptCheckBox;
-            this.EncryptCheckBox.Size = new System.Drawing.Size(20, 20);
-            this.EncryptCheckBox.TabIndex = 84;
-            this.EncryptCheckBox.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(65)))), ((int)(((byte)(66)))));
-            this.EncryptCheckBox.UncheckedState.BorderRadius = 2;
-            this.EncryptCheckBox.UncheckedState.BorderThickness = 2;
-            this.EncryptCheckBox.UncheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(4)))), ((int)(((byte)(5)))));
-            this.EncryptCheckBox.UncheckedState.Parent = this.EncryptCheckBox;
-            this.EncryptCheckBox.UseTransparentBackground = true;
-            this.EncryptCheckBox.CheckedChanged += new System.EventHandler(this.guna2CustomCheckBox2_CheckedChanged);
+            this.ForceChaLoginBox.Animated = true;
+            this.ForceChaLoginBox.BackColor = System.Drawing.Color.Transparent;
+            this.ForceChaLoginBox.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(9)))), ((int)(((byte)(10)))));
+            this.ForceChaLoginBox.CheckedState.BorderRadius = 2;
+            this.ForceChaLoginBox.CheckedState.BorderThickness = 2;
+            this.ForceChaLoginBox.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(214)))), ((int)(((byte)(223)))), ((int)(((byte)(242)))));
+            this.ForceChaLoginBox.CheckedState.Parent = this.ForceChaLoginBox;
+            this.ForceChaLoginBox.CheckMarkColor = System.Drawing.Color.Transparent;
+            this.ForceChaLoginBox.Location = new System.Drawing.Point(34, 260);
+            this.ForceChaLoginBox.Name = "ForceChaLoginBox";
+            this.ForceChaLoginBox.ShadowDecoration.BorderRadius = 0;
+            this.ForceChaLoginBox.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(73)))), ((int)(((byte)(176)))));
+            this.ForceChaLoginBox.ShadowDecoration.Parent = this.ForceChaLoginBox;
+            this.ForceChaLoginBox.Size = new System.Drawing.Size(20, 20);
+            this.ForceChaLoginBox.TabIndex = 86;
+            this.ForceChaLoginBox.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(65)))), ((int)(((byte)(66)))));
+            this.ForceChaLoginBox.UncheckedState.BorderRadius = 2;
+            this.ForceChaLoginBox.UncheckedState.BorderThickness = 2;
+            this.ForceChaLoginBox.UncheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(4)))), ((int)(((byte)(5)))));
+            this.ForceChaLoginBox.UncheckedState.Parent = this.ForceChaLoginBox;
+            this.ForceChaLoginBox.UseTransparentBackground = true;
+            this.ForceChaLoginBox.CheckedChanged += new System.EventHandler(this.guna2CustomCheckBox2_CheckedChanged);
             // 
             // guna2PictureBox1
             // 
             this.guna2PictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.guna2PictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("guna2PictureBox1.Image")));
-            this.guna2PictureBox1.Location = new System.Drawing.Point(35, 305);
+            this.guna2PictureBox1.Location = new System.Drawing.Point(35, 214);
             this.guna2PictureBox1.Name = "guna2PictureBox1";
             this.guna2PictureBox1.ShadowDecoration.Parent = this.guna2PictureBox1;
             this.guna2PictureBox1.Size = new System.Drawing.Size(283, 25);
@@ -523,7 +395,6 @@
             this.GameAccounts.Size = new System.Drawing.Size(283, 36);
             this.GameAccounts.TabIndex = 10;
             this.GameAccounts.SelectedIndexChanged += new System.EventHandler(this.GameAccounts_SelectedIndexChanged);
-            this.GameAccounts.Click += new System.EventHandler(this.GameAccounts_Click);
             // 
             // minimiseButton
             // 
@@ -583,23 +454,18 @@
         private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox2;
         private System.Windows.Forms.Label label29;
         private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox1;
-        private System.Windows.Forms.Label label2;
-        private Guna.UI2.WinForms.Guna2ComboBox GameCharacters;
         private System.Windows.Forms.Label label1;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox LoginCharCheckBox;
-        private System.Windows.Forms.Label label6;
-        private Guna.UI2.WinForms.Guna2CustomCheckBox EncryptCheckBox;
+        private Guna.UI2.WinForms.Guna2CustomCheckBox ForceChaLoginBox;
         private Guna.UI2.WinForms.Guna2GroupBox GroupBox;
         private Guna.UI2.WinForms.Guna2Panel CreateCharacterPanel;
-        private Guna.UI2.WinForms.Guna2GradientButton AddCharacterBtn;
-        private Guna.UI2.WinForms.Guna2GradientButton DeleteCharacterBtn;
         private System.Windows.Forms.Label chalabel;
-        private Guna.UI2.WinForms.Guna2TextBox CharacterNameTextBox;
-        private Guna.UI2.WinForms.Guna2GradientButton AddAccountBtn;
+        private Guna.UI2.WinForms.Guna2GradientButton ApplyButton;
         private Guna.UI2.WinForms.Guna2GradientButton DeleteAccountBtn;
         private System.Windows.Forms.Label acclabel;
         private Guna.UI2.WinForms.Guna2TextBox AccountUsernameTextBox;
         private System.Windows.Forms.Label passlabel;
         private Guna.UI2.WinForms.Guna2TextBox AccountPasswordTextBox;
+        private System.Windows.Forms.Label label3;
+        private Guna.UI2.WinForms.Guna2TextBox DefaultCharacterTextbox;
     }
 }

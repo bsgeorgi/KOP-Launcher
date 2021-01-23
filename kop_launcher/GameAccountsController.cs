@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Windows.Forms;
 using kop_launcher.Models;
 
 namespace kop_launcher
@@ -11,36 +14,40 @@ namespace kop_launcher
         /*
          * Login.dat file structure:
          * line 1: account count number
-         * line 2: account 1 username,password,character(nullable)
-         * line 2: account 2 username,password,character(nullable)
-         * line n: account n username,password,character(nullable)
+         * line 2: force cha login (0/ 1),account 1 username,password,character(nullable)
+         * line 2: force cha login (0/ 1),account 2 username,password,character(nullable)
+         * line n: force cha login (0/ 1),account n username,password,character(nullable)
          */
 
         private readonly string _folderPath;
         private readonly string _filePath;
+        private readonly string _key;
         private readonly List<string> _fileContents;
-        public GameAccountsController(string folderPath = "user", string filePath = "login.dat")
+
+        public GameAccountsController ( string key, string folderPath = "user", string filePath = "login.txt" )
         {
             _folderPath = folderPath;
             _filePath = filePath;
-            _fileContents = GetFileLines().ToList();
+            _key = key;
+            _fileContents = GetFileLines ( ) == null ? null : GetFileLines ( ).ToList ( );
         }
+
         private string CheckFileReachable()
         {
             try
             {
-                var dir = Path.Combine(Globals.RootDirectory, _folderPath);
-                var pathToFile = Path.Combine(dir, _filePath);
+                var dir = Path.Combine ( Globals.RootDirectory, _folderPath );
+                var pathToFile = Path.Combine ( dir, _filePath );
 
-                if (Directory.Exists(dir))
+                if ( Directory.Exists ( dir ) )
                 {
-                    if (!File.Exists(pathToFile))
-                        File.Create(pathToFile).Dispose();
+                    if ( !File.Exists ( pathToFile ) )
+                        File.Create ( pathToFile ).Dispose ( );
                 }
                 else
                 {
-                    Directory.CreateDirectory(dir);
-                    File.Create(pathToFile).Dispose();
+                    Directory.CreateDirectory ( dir );
+                    File.Create ( pathToFile ).Dispose ( );
                 }
 
                 return pathToFile;
@@ -55,8 +62,11 @@ namespace kop_launcher
         {
             try
             {
-                var pathToFile = CheckFileReachable();
-                return Convert.ToInt16(File.ReadLines(pathToFile).FirstOrDefault());
+                var pathToFile = CheckFileReachable ( );
+                var firstLine = File.ReadLines ( pathToFile ).FirstOrDefault ( );
+                var num = new StringCipher ( ).DecryptString ( firstLine, _key );
+
+                return Convert.ToInt16 ( num );
             }
             catch
             {
@@ -68,7 +78,15 @@ namespace kop_launcher
         {
             try
             {
-                return File.ReadLines(CheckFileReachable()).Where(line => !string.IsNullOrEmpty(line));
+                if ( new FileInfo ( CheckFileReachable ( ) ).Length == 0 ) return null;
+
+                var encryptedText = File.ReadAllText ( CheckFileReachable ( ) );
+
+                var text = new StringCipher ( ).DecryptString ( encryptedText, _key );
+
+                var lines = text.Split ( new[] {Environment.NewLine}, StringSplitOptions.None );
+
+                return lines.Where ( line => !string.IsNullOrEmpty ( line ) );
             }
             catch
             {
@@ -80,21 +98,22 @@ namespace kop_launcher
         {
             try
             {
-                var list = new List<GameAccount>();
+                var list = new List<GameAccount> ( );
                 var lines = _fileContents;
 
-                foreach (var line in lines.Skip(1))
+                foreach (var line in lines.Skip ( 1 ))
                 {
-                    var contents = line.Split(',');
-                    var account = new GameAccount()
+                    var contents = line.Split ( ',' );
+                    var account = new GameAccount ( )
                     {
-                        Character = contents.Length > 2 ? contents[2] : null,
-                        Password = contents[1],
-                        Username = contents[0]
+                        Character = contents.Length > 3 ? contents[3] : null,
+                        Password = contents[2],
+                        Username = contents[1],
+                        ForceCharacterLogin = char.Parse ( contents[0] )
                     };
 
-                    if (!list.Contains(account))
-                        list.Add(account);
+                    if ( !list.Contains ( account ) )
+                        list.Add ( account );
                 }
 
                 return list;
@@ -105,29 +124,128 @@ namespace kop_launcher
             }
         }
 
-        private bool SaveToFile(int accountTotal, List<GameAccount> gameAccounts)
+        private bool SaveToFile ( int accountTotal, IReadOnlyCollection<GameAccount> gameAccounts, bool encrypt )
         {
             try
             {
-                var path = CheckFileReachable();
-                using (var sw = new StreamWriter(path, false))
-                {
-                    if (accountTotal <= 0 || gameAccounts == null)
-                    {
-                        sw.WriteLine(Environment.NewLine);
-                    }
-                    else
-                    {
-                        sw.WriteLine(accountTotal);
-                        foreach (var account in gameAccounts)
-                        {
-                            sw.WriteLine(account.Character == null
-                                ? $"{account.Username},{account.Password}"
-                                : $"{account.Username},{account.Password},{account.Character}");
-                        }
+                var path = CheckFileReachable ( );
 
-                        sw.WriteLine(Environment.NewLine);
-                    }
+                if ( accountTotal <= 0 || gameAccounts == null ) return false;
+
+                var cipher = new StringCipher ( );
+                var sb = new StringBuilder ( );
+
+                sb.AppendLine ( accountTotal.ToString ( ) );
+
+                foreach (var account in gameAccounts)
+                {
+                    var withCharacter =
+                        $"{account.ForceCharacterLogin},{account.Username},{account.Password},{account.Character}";
+                    var withoutCharacter = $"{account.ForceCharacterLogin},{account.Username},{account.Password}";
+
+                    sb.AppendLine ( account.Character == null ? withoutCharacter : withCharacter );
+                }
+
+                using (var sw = new StreamWriter ( path, false ))
+                    sw.Write ( cipher.EncryptString ( sb.ToString ( ), _key ) );
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show ( e.Message );
+                return false;
+            }
+        }
+
+        public bool CheckAccountExists ( string accountUsername )
+        {
+            var gameAccounts = GetFileData ( );
+
+            return gameAccounts != null && gameAccounts.Any ( act => act.Username == accountUsername );
+        }
+
+        public bool AppendAccount ( GameAccount account, bool encrypt )
+        {
+            try
+            {
+                var nextAccount = GetTotalAccounts ( ) + 1;
+
+                var gameAccounts = GetFileData ( );
+
+                if ( gameAccounts != null && gameAccounts.Any ( act => act.Username == account.Username ) )
+                {
+                    gameAccounts.RemoveAll ( act => act.Username == account.Username );
+                }
+
+                if ( gameAccounts == null || gameAccounts.Count == 0 )
+                {
+                    nextAccount = 1;
+                    gameAccounts = new List<GameAccount> ( );
+                }
+
+                gameAccounts?.Add ( account );
+
+                return SaveToFile ( nextAccount, gameAccounts, encrypt );
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteAccount ( string accountUsername, bool encrypt )
+        {
+            try
+            {
+                var nextAccount = GetTotalAccounts ( ) - 1;
+
+                var gameAccounts = GetFileData ( );
+
+                gameAccounts.RemoveAll ( act => act.Username == accountUsername );
+
+                return SaveToFile ( nextAccount, gameAccounts, encrypt );
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+
+    public class StringCipher
+    {
+        public string CheckRetrieveKey ( string fileName = "account.key" )
+        {
+            if ( fileName == null ) throw new ArgumentNullException ( nameof(fileName) );
+
+            try
+            {
+                var dir = Path.Combine ( Globals.RootDirectory, "user" );
+                var pathToFile = Path.Combine ( dir, fileName );
+
+                if ( !Directory.Exists ( dir ) ) return null;
+                return File.Exists ( pathToFile ) ? File.ReadAllText ( pathToFile ) : null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public bool GenerateKey ( string key, string fileName = "account.key" )
+        {
+            try
+            {
+                var dir = Path.Combine ( Globals.RootDirectory, "user" );
+                var pathToFile = Path.Combine ( dir, fileName );
+
+                if ( File.Exists ( pathToFile ) ) return false;
+
+                using (var sw = new StreamWriter ( pathToFile, false, Encoding.UTF8 ))
+                {
+                    var pass = new StringCipher ( ).EncryptString ( "kingofpirates.net", key );
+                    sw.Write ( pass.Substring ( 0, 32 ) );
                 }
 
                 return true;
@@ -138,105 +256,96 @@ namespace kop_launcher
             }
         }
 
-        public bool AppendAccount(GameAccount account)
+        public string EncryptString ( string plainText, string password )
         {
-            try
+            if ( plainText == null )
+                return null;
+
+            var bytesToBeEncrypted = Encoding.UTF8.GetBytes ( plainText );
+            var passwordBytes = Encoding.UTF8.GetBytes ( password );
+
+            passwordBytes = SHA256.Create ( ).ComputeHash ( passwordBytes );
+
+            var bytesEncrypted = Encrypt ( bytesToBeEncrypted, passwordBytes );
+
+            return Convert.ToBase64String ( bytesEncrypted );
+        }
+
+        public string DecryptString ( string encryptedText, string password )
+        {
+            if ( encryptedText == null ) return null;
+
+            var bytesToBeDecrypted = Convert.FromBase64String ( encryptedText );
+            var passwordBytes = Encoding.UTF8.GetBytes ( password );
+
+            passwordBytes = SHA256.Create ( ).ComputeHash ( passwordBytes );
+
+            var bytesDecrypted = Decrypt ( bytesToBeDecrypted, passwordBytes );
+
+            return Encoding.UTF8.GetString ( bytesDecrypted );
+        }
+
+        private static byte[] Encrypt ( byte[] bytesToBeEncrypted, byte[] passwordBytes )
+        {
+            byte[] encryptedBytes;
+
+            var saltBytes = new byte[] {1, 2, 3, 4, 5, 6, 7, 8};
+
+            using (var ms = new MemoryStream ( ))
             {
-                var nextAccount = GetTotalAccounts() + 1;
-
-                var gameAccounts = GetFileData();
-
-                if (gameAccounts == null || gameAccounts.Count == 0)
-                    nextAccount = 1;
-
-                if (gameAccounts != null && gameAccounts.Any(act => act.Username == account.Username))
+                using (var aes = new RijndaelManaged ( ))
                 {
-                    Utils.ShowMessageA("You have already added this account!");
-                    return false;
+                    var key = new Rfc2898DeriveBytes ( passwordBytes, saltBytes, 1000 );
+
+                    aes.KeySize = 256;
+                    aes.BlockSize = 128;
+                    aes.Key = key.GetBytes ( aes.KeySize / 8 );
+                    aes.IV = key.GetBytes ( aes.BlockSize / 8 );
+
+                    aes.Mode = CipherMode.CBC;
+
+                    using (var cs = new CryptoStream ( ms, aes.CreateEncryptor ( ), CryptoStreamMode.Write ))
+                    {
+                        cs.Write ( bytesToBeEncrypted, 0, bytesToBeEncrypted.Length );
+                        cs.Close ( );
+                    }
+
+                    encryptedBytes = ms.ToArray ( );
                 }
-
-                gameAccounts?.Add(account);
-
-                return SaveToFile(nextAccount, gameAccounts);
             }
-            catch
-            {
-                return false;
-            }
+
+            return encryptedBytes;
         }
 
-        public bool AppendCharacter(string accountUsername, string characterName)
+        private static byte[] Decrypt ( byte[] bytesToBeDecrypted, byte[] passwordBytes )
         {
-            try
+            byte[] decryptedBytes;
+
+            var saltBytes = new byte[] {1, 2, 3, 4, 5, 6, 7, 8};
+
+            using (var ms = new MemoryStream ( ))
             {
-                var nextAccount = GetTotalAccounts();
+                using (var aes = new RijndaelManaged ( ))
+                {
+                    var key = new Rfc2898DeriveBytes ( passwordBytes, saltBytes, 1000 );
 
-                var gameAccounts = GetFileData();
+                    aes.KeySize = 256;
+                    aes.BlockSize = 128;
+                    aes.Key = key.GetBytes ( aes.KeySize / 8 );
+                    aes.IV = key.GetBytes ( aes.BlockSize / 8 );
+                    aes.Mode = CipherMode.CBC;
 
-                foreach (var act in gameAccounts.Where(x => x.Username == accountUsername))
-                    act.Character = characterName;
+                    using (var cs = new CryptoStream ( ms, aes.CreateDecryptor ( ), CryptoStreamMode.Write ))
+                    {
+                        cs.Write ( bytesToBeDecrypted, 0, bytesToBeDecrypted.Length );
+                        cs.Close ( );
+                    }
 
-                return SaveToFile(nextAccount, gameAccounts);
+                    decryptedBytes = ms.ToArray ( );
+                }
             }
-            catch
-            {
-                return false;
-            }
-        }
-        public bool DeleteAccount(string accountUsername)
-        {
-            try
-            {
-                var nextAccount = GetTotalAccounts() - 1;
 
-                var gameAccounts = GetFileData();
-
-                gameAccounts.RemoveAll(act => act.Username == accountUsername);
-
-                return SaveToFile(nextAccount, gameAccounts);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public bool DeleteCharacter(string accountUsername, string characterName)
-        {
-            try
-            {
-                var nextAccount = GetTotalAccounts();
-
-                var gameAccounts = GetFileData();
-
-                foreach (var act in gameAccounts.Where(x => x.Username == accountUsername))
-                    act.Character = null;
-
-                return SaveToFile(nextAccount, gameAccounts);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public bool UpdatePassword(string accountUsername, string newPassword)
-        {
-            try
-            {
-                var nextAccount = GetTotalAccounts();
-
-                var gameAccounts = GetFileData();
-
-                foreach (var act in gameAccounts.Where(x => x.Username == accountUsername))
-                    act.Password = newPassword;
-
-                return SaveToFile(nextAccount, gameAccounts);
-            }
-            catch
-            {
-                return false;
-            }
+            return decryptedBytes;
         }
     }
 }

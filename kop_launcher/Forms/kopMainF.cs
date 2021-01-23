@@ -28,7 +28,15 @@ namespace kop_launcher
 
 		public KopmainF ( )
 		{
-			Globals.UiDispatcher = Dispatcher.CurrentDispatcher;
+            try
+            {
+
+                Globals.UiDispatcher = Dispatcher.CurrentDispatcher;
+			}
+            catch (Exception e)
+            {
+                MessageBox.Show((e.Message));
+            }
 			InitializeComponent ( );
 			TrayMenuContext ( );
 

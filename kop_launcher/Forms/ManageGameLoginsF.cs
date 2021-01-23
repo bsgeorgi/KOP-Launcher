@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Guna.UI2.WinForms;
@@ -10,268 +9,183 @@ namespace kop_launcher.Forms
     public partial class ManageGameLoginsF : Form
     {
         private const string SelectAccount   = "Select Account";
-        private const string SelectCharacter = "Select Character";
+        private const string SelectCharacter = "Enter Character Name...";
         private GameAccountsController _gameAccountsController;
         private List<GameAccount> _gameAccounts;
         public ManageGameLoginsF()
         {
+            var cipher = new StringCipher();
+
+            if (cipher.CheckRetrieveKey() == null)
+            {
+                if (!cipher.GenerateKey(Utils.ShowSecurePasswordF()))
+                {
+                    Utils.ShowMessageA("An error occured while creating a security code.");
+                    Close();
+                }
+            }
+
+            Globals.SecurityCode = cipher.CheckRetrieveKey();
+
             InitializeComponent();
 
-            GameCharacters.Items.Add(SelectCharacter);
-            GameCharacters.SelectedItem = SelectCharacter;
+            DefaultCharacterTextbox.PlaceholderText = SelectCharacter;
 
-            _gameAccountsController = new GameAccountsController();
+            _gameAccountsController = new GameAccountsController( Globals.SecurityCode );
+
             _gameAccounts = _gameAccountsController.GetFileData();
+
             Globals.GameAccounts = _gameAccounts;
-            AddAccounts(_gameAccounts);
+            PopulateGameAccounts(_gameAccounts);
         }
 
-        void RefreshAll()
+        private void RefreshForm()
         {
             Controls.Clear();
             InitializeComponent();
 
-            GameAccounts.Items.Add(SelectAccount);
+            GameAccounts.Items.Add(SelectAccount );
             GameAccounts.SelectedItem = SelectAccount;
-            GameCharacters.Items.Add(SelectCharacter);
-            GameCharacters.SelectedItem = SelectCharacter;
 
-            _gameAccountsController = new GameAccountsController();
-            _gameAccounts = _gameAccountsController.GetFileData();
-            AddAccounts(_gameAccounts);
+            DefaultCharacterTextbox.PlaceholderText = SelectCharacter;
+
+            _gameAccountsController = new GameAccountsController ( Globals.SecurityCode );
+            _gameAccounts = _gameAccountsController.GetFileData ( );
+
+            Globals.GameAccounts = _gameAccounts;
+
+            PopulateGameAccounts( _gameAccounts );
         }
 
-        private void guna2CustomCheckBox2_CheckedChanged(object sender, System.EventArgs e)
+        private void guna2CustomCheckBox2_CheckedChanged ( object sender, System.EventArgs e )
         {
-            if (!(sender is Guna2CustomCheckBox ck))
-                return;
+            if (! ( sender is Guna2CustomCheckBox ck ) ) return;
 
             ck.ShadowDecoration.Enabled = ck.Checked;
 
-            if ( ck.Name == "LoginCharCheckBox" && ck.Enabled )
+            if ( ck.Name == "LoginCharCheckBox" )
             {
-                GameCharacters.Enabled = ck.Enabled;
+                DefaultCharacterTextbox.Enabled = ck.Enabled;
             }
         }
 
-        private void AddAccounts(IEnumerable<GameAccount> accounts)
+        private void PopulateGameAccounts ( IEnumerable<GameAccount> accounts )
         {
-            GameAccounts.Items.Clear();
+            GameAccounts.Items.Clear ( );
             GameAccounts.Items.Add(SelectAccount);
             GameAccounts.SelectedItem = SelectAccount;
-            foreach (var account in accounts.Where(account => !GameAccounts.Items.Contains(account)))
+
+            if ( accounts == null ) return;
+
+            foreach ( var account in accounts.Where ( account => !GameAccounts.Items.Contains ( account ) ) )
             {
-                GameAccounts.Items.Add(account.Username);
+                GameAccounts.Items.Add ( account.Username );
             }
         }
 
-        private void SetPanelVisible(short panelType, bool visible)
+        private void AddUpdateGameAccount ( )
         {
-            if (panelType == 1)
+            if ( !string.IsNullOrEmpty ( AccountUsernameTextBox.Text ) && !string.IsNullOrEmpty ( AccountPasswordTextBox.Text ) )
             {
-                acclabel.Visible                 = visible;
-                AccountUsernameTextBox.Visible   = visible;
-                passlabel.Visible                = visible;
-                AccountPasswordTextBox.Visible   = visible;
-                AddAccountBtn.Visible            = visible;
-                DeleteAccountBtn.Visible         = visible;
+                var character  = DefaultCharacterTextbox.Text;
+                var isCharacterEmpty = string.IsNullOrEmpty ( character );
 
-                chalabel.Visible                 = !visible;
-                CharacterNameTextBox.Visible     = !visible;
+                var characterUpdateRequired = ForceChaLoginBox.Checked && !isCharacterEmpty;
 
-                AddCharacterBtn.Visible          = !visible;
-                DeleteCharacterBtn.Visible       = !visible;
-            }
-            else
-            {
-                acclabel.Visible                 = !visible;
-                AccountUsernameTextBox.Visible   = !visible;
-                passlabel.Visible                = !visible;
-                AccountPasswordTextBox.Visible   = !visible;
-                AddAccountBtn.Visible            = !visible;
-                DeleteAccountBtn.Visible         = !visible;
-
-                chalabel.Visible                 = visible;
-                CharacterNameTextBox.Visible     = visible;
-
-                AddCharacterBtn.Visible          = visible;
-                DeleteCharacterBtn.Visible       = visible;
-            }
-        }
-
-        void RefreshData()
-        {
-            _gameAccounts = _gameAccountsController.GetFileData();
-            Globals.GameAccounts = _gameAccounts;
-            AddAccounts(_gameAccounts);
-        }
-
-        private void GameCharacters_Click(object sender, System.EventArgs e)
-        {
-            SetPanelVisible(1, false);
-            SetPanelVisible(2, true);
-        }
-
-        private void GameAccounts_Click(object sender, System.EventArgs e)
-        {
-            SetPanelVisible(1, true);
-            SetPanelVisible(2, false);
-        }
-
-        private void AddAccount()
-        {
-            if (!string.IsNullOrEmpty(AccountUsernameTextBox.Text) &&
-                !string.IsNullOrEmpty(AccountPasswordTextBox.Text))
-            {
-                var gameAccount = new GameAccount()
+                var gameAccount = new GameAccount
                 {
-                    Password = AccountPasswordTextBox.Text,
-                    Username = AccountUsernameTextBox.Text
+                    Password            = AccountPasswordTextBox.Text,
+                    Username            = AccountUsernameTextBox.Text,
+                    ForceCharacterLogin = characterUpdateRequired ? '1' : '0',
+                    Character           = characterUpdateRequired ? character : null
                 };
 
-                _gameAccountsController = new GameAccountsController();
-                if (_gameAccountsController.AppendAccount(gameAccount))
+                if ( _gameAccountsController.AppendAccount ( gameAccount, true ) )
                 {
-                    GameAccounts.Items.Add(AccountUsernameTextBox.Text);
+                    GameAccounts.Items.Add ( gameAccount.Username );
+                    GameAccounts.SelectedItem = gameAccount.Username;
 
-                    GameAccounts.SelectedItem = AccountUsernameTextBox.Text;
+                    Utils.ShowMessageA( _gameAccountsController.CheckAccountExists ( gameAccount.Username )
+                        ? "Account has been successfully updated."
+                        : "Account has been successfully saved." );
 
-                    Utils.ShowMessageA("Account has been successfully saved.");
-
-                    RefreshAll();
+                    RefreshForm ( );
                 }
             }
             else
-            {
-                Utils.ShowMessageA("Please fill out all the required fields.");
-            }
+                Utils.ShowMessageA ( "Please fill out all the required fields." );
         }
 
-        private void AddCharacter()
+        private void AccountUsernameTextBox_KeyDown ( object sender, KeyEventArgs e )
         {
-            string character = null;
-            if (GameCharacters.Items.Count > 1)
-                character = GameCharacters.Items[1].ToString();
+            if ( e.KeyData != Keys.Enter ) return;
 
-            if (!string.IsNullOrEmpty(CharacterNameTextBox.Text) && GameAccounts.SelectedIndex > 0)
-            {
-                _gameAccountsController = new GameAccountsController();
-                var account = GameAccounts.SelectedItem.ToString();
-
-                if (_gameAccountsController.AppendCharacter(account, CharacterNameTextBox.Text))
-                {
-                    GameCharacters.Items.Add(CharacterNameTextBox.Text);
-
-                    if (!string.IsNullOrEmpty(character))
-                        GameCharacters.Items.Remove(character);
-
-                    GameCharacters.SelectedItem = CharacterNameTextBox.Text;
-
-                    CharacterNameTextBox.Clear();
-
-                    Utils.ShowMessageA("Character has been successfully saved.");
-                }
-            }
-            else
-            {
-                Utils.ShowMessageA("Please fill out all the required fields.");
-            }
-        }
-
-        private void AddAccountBtn_Click(object sender, System.EventArgs e)
-        {
-            AddAccount();
-        }
-
-        private void AccountUsernameTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyData == Keys.Enter)
-            {
-                AccountPasswordTextBox.Select();
-                AccountPasswordTextBox.Focus();
-            }
+            AccountPasswordTextBox.Select ( );
+            AccountPasswordTextBox.Focus ( );
         }
 
         private void AccountPasswordTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyData != Keys.Enter) return;
-            AddAccount();
+            if ( e.KeyData != Keys.Enter ) return;
+
+            DefaultCharacterTextbox.Focus ( );
+            DefaultCharacterTextbox.Select ( );
         }
 
-        private void GameAccounts_SelectedIndexChanged(object sender, System.EventArgs e)
+        private void GameAccounts_SelectedIndexChanged ( object sender, System.EventArgs e )
         {
-            GameCharacters.Enabled = LoginCharCheckBox.Checked && GameAccounts.SelectedIndex > 0;
-            DeleteAccountBtn.Enabled = GameAccounts.SelectedIndex > 0;
+            DeleteAccountBtn.Enabled = GameAccounts.SelectedIndex >= 1;
 
-            if (string.IsNullOrEmpty(GameAccounts.SelectedItem.ToString()) || _gameAccounts == null || _gameAccounts.Count == 0) return;
+            if (_gameAccounts == null) return;
 
-            var accountInfo = _gameAccounts.Where(account => account.Username == GameAccounts.SelectedItem.ToString());
-            var gameAccounts = accountInfo.ToList();
+            var accountInfo = _gameAccounts.Where ( account => account.Username == GameAccounts.SelectedItem.ToString( ) );
+            var gameAccounts = accountInfo.ToList ( );
 
-            foreach (var account in gameAccounts)
+            foreach ( var account in gameAccounts )
             {
                 AccountUsernameTextBox.Text = account.Username;
                 AccountPasswordTextBox.Text = account.Password;
+                ForceChaLoginBox.Checked    = account.ForceCharacterLogin == '1';
+
+                if ( account.Character == null ) continue;
+
+                DefaultCharacterTextbox.Text = account.Character;
             }
-
-            foreach (var account in gameAccounts.Where(act => act.Character != null))
-            {
-                if (!GameCharacters.Items.Contains(account.Character))
-                    GameCharacters.Items.Add(account.Character);
-            }
-        }
-
-        private void GameCharacters_SelectedIndexChanged(object sender, System.EventArgs e)
-        {
-            DeleteCharacterBtn.Enabled = LoginCharCheckBox.Checked && GameCharacters.SelectedIndex > 0;
-
-            if (GameCharacters.SelectedIndex > 0)
-                CharacterNameTextBox.Text = GameCharacters.SelectedItem.ToString();
-        }
-
-        private void DeleteCharacterBtn_Click(object sender, System.EventArgs e)
-        {
-            var character = GameCharacters.SelectedItem.ToString();
-            var account = GameAccounts.SelectedItem.ToString();
-
-            if (_gameAccountsController.DeleteCharacter(account, character))
-            {
-                Utils.ShowMessageA("Character was successfully removed from this account.");
-                GameCharacters.Items.Remove(character);
-                GameCharacters.Refresh();
-                DeleteCharacterBtn.Enabled = false;
-            }
-            else
-                Utils.ShowMessageA("An error occured while deleting character from this.");
-
         }
 
         private void DeleteAccountBtn_Click(object sender, System.EventArgs e)
         {
-            var account = GameAccounts.SelectedItem.ToString();
+            var account = GameAccounts.SelectedItem.ToString ( );
 
-            if (_gameAccountsController.DeleteAccount(account))
+            if ( _gameAccountsController.DeleteAccount( account, true ) )
             {
-                Utils.ShowMessageA("Account was successfully removed from game launcher.");
-                GameAccounts.Items.Remove(account);
-                GameAccounts.SelectedItem = GameAccounts.Items[0];
-                DeleteAccountBtn.Enabled = false;
+                Utils.ShowMessageA ( "Account was successfully removed from game launcher." );
 
-                RefreshAll();
+                RefreshForm ( );
             }
             else
-                Utils.ShowMessageA("An error occured while deleting this account.");
+                Utils.ShowMessageA ( "An error occured while deleting this account." );
         }
 
-        private void AddCharacterBtn_Click(object sender, System.EventArgs e)
+        private void label1_Click ( object sender, System.EventArgs e )
         {
-            AddCharacter();
+            ForceChaLoginBox.Checked = !ForceChaLoginBox.Checked;
         }
 
-        private void CharacterNameTextBox_KeyDown(object sender, KeyEventArgs e)
+        private void DefaultCharacterTextbox_KeyDown ( object sender, KeyEventArgs e )
         {
-            if (e.KeyData != Keys.Enter) return;
-            AddCharacter();
+            if ( e.KeyData != Keys.Enter ) return;
+            AddUpdateGameAccount ( );
+        }
+
+        private void DefaultCharacterTextbox_TextChanged ( object sender, System.EventArgs e )
+        { 
+            ForceChaLoginBox.Checked = DefaultCharacterTextbox.Text.Length > 1;
+        }
+
+        private void ApplyButtonBtn_Click ( object sender, System.EventArgs e )
+        {
+            AddUpdateGameAccount ( );
         }
     }
 }

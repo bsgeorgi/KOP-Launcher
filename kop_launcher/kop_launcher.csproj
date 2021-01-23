@@ -130,6 +130,12 @@
     <Compile Include="Discord\HookRequest\DiscordHook.cs" />
     <Compile Include="Discord\HookRequest\DiscordHookBuilder.cs" />
     <Compile Include="Discord\Utils\DiscordConverter.cs" />
+    <Compile Include="Forms\CreateAccountKeyF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CreateAccountKeyF.Designer.cs">
+      <DependentUpon>CreateAccountKeyF.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ManageGameLoginsF.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,6 +195,9 @@
     </Compile>
     <Compile Include="SecurePasswordHasher.cs" />
     <Compile Include="Utils.cs" />
+    <EmbeddedResource Include="Forms\CreateAccountKeyF.resx">
+      <DependentUpon>CreateAccountKeyF.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\kopMainF.resx">
       <DependentUpon>kopMainF.cs</DependentUpon>
     </EmbeddedResource>
