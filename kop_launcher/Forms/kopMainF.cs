@@ -90,18 +90,31 @@ namespace kop_launcher
             var count = gameAccounts.Items.Count - 1;
             if ( _hasBeenPopulated && Globals.GameAccounts != null && count == Globals.GameAccounts.Count ) return;
 
-            if ( Globals.GameAccounts == null || Globals.GameAccounts.Count == 0 && gameAccounts.Visible )
+            if ( gameAccounts.Visible )
             {
-                gameAccounts.Visible = false;
-                accLabc.Visible = false;
+                if ( Globals.GameAccounts == null || Globals.GameAccounts.Count == 0 )
+                {
+                    gameAccounts.Visible = false;
+                    accLabc.Visible = false;
 
-                gameAccounts.Items.Clear();
-                gameAccounts.Items.Add("Select Account");
-                gameAccounts.SelectedItem = gameAccounts.Items[0];
+                    gameAccounts.Items.Clear();
+                    gameAccounts.Items.Add("Select Account");
+                    gameAccounts.SelectedItem = gameAccounts.Items[0];
 
-                regLabc.Location = new Point(539, 214);
-                regionsBox.Location = new Point(503, 234);
-                accLabc.Location = new Point(723, 217);
+                    regLabc.Location = new Point(539, 214);
+                    regionsBox.Location = new Point(503, 234);
+                    accLabc.Location = new Point(723, 217);
+                }
+
+                if ( Globals.GameAccounts != null && count != Globals.GameAccounts.Count )
+                {
+                    gameAccounts.Items.Clear();
+                    gameAccounts.Items.Add("Select Account");
+                    gameAccounts.SelectedItem = gameAccounts.Items[0];
+
+                    foreach (var account in Globals.GameAccounts.Where(account => !gameAccounts.Items.Contains(account.Username)))
+                        gameAccounts.Items.Add(account.Username);
+                }
             }
 
             Globals.SecurityCode = new StringCipher ( ).CheckRetrieveKey ( );
