@@ -198,7 +198,7 @@ namespace kop_launcher
         {
             try
             {
-                var nextAccount = GetTotalAccounts ( ) - 1;
+                var nextAccount = GetTotalAccounts ( ) - 1 == 0 ? 1 : GetTotalAccounts (  );
 
                 var gameAccounts = GetFileData ( );
 
