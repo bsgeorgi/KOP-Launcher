@@ -7,33 +7,6 @@ namespace kop_launcher.ConfigReaders
 {
 	internal class ConfigFileReaderWriter
 	{
-		public Dictionary<string, string> ReadConfigFile ( string fileName )
-		{
-			var configs = new Dictionary<string, string> ( );
-			try
-			{
-				var path = Path.Combine ( Globals.RootDirectory, "system", "CandyFX", fileName );
-				var line = "";
-
-				using ( var reader = new StreamReader ( path ) )
-				{
-					while ( ( line = reader.ReadLine ( ) ) != null )
-						if ( !string.IsNullOrEmpty ( line ) )
-						{
-							var value = line.Trim ( ).Split ( ' ' ).Last ( );
-							var key   = line.Replace ( value, "" ).Replace ( "#define ", "" ).Trim ( );
-
-							if ( !configs.ContainsKey ( key ) ) configs.Add ( key, value );
-						}
-				}
-			}
-			catch
-			{
-				// ignored
-			}
-
-			return configs;
-		}
 
 		public Dictionary<string, string> ReadCoreIniSettings ( string path )
 		{
@@ -80,6 +53,12 @@ namespace kop_launcher.ConfigReaders
 							? iniReader.Read ( "effect", "gameOption" )
 							: "1" );
 
+                    configs.Add(
+						"numericPanel",
+                        iniReader.KeyExists("numericPanel", "gameOption")
+                            ? iniReader.Read("numericPanel", "gameOption")
+                            : "1");
+
 					configs.Add (
 						"state",
 						iniReader.KeyExists ( "state", "gameOption" )
@@ -112,6 +91,7 @@ namespace kop_launcher.ConfigReaders
 					configs.Add ( "depth32", "0" );
 					configs.Add ( "apparel", "1" );
 					configs.Add ( "effect", "1" );
+                    configs.Add ( "numericPanel", "1");
 					configs.Add ( "state", "0" );
 					configs.Add ( "quality", "0" );
 					configs.Add ( "frames", "1" );
@@ -124,28 +104,6 @@ namespace kop_launcher.ConfigReaders
 			}
 
 			return configs;
-		}
-
-		public bool SaveConfigFile ( string fileName, Dictionary<string, string> settings )
-		{
-			var sb = new StringBuilder ( );
-
-			try
-			{
-				foreach ( var kv in settings )
-                    sb.AppendLine ( $"#define {kv.Key} {kv.Value}" );
-
-				using ( var writer = new StreamWriter ( fileName, false ) )
-				{
-					writer.Write ( sb.ToString ( ) );
-				}
-
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
 		}
 
 		public bool SaveGameSettings ( Dictionary<string, string> settings )

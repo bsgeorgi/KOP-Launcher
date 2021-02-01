@@ -21,7 +21,6 @@ namespace kop_launcher
 		public static string LastOpenedRegion;
 
 		public static short MaximumPortals      = 3;
-		public const  short MaximumPortalPanels = 3;
 
 		public static readonly List<int>    GameInstances         = new List<int> ( );
 		public static readonly List<string> GenuineResourceHashes = new List<string> ( );

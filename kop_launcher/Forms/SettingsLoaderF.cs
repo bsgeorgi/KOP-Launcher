@@ -10,8 +10,6 @@ namespace kop_launcher
 	public partial class SettingsLoaderF : Form
 	{
 		private ConfigFileReaderWriter     _configs;
-		private Dictionary<string, string> _candyFXsettings;
-		private Dictionary<string, string> _globalSettings;
 		private Dictionary<string, string> _gameSettings;
 		private SettingsF                  _settingsForm;
 
@@ -45,7 +43,7 @@ namespace kop_launcher
 		{
 			if ( !CheckOpened ( "SettingsF" ) )
 			{
-				_settingsForm = new SettingsF ( _candyFXsettings, _globalSettings, _gameSettings );
+				_settingsForm = new SettingsF ( _gameSettings );
 				_settingsForm.Show ( );
 				_settingsForm.IsOpen = true;
 
@@ -63,16 +61,12 @@ namespace kop_launcher
         {
             backgroundWorker1.Dispose();
             _configs = null;
-            _candyFXsettings = null;
-            _globalSettings = null;
             _gameSettings = null;
 		}
 
 		private void BackgroundWorker1_DoWork ( object sender, DoWorkEventArgs e )
 		{
             _configs         = new ConfigFileReaderWriter ( );
-            _candyFXsettings = _configs.ReadConfigFile ( "CandyFX_settings.txt" );
-            _globalSettings  = _configs.ReadConfigFile ( "Global_settings.txt" );
 
 			var pathToGameS = Path.Combine ( Globals.RootDirectory, "user", "system.ini" );
             _gameSettings = _configs.ReadCoreIniSettings ( pathToGameS );
@@ -82,8 +76,6 @@ namespace kop_launcher
 		{
 			backgroundWorker1.Dispose ( );
             _configs         = null;
-            _candyFXsettings = null;
-            _globalSettings  = null;
             _gameSettings    = null;
 			Close ( );
 		}

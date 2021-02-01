@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using Guna.UI2.WinForms;
 using kop_launcher.Forms;
 using kop_launcher.Models;
-using static System.String;
 
 namespace kop_launcher
 {
