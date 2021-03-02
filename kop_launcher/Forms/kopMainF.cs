@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using Guna.UI2.WinForms;
+using kop_launcher.Forms;
 using kop_launcher.Models;
 using kop_launcher.Properties;
 using Newtonsoft.Json.Linq;
@@ -585,6 +586,7 @@ namespace kop_launcher
             if ( !_playButtonEnabled ) return;
 
             var region = Globals.GetIpByServer ( regionsBox.Text );
+            MessageBox.Show ( $"Connecting to : {region} " );
             if ( !string.IsNullOrEmpty ( region ) )
             {
                 if ( gameAccounts.SelectedIndex > 0 )

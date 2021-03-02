@@ -84,16 +84,16 @@ namespace kop_launcher
 			try
 			{
 				var path = Path.Combine ( Globals.RootDirectory, "scripts", "update", ".version" );
-				if ( File.Exists ( path ) )
-				{
-					using ( TextWriter tw = new StreamWriter ( path ) )
-					{
-						tw.WriteLine ( version );
-					}
-				}
+                if ( !File.Exists ( path ) ) return false;
 
-				return true;
-			}
+                using ( TextWriter tw = new StreamWriter ( path ) )
+                {
+                    tw.WriteLine ( version );
+                }
+
+                return true;
+
+            }
 			catch
 			{
 				return false;
@@ -208,25 +208,24 @@ namespace kop_launcher
 						? version > 0 && !string.IsNullOrEmpty ( patch.FileUrl )
 						: version > 0 && !string.IsNullOrEmpty ( patch.FileUrl ) && version <= remoteVersion;
 
-					if ( shouldUpdate )
-					{
-						if ( IsLinkReachable ( patchUrl ) )
-						{
-							patchInfo.FileUrl      = patchUrl;
-							patchInfo.FileMirror   = patchMirror;
-							patchInfo.PatchVersion = version;
-						}
-						else
-						{
-							patchInfo.FileUrl      = patchMirror;
-							patchInfo.FileMirror   = patchInfo.FileUrl;
-							patchInfo.PatchVersion = version;
-						}
+                    if ( !shouldUpdate ) continue;
 
-						if ( !list.Contains ( patchInfo ) )
-							list.Add ( patchInfo );
-					}
-				}
+                    if ( IsLinkReachable ( patchUrl ) )
+                    {
+                        patchInfo.FileUrl      = patchUrl;
+                        patchInfo.FileMirror   = patchMirror;
+                        patchInfo.PatchVersion = version;
+                    }
+                    else
+                    {
+                        patchInfo.FileUrl      = patchMirror;
+                        patchInfo.FileMirror   = patchInfo.FileUrl;
+                        patchInfo.PatchVersion = version;
+                    }
+
+                    if ( !list.Contains ( patchInfo ) )
+                        list.Add ( patchInfo );
+                }
 
 				// Get the last element in IEnumerable which indicates the last version
 				if ( list.Count > 0 )

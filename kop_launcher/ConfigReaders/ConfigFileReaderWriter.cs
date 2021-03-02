@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace kop_launcher.ConfigReaders
 {
 	internal class ConfigFileReaderWriter
 	{
-
-		public Dictionary<string, string> ReadCoreIniSettings ( string path )
+        public Dictionary<string, string> ReadCoreIniSettings ( string path )
 		{
 			var configs = new Dictionary<string, string> ( );
 			try
@@ -180,7 +178,7 @@ namespace kop_launcher.ConfigReaders
 			}
 		}
 
-		public bool OverrideCamera ( bool regular )
+		public bool OverrideAnimations ( bool regular )
 		{
 			try
 			{

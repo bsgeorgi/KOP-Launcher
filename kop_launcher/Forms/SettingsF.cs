@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Guna.UI2.WinForms;
 using kop_launcher.ConfigReaders;
 
-namespace kop_launcher
+namespace kop_launcher.Forms
 {
 	public partial class SettingsF : Form
 	{
@@ -62,11 +62,37 @@ namespace kop_launcher
 				hasSettings &= _gameSettings.TryGetValue ( "stalls", out coreGameSettings[10] );
                 hasSettings &= _gameSettings.TryGetValue( "numericPanel", out coreGameSettings[11]);
 
+                foreach (var value in coreGameSettings)
+                {
+                    MessageBox.Show ( value );
+                }
+
 				if ( hasSettings )
 				{
 					try
 					{
-                        var cam = new CameraHandler ( );
+                        if (coreGameSettings[2] != "0")
+                            guna2CustomCheckBox2.Checked = true;
+                        if (coreGameSettings[3] != "0")
+                            guna2CustomCheckBox1.Checked = true;
+                        if (coreGameSettings[4] != "0")
+                            guna2CustomCheckBox4.Checked = true;
+                        if (coreGameSettings[5] != "0")
+                            guna2CustomCheckBox5.Checked = true;
+                        if (coreGameSettings[6] != "0")
+                            guna2CustomCheckBox6.Checked = true;
+                        if (coreGameSettings[7] != "0")
+                            guna2CustomCheckBox10.Checked = true;
+                        if (coreGameSettings[8] == "0")
+                            guna2CustomCheckBox7.Checked = true;
+                        if (coreGameSettings[9] != "0")
+                            guna2CustomCheckBox3.Checked = true;
+                        if (coreGameSettings[10] != "0")
+                            guna2CustomCheckBox13.Checked = true;
+                        if (coreGameSettings[11] != "0")
+                            guna2CustomCheckBox14.Checked = true;
+
+						var cam = new CameraHandler ( );
 						switch ( cam.GetCurrentCameraConfig ( ) )
 						{
 							case 1:
@@ -266,11 +292,11 @@ namespace kop_launcher
 				++count;
 				if ( guna2CustomCheckBox11.Checked )
 				{
-					if ( !cfg.OverrideCamera ( false ) ) ret = false;
+					if ( !cfg.OverrideAnimations( false ) ) ret = false;
 				}
 				else
 				{
-					if ( !cfg.OverrideCamera ( true ) ) ret = false;
+					if ( !cfg.OverrideAnimations( true ) ) ret = false;
 				}
 			}
 

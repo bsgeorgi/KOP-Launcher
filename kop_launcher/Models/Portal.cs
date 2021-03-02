@@ -8,11 +8,11 @@ namespace kop_launcher.Models
 
 		public PortalOpeningInfo OpeningInfo { get; set; }
 
-		public PortalInfo ToPortalInfo ( DateTime ServerDateTime )
+		public PortalInfo ToPortalInfo ( DateTime serverDateTime )
 		{
-			OpeningInfo.CheckTime ( ServerDateTime );
-			var nextOpen  = OpeningInfo.GetTimeUntilNextOpen ( ServerDateTime );
-			var remaining = OpeningInfo.GetRemainingTime ( ServerDateTime );
+			OpeningInfo.CheckTime ( serverDateTime );
+			var nextOpen  = OpeningInfo.GetTimeUntilNextOpen ( serverDateTime );
+			var remaining = OpeningInfo.GetRemainingTime ( serverDateTime );
 			var info = new PortalInfo
 			{
 				PortalName   = PortalName,

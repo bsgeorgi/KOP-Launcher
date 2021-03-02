@@ -80,8 +80,8 @@ namespace kop_launcher
 			new Panel ( )
 		};
 
-		private List<Portal> _portals;
-		private IDisposable  _sub;
+		private readonly List<Portal> _portals;
+		private readonly IDisposable  _sub;
 
 		public PortalsOnDraw ( )
 		{

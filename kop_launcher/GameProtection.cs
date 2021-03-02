@@ -154,10 +154,17 @@ namespace kop_launcher
 			try
 			{
 				if ( Globals.GenuineResourceHashes.Count > 0 && Globals.CurrentResourceHashes.Count > 0 )
-					for ( var i = 0; i < Globals.GenuineResourceHashes.Count; i++ )
+					if ( Globals.GenuineResourceHashes.Where ( ( t, i ) => Globals.GenuineResourceHashes.ElementAt ( i ) !=
+                                                                           Globals.CurrentResourceHashes.ElementAt ( i ) ).Any ( ) )
+                    {
+                        return true;
+                    }
+				/*
+				 * 		for ( var i = 0; i < Globals.GenuineResourceHashes.Count; i++ )
 						if ( Globals.GenuineResourceHashes.ElementAt ( i ) !=
 							 Globals.CurrentResourceHashes.ElementAt ( i ) )
 							return true;
+				 */
 			}
 			catch
 			{
@@ -185,31 +192,31 @@ namespace kop_launcher
 
 			var files = new List<string> ( );
 
-			if ( holder.Count > 0 )
-			{
-				foreach ( var value in holder )
-					if ( value == 0 )
-						files.Add ( "Game.exe" );
-					else if ( value == 1 )
-						files.Add ( "MindPower3D_D8R.dll" );
-					else
-						files.Add ( "Engine.dll" );
+            if ( holder.Count <= 0 ) return null;
 
-				return string.Join ( ",", files.ToArray ( ) ).TrimEnd ( ',' );
-			}
+            foreach ( var value in holder )
+                switch (value)
+                {
+                    case 0:
+                        files.Add ( "Game.exe" );
+                        break;
+                    case 1:
+                        files.Add ( "MindPower3D_D8R.dll" );
+                        break;
+                    default:
+                        files.Add ( "Engine.dll" );
+                        break;
+                }
 
-			return null;
-		}
+            return string.Join ( ",", files.ToArray ( ) ).TrimEnd ( ',' );
+
+        }
 
 		public static bool UserDataExists ( )
 		{
 			var dir = Path.Combine ( Globals.RootDirectory, "user" );
-			if ( Directory.Exists ( dir ) )
-				if ( File.Exists ( GetUserDataFilePath ( ) ) )
-					return true;
-
-			return false;
-		}
+            return Directory.Exists ( dir ) && File.Exists ( GetUserDataFilePath ( ) );
+        }
 
 		public static bool CheckForInternetConnection ( )
 		{
@@ -232,14 +239,13 @@ namespace kop_launcher
 		}
 
 		public static void KillAllGameInstances ( )
-		{
-			if ( Globals.GameInstances.Count > 0 )
-			{
-				foreach ( var processID in Globals.GameInstances ) Globals.KillProcess ( processID );
+        {
+            if ( Globals.GameInstances.Count <= 0 ) return;
 
-				Globals.GameInstances.Clear ( );
-			}
-		}
+            foreach ( var processId in Globals.GameInstances ) Globals.KillProcess (processId);
+
+            Globals.GameInstances.Clear ( );
+        }
 
 		public static string GetCurrentMachineIP ( )
 		{

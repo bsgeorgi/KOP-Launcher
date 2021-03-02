@@ -18,29 +18,29 @@ namespace kop_launcher.Models
 		private readonly Subject<bool>                         _state;
 		private readonly List<(TimeSpan open, TimeSpan close)> _openingTimes;
 
-		public PortalOpeningInfo ( TimeSpan InitialTime, TimeSpan Interval, TimeSpan Duration )
+		public PortalOpeningInfo ( TimeSpan initialTime, TimeSpan interval, TimeSpan duration )
 		{
-			this.InitialTime = InitialTime;
-			this.Interval    = Interval;
-			this.Duration    = Duration;
+			this.InitialTime = initialTime;
+			this.Interval    = interval;
+			this.Duration    = duration;
 
 			_state        = new Subject<bool> ( );
 			_openingTimes = new List<(TimeSpan, TimeSpan)> ( );
 
-			var time        = InitialTime;
-			var closingTime = time + Duration;
+			var time        = initialTime;
+			var closingTime = time + duration;
 			while ( closingTime.Days == 0 ) // TODO check loop termination logic
 			{
 				_openingTimes.Add ( ( time, closingTime ) );
 
-				time        += Interval;
-				closingTime = time + Duration;
+				time        += interval;
+				closingTime = time + duration;
 			}
 		}
 
-		public void CheckTime ( DateTime ServerDateTime )
+		public void CheckTime ( DateTime serverDateTime )
 		{
-			var time = ServerDateTime.TimeOfDay;
+			var time = serverDateTime.TimeOfDay;
 			if ( time < InitialTime )
 				IsOpen = false;
 
@@ -49,24 +49,24 @@ namespace kop_launcher.Models
 			_state.OnNext ( IsOpen );
 		}
 
-		public TimeSpan GetTimeUntilNextOpen ( DateTime ServerDateTime )
+		public TimeSpan GetTimeUntilNextOpen ( DateTime serverDateTime )
 		{
 			if ( _openingTimes.Count == 0 )
 				return TimeSpan.MaxValue;
 
-			var time = ServerDateTime.TimeOfDay;
+			var time = serverDateTime.TimeOfDay;
 			if ( _openingTimes.Last ( ).open <= time )
 				return InitialTime + TimeSpan.FromDays ( 1 ) - time;
 
 			return _openingTimes.First ( x => x.open >= time ).open - time;
 		}
 
-		public TimeSpan GetRemainingTime ( DateTime ServerDateTime )
+		public TimeSpan GetRemainingTime ( DateTime serverDateTime )
 		{
 			if ( !IsOpen )
 				return TimeSpan.MaxValue;
 
-			var time = ServerDateTime.TimeOfDay;
+			var time = serverDateTime.TimeOfDay;
 			var pair = _openingTimes.FirstOrDefault ( x => x.open <= time && time <= x.close );
 			if ( pair == default )
 				return TimeSpan.MaxValue;

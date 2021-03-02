@@ -1,11 +1,12 @@
-﻿using kop_launcher.ConfigReaders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
+using kop_launcher.ConfigReaders;
 
-namespace kop_launcher
+namespace kop_launcher.Forms
 {
 	public partial class SettingsLoaderF : Form
 	{
@@ -22,16 +23,13 @@ namespace kop_launcher
 			backgroundWorker1.RunWorkerAsync ( );
 		}
 
-		private bool CheckOpened ( string name )
+		private static bool CheckOpened ( string name )
 		{
 			var fc = Application.OpenForms;
-			foreach ( Form frm in fc )
-				if ( frm.Name == name )
-					return true;
-			return false;
-		}
+            return fc.Cast<Form> ( ).Any ( frm => frm.Name == name );
+        }
 
-		private void BringToFront ( string name )
+		private static void BringToFront ( string name )
 		{
 			var fc = Application.OpenForms;
 			foreach ( Form frm in fc )
@@ -70,7 +68,7 @@ namespace kop_launcher
 
 			var pathToGameS = Path.Combine ( Globals.RootDirectory, "user", "system.ini" );
             _gameSettings = _configs.ReadCoreIniSettings ( pathToGameS );
-		}
+        }
 
 		private void guna2Button1_Click ( object sender, EventArgs e )
 		{

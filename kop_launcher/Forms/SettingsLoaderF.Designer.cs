@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Guna.UI2.WinForms;
 
-namespace kop_launcher
+namespace kop_launcher.Forms
 {
     partial class SettingsLoaderF
     {

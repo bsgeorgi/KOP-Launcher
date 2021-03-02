@@ -65,16 +65,14 @@ namespace kop_launcher
 												  "Central Europe Standard Time" ) );
 		}
 
-		public static bool PopulateRegion ( Guna2ComboBox Control )
+		public static bool PopulateRegion ( Guna2ComboBox control )
 		{
 			try
 			{
-				if ( Control == null ) return false;
+				if ( control == null ) return false;
 
-				Control.Items.Add ( "Morgan" );
-				Control.Items.Add ( "Local" );
-				Control.Items.Add ( "Jan" );
-				Control.SelectedItem = "Select Region";
+				control.Items.Add ( "Morgan" );
+				control.SelectedItem = "Select Region";
 
 				return true;
 			}
@@ -119,13 +117,13 @@ namespace kop_launcher
 														  TimeSpan.FromHours ( 3 ),
 														  TimeSpan.FromMinutes ( 60 ) )
 				},
-				new Portal
+				/*new Portal
 				{
 					PortalName = "Chaos Argent",
 					OpeningInfo = new PortalOpeningInfo ( TimeSpan.FromHours ( 11 ),
 														  TimeSpan.FromHours ( 12 ),
 														  TimeSpan.FromMinutes ( 30 ) )
-				},
+				},*/
 				new Portal
 				{
 					PortalName = "Demonic World",

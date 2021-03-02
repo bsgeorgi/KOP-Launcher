@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -50,19 +51,43 @@ namespace kop_launcher
 			return false;
 		}
 
+        private static async Task<string> GetBestServer(IEnumerable<string> regions, string defaultServer)
+        {
+            string server = null;
+            try
+            {
+                var tasks = regions.Select(ip => new Ping().SendPingAsync(ip, 2000));
+                var results = await Task.WhenAll(tasks);
+
+                var data = results.ToList();
+
+                var sortedResults = (from result in data select new Tuple<long, string> ( result.RoundtripTime, result.Address.ToString ( ) )).ToList ( );
+
+                sortedResults = sortedResults.OrderBy(i => i.Item1).ToList();
+                var (latency, address) = sortedResults.ElementAt(0);
+				//"51.124.120.48"
+
+                server = latency <= 100 ? address : defaultServer;
+            }
+            catch
+            {
+                // do nothing
+            }
+
+            return server;
+        }
+
 		public static string GetIpByServer ( string server )
 		{
 			string ip;
-			switch ( server )
+
+            var morganRegions = new List<string> { "83.58.35.155", "172.67.75.10", "172.67.200.80", "159.69.54.53", "54.94.234.144", "18.138.241.184" };
+			
+            switch ( server )
 			{
-				case "Local":
-					ip = "127.0.0.1";
+				case string external when external.ToLowerInvariant (  ).Contains ( "morgan" ):
+					ip = Task.Run(async () => await GetBestServer(morganRegions, "51.124.120.48")).Result;
 					break;
-				case "Jan":
-					ip = "192.168.1.49";
-					break;
-				// ReSharper disable once RedundantCaseLabel
-				case "Morgan":
 				default:
 					ip = "51.124.120.48";
 					break;
@@ -79,7 +104,7 @@ namespace kop_launcher
 
             Process process;
 
-            if (account == null)
+			if (account == null)
             {
                 process = new Process
                 {
@@ -90,7 +115,7 @@ namespace kop_launcher
                         WorkingDirectory = RootDirectory
                     }
                 };
-			}
+            }
             else
             {
                 process = new Process
@@ -98,15 +123,18 @@ namespace kop_launcher
                     StartInfo =
                     {
                         FileName         = startPath,
-                        Arguments        = account.Character != null ? $"startgame ip:{region} autolog:{account.Username},{account.Password},{account.Character}" : 
-                            $"startgame ip:{region} autolog:{account.Username},{account.Password}",
-						WorkingDirectory = RootDirectory
+                        Arguments        = account.Character != null ? 
+                                            $"startgame ip:{region} autolog:{account.Username},{account.Password},{account.Character}" :
+                                            $"startgame ip:{region} autolog:{account.Username},{account.Password}",
+                        WorkingDirectory = RootDirectory
                     }
                 };
-			}
+            }
+
 
             if ( process.Start ( ) )
 				return process.Id;
+
 			return -1;
 		}
 
@@ -116,19 +144,9 @@ namespace kop_launcher
 		}
 
 		public static bool AnyInstancesRunning ( )
-		{
-			var ret = false;
-
-			if ( GameInstances.Count > 0 )
-				foreach ( var id in GameInstances )
-					if ( ProcessExists ( id ) )
-					{
-						ret = true;
-						break;
-					}
-
-			return ret;
-		}
+        {
+            return GameInstances.Count > 0 && GameInstances.Any ( ProcessExists );
+        }
 
 		public static bool RestartGameInstances ( )
 		{
@@ -136,11 +154,9 @@ namespace kop_launcher
 
 			try
 			{
-				if ( GameInstances.Count > 0 )
-					if ( AnyInstancesRunning ( ) )
-						foreach ( var processID in GameInstances )
-							if ( !KillProcess ( processID ) )
-								ret = false;
+				if ( GameInstances.Count > 0 && AnyInstancesRunning())
+						foreach (var processId in GameInstances.Where ( processId => !KillProcess ( processId ) ))
+                            ret = false;
 
 				var toBeRestarted = GameInstances.Count;
 				GameInstances.Clear ( );
@@ -170,12 +186,9 @@ namespace kop_launcher
 		}
 
 		public static bool IsGameRunning ( )
-		{
-			if ( GameInstances.Count > 0 )
-				return true;
-
-			return false;
-		}
+        {
+            return GameInstances.Count > 0;
+        }
 
 		public static string CalculateMD5 ( string filename )
 		{
