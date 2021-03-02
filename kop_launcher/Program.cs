@@ -46,27 +46,25 @@ namespace kop_launcher
 				}
 			}
 			finally
-			{
-				if ( mutex != null )
-				{
-					mutex.Close ( );
-					mutex = null;
-				}
-			}
+            {
+                mutex.Close ( );
+            }
 		}
 
 		private static void CurrentDomain_ProcessExit ( object sender, EventArgs e )
 		{
-			if ( Globals.GameInstances.Count > 0 )
-				foreach ( var processID in Globals.GameInstances )
-					Globals.KillProcess ( processID );
+            if (!Globals.IsGameRunning()) return;
+
+            foreach (var processId in Globals.GameInstances)
+                Globals.KillProcess(processId);
 		}
 
 		private static void Application_ApplicationExit ( object sender, EventArgs e )
-		{
-			if ( Globals.GameInstances.Count > 0 )
-				foreach ( var processID in Globals.GameInstances )
-					Globals.KillProcess ( processID );
+        {
+            if ( !Globals.IsGameRunning ( ) ) return;
+
+			foreach ( var processId in Globals.GameInstances )
+				Globals.KillProcess (processId);
 		}
 
 		[DllImport ( "user32.dll" )]

@@ -106,29 +106,33 @@ namespace kop_launcher.ConfigReaders
 
 		public bool SaveGameSettings ( Dictionary<string, string> settings )
 		{
-			var sb       = new StringBuilder ( );
 			var fileName = Path.Combine ( Globals.RootDirectory, "user", "system.ini" );
 			var ini      = new IniFile ( fileName );
 
 			try
 			{
 				foreach ( var kv in settings )
-					if ( kv.Key == "quality" )
-					{
-						if ( kv.Value == "0" )
-						{
-							ini.Write ( "texture", "0", "video" );
-							ini.Write ( "quality", "0", "video" );
-						}
-					}
-					else if ( kv.Key == "fullScreen" || kv.Key == "pixel1024" || kv.Key == "depth32" )
-					{
-						ini.Write ( kv.Key, kv.Value, "video" );
-					}
-					else
-					{
-						ini.Write ( kv.Key, kv.Value, "gameOption" );
-					}
+					switch (kv.Key)
+                    {
+                        case "quality":
+                        {
+                            if ( kv.Value == "0" )
+                            {
+                                ini.Write ( "texture", "0", "video" );
+                                ini.Write ( "quality", "0", "video" );
+                            }
+
+                            break;
+                        }
+                        case "fullScreen":
+                        case "pixel1024":
+                        case "depth32":
+                            ini.Write ( kv.Key, kv.Value, "video" );
+                            break;
+                        default:
+                            ini.Write ( kv.Key, kv.Value, "gameOption" );
+                            break;
+                    }
 
 				return true;
 			}

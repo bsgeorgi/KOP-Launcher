@@ -151,9 +151,9 @@ namespace kop_launcher
 
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                MessageBox.Show ( e.Message );
+                //MessageBox.Show ( e.Message );
                 return false;
             }
         }

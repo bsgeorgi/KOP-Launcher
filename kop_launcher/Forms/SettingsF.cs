@@ -62,12 +62,7 @@ namespace kop_launcher.Forms
 				hasSettings &= _gameSettings.TryGetValue ( "stalls", out coreGameSettings[10] );
                 hasSettings &= _gameSettings.TryGetValue( "numericPanel", out coreGameSettings[11]);
 
-                foreach (var value in coreGameSettings)
-                {
-                    MessageBox.Show ( value );
-                }
-
-				if ( hasSettings )
+                if ( hasSettings )
 				{
 					try
 					{
