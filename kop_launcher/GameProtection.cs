@@ -16,12 +16,8 @@ namespace kop_launcher
 			new HashSet<string> ( StringComparer.OrdinalIgnoreCase )
 			{
 				/* Packet Editors */
-				"Tsearch",
 				"ArtMoney",
 				"Cheat Engine",
-				"Kiki",
-				"GhostKiller",
-				"MoonLight",
 				"Winsock Packet Editor",
 				"Redox Packet Editor",
 				"WPE",
@@ -29,41 +25,31 @@ namespace kop_launcher
 				"Squalr",
 				"CrySearch",
 				"Binwalk",
-				"PSR (Pointer Sequence Reverser)",
-				"PSR",
 				"XenoScan",
 				"Hack",
 				"Cheat",
-				"Packet",
+				"Packet Editor",
+				"Packet Edit",
 
 				/* Debuggers */
-				"PINCE",
 				"Binary Ninja",
 				"Ghidra",
 				"x64dbg",
 				"x32dbg",
 				"WinDbg",
-				"Hopper",
 				"Ninja Ripper",
-				"PIX",
 				"Ollydbg",
 				"IDA",
 				"IDA Pro",
-				"radare2",
-				"GNU Project Debugger",
-				"Cutter",
 				"REDasm",
 				"Debugger",
 				"Disassembler",
 				"Decompiler",
-				"RenderDoc",
 				"Process Hacker",
 				"WinExplorer",
 				"CDA: Code Dynamic Analysis",
-				"CDA",
 				"QuickBMS",
 				"MultiEx Commander",
-				"YARA",
 
 				/* NET Debuggers */
 				"dnSpy",
@@ -81,26 +67,15 @@ namespace kop_launcher
 				"DLL Injector",
 				"DLL Vaccine",
 				"Injector",
-				"Lunar",
 				"Inject",
 				"Memject",
 
 				/* Sniffers */
 				"Fiddler",
 				"Wireshark",
-				"Microsoft Message Analyzer",
-				"Sysinternals - Process Monitor",
-				"Sysinternals - Process Explorer",
-				"WinDump",
-				"NetworkMiner",
-				"Colasoft Capsa",
 				"Network Protocol Analyzer",
-				"Capsa",
 				"Network Packet Sniffer",
-				"Paessler",
-				"PRTG",
 				"NetFlow Analyzer",
-				"TCPdump"
 			};
 
 		private static readonly HashSet<string> Exclude = new HashSet<string> ( StringComparer.OrdinalIgnoreCase )

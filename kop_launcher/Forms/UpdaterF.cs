@@ -17,20 +17,22 @@ namespace kop_launcher
 	{
 		private readonly string       _remoteVersion;
 		private          AutoUpdate   _gameUpdater;
-		private readonly string       _regionIp;
+		private readonly ConnectionInfo _connectionInfo;
 		private          List<string> _downloadedFiles;
 		private          int          _totalUpdates;
 		private readonly bool         _forceUpdate;
 		private          bool         _wasUpdated;
         private readonly GameAccount  _account;
+        private string                _region;
 
-		public UpdaterF ( string remoteVersion, string region, GameAccount account, bool forceUpdate = false )
+		public UpdaterF ( string remoteVersion, ConnectionInfo connectionInfo, string region, GameAccount account, bool forceUpdate = false )
 		{
 			InitializeComponent ( );
-			_remoteVersion = remoteVersion;
-			_forceUpdate   = forceUpdate;
-			_regionIp      = region;
-            _account       = account;
+			_remoteVersion     = remoteVersion;
+			_forceUpdate       = forceUpdate;
+            _connectionInfo    = connectionInfo;
+            _account           = account;
+            _region            = region;
 
 			progressBar1.Focus ( );
 			progressBar1.Select ( );
@@ -100,10 +102,9 @@ namespace kop_launcher
 			_wasUpdated = true;
 			AutoUpdate.OverrideLocalGameVersion ( _remoteVersion );
             if (!_forceUpdate)
-                if (!StartGameInstance())
-                    Utils.ShowMessageA("An error occurred while opening a game instance");
-            else
-				Utils.ShowMessageA("King of Pirates game client is up to date!");
+                Utils.ShowMessageA ( !StartGameInstance ( )
+                    ? "An error occurred while opening a game instance"
+                    : "King of Pirates game client is up to date!" );
 
             SetControlThreadSafe(this, Close);
 		}
@@ -180,32 +181,27 @@ namespace kop_launcher
 					if ( Utils.ShowMessageOK (
 						"Game has been updated to the last available version, would you like to start the game now?" ) )
 					{
-						var procId = Globals.StartGameInstance ( _regionIp, _account );
+						var procId = Globals.StartGameInstance ( _connectionInfo, _account );
 
-						if ( procId != -1 )
-						{
-							Globals.LastOpenedRegion = _regionIp;
-							Globals.GameInstances.Add ( procId );
-							return true;
-						}
+                        if ( procId == -1 ) return false;
 
-						return false;
-					}
+                        Globals.LastOpenedConnectionInfo = _connectionInfo;
+                        Globals.LastOpenedRegion = _region;
+						Globals.GameInstances.Add ( procId );
+                        return true;
+                    }
 				}
 				else
 				{
+					var procId = Globals.StartGameInstance (_connectionInfo, _account );
 
-					var procId = Globals.StartGameInstance ( _regionIp, _account );
+                    if ( procId == -1 ) return false;
 
-					if ( procId != -1 )
-					{
-						Globals.LastOpenedRegion = _regionIp;
-						Globals.GameInstances.Add ( procId );
-						return true;
-					}
-
-					return false;
-				}
+                    Globals.LastOpenedConnectionInfo = _connectionInfo;
+                    Globals.LastOpenedRegion = _region;
+					Globals.GameInstances.Add ( procId );
+                    return true;
+                }
 			}
 			catch
 			{

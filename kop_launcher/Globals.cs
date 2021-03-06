@@ -9,6 +9,7 @@ using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Threading;
 using kop_launcher.Models;
 
@@ -19,7 +20,8 @@ namespace kop_launcher
 		public static bool   RenderNotification      = true;
 		public static bool   RenderNotificationShown = false;
 		public static bool   HasBeenReported         = false;
-		public static string LastOpenedRegion;
+        public static ConnectionInfo LastOpenedConnectionInfo;
+        public static string LastOpenedRegion;
 
 		public static short MaximumPortals      = 3;
 
@@ -77,26 +79,49 @@ namespace kop_launcher
             return server;
         }
 
-		public static string GetIpByServer ( string server )
+		public static ConnectionInfo GetServerConnectionInfo ( string server )
 		{
 			string ip;
+            const string defaultServer = "51.124.120.48";
 
-            var morganRegions = new List<string> { "83.58.35.155", "172.67.75.10", "172.67.200.80", "159.69.54.53", "54.94.234.144", "18.138.241.184" };
+            var morganRegions = new List<string> { "20.68.240.41", "20.84.147.28", "51.13.69.172", "20.197.224.66", "51.124.120.48" };
 			
             switch ( server )
 			{
 				case string external when external.ToLowerInvariant (  ).Contains ( "morgan" ):
-					ip = Task.Run(async () => await GetBestServer(morganRegions, "51.124.120.48")).Result;
+					ip = Task.Run(async () => await GetBestServer( morganRegions, defaultServer ) ).Result;
 					break;
 				default:
-					ip = "51.124.120.48";
+					ip = defaultServer;
 					break;
 			}
 
-			return ip;
-		}
+            string port;
+            switch ( ip )
+            {
+				case "20.68.240.41":
+                    port = "23215";
+                    break;
+                case "20.84.147.28":
+                    port = "56381";
+                    break;
+                case "51.13.69.172":
+                    port = "64728";
+                    break;
+                case "20.197.224.66":
+                    port = "14799";
+                    break;
 
-		public static int StartGameInstance ( string region, GameAccount account )
+                default:
+                    ip = defaultServer;
+					port = "55721";
+                    break;
+			}
+
+			return new ConnectionInfo { IPAddress = ip, GamePort = port };
+        }
+
+		public static int StartGameInstance ( ConnectionInfo connectionInfo, GameAccount account )
         {
 			var systemPath = Path.Combine ( RootDirectory, "system" );
 			var gameExe    = File.Exists ( Path.Combine ( systemPath, "game.exe" ) ) ? "game.exe" : "Game.exe";
@@ -111,7 +136,7 @@ namespace kop_launcher
                     StartInfo =
                     {
                         FileName         = startPath,
-                        Arguments        = $"startgame ip:{region}",
+                        Arguments        = $"hhfa029N27ckop iwodpuJTCM:{connectionInfo.IPAddress} nLpnZKuiFENK:{connectionInfo.GamePort}",
                         WorkingDirectory = RootDirectory
                     }
                 };
@@ -124,8 +149,8 @@ namespace kop_launcher
                     {
                         FileName         = startPath,
                         Arguments        = account.Character != null ? 
-                                            $"startgame ip:{region} autolog:{account.Username},{account.Password},{account.Character}" :
-                                            $"startgame ip:{region} autolog:{account.Username},{account.Password}",
+                                            $"hhfa029N27ckop iwodpuJTCM:{connectionInfo.IPAddress} nLpnZKuiFENK:{connectionInfo.GamePort} heeQjg8TI:{account.Username},{account.Password},{account.Character}" :
+                                            $"hhfa029N27ckop iwodpuJTCM:{connectionInfo.IPAddress} nLpnZKuiFENK:{connectionInfo.GamePort} heeQjg8TI:{account.Username},{account.Password}",
                         WorkingDirectory = RootDirectory
                     }
                 };
@@ -163,12 +188,11 @@ namespace kop_launcher
 
 				for ( var i = 0; i < toBeRestarted; i++ )
 				{
-					var region = GetIpByServer ( LastOpenedRegion );
-					var procId = StartGameInstance ( region, null );
+					var connectionInfo = GetServerConnectionInfo ( LastOpenedRegion );
+					var procId = StartGameInstance (connectionInfo, null );
 
 					if ( procId != -1 )
 					{
-						LastOpenedRegion = region;
 						GameInstances.Add ( procId );
 					}
 					else
