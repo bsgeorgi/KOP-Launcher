@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ConfigureAwait</name>
+    </assembly>
+    <members>
+        <member name="T:Fody.ConfigureAwaitAttribute">
+            <summary>
+            Controls the config of the ConfigureAwait fody weaver.
+            </summary>
+        </member>
+        <member name="M:Fody.ConfigureAwaitAttribute.#ctor(System.Boolean)">
+            <summary>
+            Instantiate a new instance of <see cref="T:Fody.ConfigureAwaitAttribute"/>.
+            </summary>
+            <param name="continueOnCapturedContext">true to continue on CapturedContext.</param>
+        </member>
+    </members>
+</doc>
