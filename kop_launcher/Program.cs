@@ -13,12 +13,12 @@ namespace kop_launcher
 		[STAThread]
 		private static void Main ( )
 		{
-			/*if (!ProcessExtensions.ParentProcessUtilities.GetParentProcess().ProcessName.ToLowerInvariant().Contains("kop")
-				&& !ProcessExtensions.ParentProcessUtilities.GetParentProcess().ProcessName.ToLowerInvariant().Contains("launcher"))
-			{
-				MessageBox.Show("Please open the launcher correctly!", "KOPO - error");
-				return;
-			}*/
+			//if (!ProcessExtensions.ParentProcessUtilities.GetParentProcess().ProcessName.ToLowerInvariant().Contains("kop")
+			//	&& !ProcessExtensions.ParentProcessUtilities.GetParentProcess().ProcessName.ToLowerInvariant().Contains("launcher"))
+			////{
+			//	MessageBox.Show("Please open the launcher correctly!", "KOPO - error");
+			//	return;
+			//}
 			if ( !GameProtection.CheckForInternetConnection ( ) )
 			{
 				MessageBox.Show ( "Please ensure an internet connection has been established!", "KOPO - error" );

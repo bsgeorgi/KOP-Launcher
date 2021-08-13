@@ -770,7 +770,6 @@ namespace kop_launcher
             this.label3.Size = new System.Drawing.Size(181, 19);
             this.label3.TabIndex = 2;
             this.label3.Text = "Frequently Asked Questions";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             this.label3.MouseEnter += new System.EventHandler(this.label4_MouseEnter);
             this.label3.MouseLeave += new System.EventHandler(this.label4_MouseLeave);
             this.label3.MouseHover += new System.EventHandler(this.label4_MouseEnter);
@@ -787,7 +786,6 @@ namespace kop_launcher
             this.label2.Size = new System.Drawing.Size(81, 19);
             this.label2.TabIndex = 1;
             this.label2.Text = "Game Rules";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             this.label2.MouseEnter += new System.EventHandler(this.label4_MouseEnter);
             this.label2.MouseLeave += new System.EventHandler(this.label4_MouseLeave);
             this.label2.MouseHover += new System.EventHandler(this.label4_MouseEnter);
@@ -852,7 +850,7 @@ namespace kop_launcher
             // 
             // updateStatisticsTimer
             // 
-            this.updateStatisticsTimer.Interval = 10000;
+            this.updateStatisticsTimer.Interval = 300000;
             this.updateStatisticsTimer.Tick += new System.EventHandler(this.updateStatisticsTimer_Tick);
             // 
             // SecurityTimer

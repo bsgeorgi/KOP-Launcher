@@ -65,8 +65,8 @@ namespace kop_launcher
             //SecurityTimer.Start();
 
             // Timer to check for hash changes in game.exe and dlls
-            UpdateHashesTimer.Enabled = true;
-            UpdateHashesTimer.Start();
+            //UpdateHashesTimer.Enabled = true;
+            //UpdateHashesTimer.Start();
         }
 
         /* Overriding Separator Due to it not being aligned correctly by default thanks to Microsoft*/
@@ -490,6 +490,7 @@ namespace kop_launcher
                         wc.Proxy = null;
 
                         var json = wc.DownloadString ( Resources.StatisticsURL );
+                        MessageBox.Show(json);
                         dynamic data = JObject.Parse ( json );
 
                         SetControlThreadSafe ( label7, arg => { label7.Text = data.accounts; }, null );
@@ -585,8 +586,9 @@ namespace kop_launcher
         {
             if ( !_playButtonEnabled ) return;
 
-            var connectionInfo = Globals.GetServerConnectionInfo( regionsBox.Text );
-            if ( !string.IsNullOrEmpty ( connectionInfo.IPAddress ) && !string.IsNullOrEmpty ( connectionInfo.GamePort ) )
+            var region = Globals.GetIpByServer ( regionsBox.Text );
+            MessageBox.Show ( $"Connecting to : {region} " );
+            if ( !string.IsNullOrEmpty ( region ) )
             {
                 if ( gameAccounts.SelectedIndex > 0 )
                 {
@@ -609,11 +611,10 @@ namespace kop_launcher
         {
             if ( Application.OpenForms.OfType<UpdaterF> ( ).Any ( ) ) return;
 
-            var connectionInfo = Globals.GetServerConnectionInfo ( regionsBox.Text );
-
+            var region = Globals.GetIpByServer ( regionsBox.Text );
             if ( !string.IsNullOrEmpty ( _gameVersion ) )
             {
-                using (var updater = new UpdaterF ( _gameVersion, connectionInfo, regionsBox.Text, account, forceUpdate ))
+                using (var updater = new UpdaterF ( _gameVersion, region, account, forceUpdate ))
                 {
                     updater.Show ( );
                 }
@@ -727,16 +728,6 @@ namespace kop_launcher
             {
                 // ignored
             }
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-            Process.Start ( "https://kingofpirates.net/game/rules" );
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-            Process.Start ( "https://kingofpirates.net/forum/" );
         }
     }
 }

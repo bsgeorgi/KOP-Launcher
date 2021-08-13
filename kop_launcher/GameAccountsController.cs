@@ -29,7 +29,7 @@ namespace kop_launcher
             _folderPath = folderPath;
             _filePath = filePath;
             _key = key;
-            _fileContents = GetFileLines ( )?.ToList ( );
+            _fileContents = GetFileLines ( ) == null ? null : GetFileLines ( ).ToList ( );
         }
 
         private string CheckFileReachable()
